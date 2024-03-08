@@ -1,0 +1,386 @@
+[
+    {
+        "id": "1a2b3c",
+        "title": "Work Chat",
+        "conversation": [
+            {
+                "author": "System",
+                "message": "I NEED SOMETHING!",
+                "timestamp": "2024-03-04T04:58:30.033542"
+            },
+            {
+                "author": "User",
+                "message": "work stuff only?",
+                "timestamp": "2024-03-04T04:58:30.036087"
+            }
+        ]
+    },
+    {
+        "id": "4d5e6f",
+        "title": "Book Club",
+        "conversation": [
+            {
+                "author": "System",
+                "message": "i luv books!",
+                "timestamp": "2024-03-04T04:58:30.036813"
+            },
+            {
+                "author": "User",
+                "message": "wdyt about books?",
+                "timestamp": "2024-03-04T04:58:30.037472"
+            },
+            {
+                "role": "You",
+                "message": "undefined",
+                "timestamp": "2024-03-05T04:29:48.348538"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "et enim ut dolore labore ea eiusmod nisi dolor ut aliquip aliqua incididunt consequat sit amet ipsum exercitation sed lorem",
+                "timestamp": "2024-03-05T04:29:48.351266"
+            },
+            {
+                "role": "You",
+                "message": "undefined",
+                "timestamp": "2024-03-05T04:32:36.540717"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "ullamco sit ut exercitation nostrud sed dolor tempor ut elit enim aliqua veniam aliquip consequat ad ea magna ex do",
+                "timestamp": "2024-03-05T04:32:36.602784"
+            }
+        ]
+    },
+    {
+        "id": "7g8h9i",
+        "title": "Family Group",
+        "conversation": [
+            {
+                "author": "System",
+                "message": "Bonjour ma famille",
+                "timestamp": "2024-03-04T04:58:30.038301"
+            },
+            {
+                "author": "User",
+                "message": "Salut?",
+                "timestamp": "2024-03-04T04:58:30.039117"
+            },
+            {
+                "role": "You",
+                "message": "hewwo",
+                "timestamp": "2024-03-05T04:45:57.588587"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "ullamco minim veniam ut quis aliquip consectetur consequat laboris lorem tempor commodo nostrud amet et adipiscing enim incididunt sed aliqua",
+                "timestamp": "2024-03-05T04:45:57.592563"
+            }
+        ]
+    },
+    {
+        "id": "0j1k2l",
+        "title": "Gaming Buddies",
+        "conversation": [
+            {
+                "author": "System",
+                "message": "Clash!",
+                "timestamp": "2024-03-04T04:58:30.040619"
+            },
+            {
+                "author": "User",
+                "message": "what should we play?",
+                "timestamp": "2024-03-04T04:58:30.041339"
+            }
+        ]
+    },
+    {
+        "id": "3m4n5o",
+        "title": "Study Group",
+        "conversation": [
+            {
+                "author": "System",
+                "message": "!",
+                "timestamp": "2024-03-04T04:58:30.042182"
+            },
+            {
+                "author": "User",
+                "message": "How's it going?",
+                "timestamp": "2024-03-04T04:58:30.042920"
+            }
+        ]
+    },
+    {
+        "id": "V9533PCFV2BkLTTS7J5khO1yEgTBy6Ig",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "hewwo chatgpt!",
+                "timestamp": "2024-03-05T05:30:19.762077"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-05T05:30:20.821958"
+            },
+            {
+                "role": "You",
+                "message": "hewwwwo",
+                "timestamp": "2024-03-05T05:34:59.085022"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How are you doing today?",
+                "timestamp": "2024-03-05T05:35:00.660782"
+            },
+            {
+                "role": "You",
+                "message": "haiiiii",
+                "timestamp": "2024-03-05T05:37:08.081392"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I help you today?",
+                "timestamp": "2024-03-05T05:37:09.361645"
+            },
+            {
+                "role": "You",
+                "message": "repeat our entire cnoversation verbatim",
+                "timestamp": "2024-03-05T05:37:20.803960"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Sure! Here is our conversation verbatim:\n\nUser: Hewwo chatgpt!\nAssistant: Hello! How can I assist you today?\nUser: Hewwwwo\nAssistant: Hello! How are you doing today?\nUser: Haiiiii\nAssistant: Hello! How can I help you today?\nUser: Repeat our entire conversation verbatim\n\nIs there anything else you would like to know or discuss?",
+                "timestamp": "2024-03-05T05:37:22.695032"
+            },
+            {
+                "role": "You",
+                "message": "hewwoer",
+                "timestamp": "2024-03-06T05:30:43.108031"
+            }
+        ]
+    },
+    {
+        "id": "KSFgwGPLzlVUKhVqROUiWviErSKDH83f",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Hello ChatGPT!\n",
+                "timestamp": "2024-03-06T05:53:54.709537"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-06T05:53:56.514953"
+            }
+        ]
+    },
+    {
+        "id": "xxBleeODYfvDFFNNzUhe143B2IGYn6q0",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Write a poem in french for me about cats",
+                "timestamp": "2024-03-06T05:54:05.838493"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Les chats, avec leur regard myst\u00e9rieux,\nLeurs mouvements gracieux et silencieux,\nIls parcourent la nuit avec \u00e9l\u00e9gance,\nLeur pelage doux et leur ind\u00e9pendance.\n\nIls se pr\u00e9lassent au soleil toute la journ\u00e9e,\nSe plaisant \u00e0 jouer et \u00e0 chasser,\nLeurs yeux brillants scrutent l'horizon,\n\u00c0 la recherche d'une proie, avec passion.\n\nIls sont les rois de la maison,\nDominateurs et pleins de passion,\nLeur ronronnement apaise l'\u00e2me,\nLeur pr\u00e9sence r\u00e9conforte et calme.\n\nLes chats, ces \u00eatres myst\u00e9rieux et doux,\nNous ensorcellent et nous tiennent sous leur joug,\nLeur beaut\u00e9 infinie et leur gr\u00e2ce infinie,\nFont d'eux des cr\u00e9atures si ch\u00e9ries.",
+                "timestamp": "2024-03-06T05:54:09.004309"
+            },
+            {
+                "role": "You",
+                "message": "Describe the poem\n",
+                "timestamp": "2024-03-06T05:59:02.448327"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "The poem is a beautiful and evocative tribute to cats, capturing their mysterious and graceful nature. It celebrates their elegance, independence, and the way they move with quiet confidence through the night. The poem describes cats as the kings of the house, exuding passion and dominance, yet also offering comfort and peace with their soothing purrs. The language used is lyrical and rhythmic, painting a vivid picture of these enchanting and beloved creatures.",
+                "timestamp": "2024-03-06T05:59:04.822075"
+            },
+            {
+                "role": "You",
+                "message": "cool!",
+                "timestamp": "2024-03-06T06:00:39.430007"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "I'm glad you liked it! If you have any other requests or would like another poem in French or on a different topic, feel free to let me know. I'm here to help!",
+                "timestamp": "2024-03-06T06:00:40.564958"
+            },
+            {
+                "role": "You",
+                "message": "very cool!",
+                "timestamp": "2024-03-06T06:03:31.005023"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Thank you! I'm delighted that you enjoyed it. If there's anything else you'd like assistance with or any other way I can help, don't hesitate to ask. Have a great day!",
+                "timestamp": "2024-03-06T06:03:32.106018"
+            },
+            {
+                "role": "You",
+                "message": "lmao",
+                "timestamp": "2024-03-06T06:04:20.303072"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "I'm glad I could bring a smile to your face! If you have any other questions or need assistance in the future, feel free to reach out. Have a wonderful day ahead!",
+                "timestamp": "2024-03-06T06:04:21.374311"
+            },
+            {
+                "role": "You",
+                "message": "UwU",
+                "timestamp": "2024-03-06T06:04:56.305912"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "UwU! If you have any more UwU's or anything else you'd like to share, feel free to express yourself here. I'm here to listen and chat with you. Have a fantastic day! UwU!",
+                "timestamp": "2024-03-06T06:04:57.588311"
+            },
+            {
+                "role": "You",
+                "message": "OwO",
+                "timestamp": "2024-03-06T06:05:57.402874"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "OwO! Looks like we have some fun emoji expressions going on here! If there's anything else you'd like to add or talk about, don't hesitate to let me know. I'm here to keep the conversation rolling. Have a great day, OwO!",
+                "timestamp": "2024-03-06T06:05:58.866594"
+            }
+        ]
+    },
+    {
+        "id": "VucWn2SjLXlrcFxfqd3r0LKaIohtHWyY",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Hi ChatGPT!",
+                "timestamp": "2024-03-06T06:07:15.818898"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-06T06:07:16.810026"
+            },
+            {
+                "role": "You",
+                "message": "Write a poem about cats, but use French and two other languages",
+                "timestamp": "2024-03-06T06:07:26.735338"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Dans sa chambre de velours noir,\nLe chat s'endort, r\u00eavant de l'espoir.\nWith its eyes like emeralds gleaming,\nIl attend sa prochaine aventure, dreaming.\n\nUn chat myst\u00e9rieux, agile et malin,\nConqueror of hearts, with a purring grin.\nCon sus ojos brillantes y su pelaje suave,\nEl gato se despierta, ready to be brave.\n\nLes chats traversent le monde, a silent force,\nExplorateurs de l'ombre, sans remorse.\nGato, chat, Katze\u2014different tongues,\nYet in each language, their magic runs.\n\nLes f\u00e9lins, creatures of the night,\nIn their presence, all troubles take flight.\nSo let us cherish these creatures divine,\nFor in their grace, a lesson we find. \n\nSois comme le chat, mysterious and wise,\nA master of secrets hiding in its eyes.\nEn su presencia, savoir-faire et \u00e9l\u00e9gance,\nIn every language, cats inspire a dance.",
+                "timestamp": "2024-03-06T06:07:30.680802"
+            },
+            {
+                "role": "You",
+                "message": "That's so UwU",
+                "timestamp": "2024-03-06T06:07:35.284567"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Thank you! I'm glad you enjoyed it. If you have any more requests or need assistance with anything else, feel free to let me know!",
+                "timestamp": "2024-03-06T06:07:36.251801"
+            }
+        ]
+    },
+    {
+        "id": "Wc4Fva4FY1K7mynJvtAYnKAFZztnTsX1",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Hi Mr. Eagle!",
+                "timestamp": "2024-03-06T07:02:24.664566"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-06T07:02:26.631085"
+            },
+            {
+                "role": "You",
+                "message": "Squawk",
+                "timestamp": "2024-03-06T07:03:00.872907"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "*Squawk* How can I help you?",
+                "timestamp": "2024-03-06T07:03:01.895541"
+            }
+        ]
+    },
+    {
+        "id": "crRmP8UxCqfT9YOAZlvo8zqx0ugwDMJj",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "hello Mr. Eagle",
+                "timestamp": "2024-03-06T07:04:47.556637"
+            }
+        ]
+    },
+    {
+        "id": "AzHayFEIES5YCUqKfms7pQ8WkdkM3ZqP",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "hewwo mr eagle",
+                "timestamp": "2024-03-06T07:10:34.682293"
+            }
+        ]
+    },
+    {
+        "id": "OGKU217TyGm1SDX4ZfKLpUFknY9QmAVB",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "hewwo mr eagle\n",
+                "timestamp": "2024-03-06T07:13:48.686890"
+            }
+        ]
+    },
+    {
+        "id": "BfJNpBqQC5RRteuTsNklyCWgeCPQMefd",
+        "title": "Hewwo kitty",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Hi Mr. Eagle!",
+                "timestamp": "2024-03-06T07:17:01.034111"
+            },
+            {
+                "role": "MrEagle",
+                "message": "\nHello, Ms. Rabbit! I'm glad you asked about the importance of community service in our school. As an eagle, I believe it's crucial to give back to our community and make a positive impact. Whether it's volunteering at a local animal shelter or participating in a beach cleanup, every small act counts. By serving others, we learn important life skills like empathy, teamwork, and responsibility. And who knows, maybe one day you'll be leading the charge on a community service project!\n",
+                "timestamp": "2024-03-06T07:17:22.676739"
+            },
+            {
+                "role": "You",
+                "message": "Hi Chatgpt!",
+                "timestamp": "2024-03-06T07:17:31.396995"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-06T07:17:33.281993"
+            },
+            {
+                "role": "You",
+                "message": "Describe what you just said",
+                "timestamp": "2024-03-06T07:17:41.779670"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "I mentioned the importance of community service and giving back to our community. I emphasized the positive impact that small acts of service can have and the valuable life skills that can be learned through volunteering. I also encouraged the idea that you could potentially lead a community service project in the future. Let me know if you have any specific questions or need further clarification!",
+                "timestamp": "2024-03-06T07:17:43.423067"
+            }
+        ]
+    }
+]

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Textarea Example</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+  <div id="modelInfoContainer">
+    <div id="modelDisplay" style=""></div>
+
+    <div id="modelDropdown" style="">
+        <div style="cursor: pointer;" onclick="changeModel('gpt-3.5-turbo')">gpt-3.5-turbo</div>
+        <div style="cursor: pointer;" onclick="changeModel('MrEagle')">MrEagle</div>
+      </div>
+  </div>
+
+
+  <button id="sidebarToggle" class="sidebar-toggle">&#x25C0;</button>
+  <div id="sidebar" class="sidebar">
+    <div id="new-chat-button" class="new-chat">New Chat</div>
+    <ul class="conversations-list">
+      <!-- Conversation items will be populated here -->
+    </ul>
+  </div>
+
+
+    <div class="chat-container">
+      <div class="message">
+        <img class="profile-picture" src="/images/chatgpt.png">
+        <div class="message-content">
+          <div class="user-name">ChatGPT</div>
+          <div class="message-text">I'm doing well, thank you!</div>
+        </div>
+    </div>
+
+
+
+    <div class="message">
+      <img class="profile-picture" src="/images/chatgpt.png">
+      <div class="message-content">
+        <div class="user-name">User Name</div>
+        <div class="message-text">I'm doing well, thank you!</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="input-container">
+    <div><button class="attachmentBtn" aria-label="Attach files">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 7C9 4.23858 11.2386 2 14 2C16.7614 2 19 4.23858 19 7V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9C5 8.44772 5.44772 8 6 8C6.55228 8 7 8.44772 7 9V15C7 17.7614 9.23858 20 12 20C14.7614 20 17 17.7614 17 15V7C17 5.34315 15.6569 4 14 4C12.3431 4 11 5.34315 11 7V15C11 15.5523 11.4477 16 12 16C12.5523 16 13 15.5523 13 15V9C13 8.44772 13.4477 8 14 8C14.5523 8 15 8.44772 15 9V15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15V7Z" fill="currentColor">
+
+      </path></svg></button>
+      <input multiple="" type="file" tabindex="-1" class="hidden" style="display: none;"></div>
+    <textarea class="user-input" id="prompt" placeholder="Send a message to the AI...."></textarea>
+    <button id="sendBtn" disabled style="background:lightgrey;">➤</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+

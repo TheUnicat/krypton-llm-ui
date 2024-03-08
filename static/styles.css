@@ -1,0 +1,234 @@
+body {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Noto Sans', sans-serif;
+  }
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s;
+}
+
+.chat-container {
+  flex: 1;
+  position: absolute; /* Positioning relative to its nearest positioned ancestor */
+  bottom: 0; /* Align the bottom with the parent */
+  width: 50%;
+  height: 95%;
+  overflow-y: auto; /* Allows scrolling for overflow */
+  padding: 10px;
+  padding-bottom: 10%; /* Bottom padding to create space */
+  box-sizing: border-box; /* Ensures padding is included in height */
+  transition: 0.3s;
+}
+
+
+
+.message {
+  display: flex;
+  align-items: flex-start; /* Aligns items to the start of the flex container */
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: white;
+}
+
+.profile-picture {
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
+  border-radius: 50%; /* Makes the image round */
+  margin-right: 10px; /* Adds space between the image and the message text */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+}
+
+.message-content {
+  flex: 1; /* Takes up the remaining space */
+}
+
+.user-name {
+  font-weight: 600; /* Makes the user name bold */
+  margin-bottom: 4px; /* Adds space between the user name and the message text */
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background: white;
+  transition: 0.3s;
+  }
+
+.user-input {
+  width: 50%;
+  padding: 10px;
+  height: 25px;
+  margin-right: 10px;
+  border: 1px solid lightgrey;
+  resize: none;
+  border-radius: 10px;
+  font-family: 'Noto Sans', sans serif;
+  padding-right: 4%;
+  padding-left: 4%;
+  font-size: 15px;
+}
+
+textarea {
+  /* Default state styles */
+  border: 1px solid #ccc; /* Light grey border */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus styles */
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #999; /* Darken the border a bit */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Subtle outer shadow */
+}
+
+@media (max-width: 600px) {
+  .user-input {
+    width: 70%;
+  }
+}
+
+/* Styles for sidebar adjustment (example) */
+@media (min-width: 600px) {
+  body.has-sidebar .chat-container {
+    margin-right: 300px; /* Assuming the sidebar is 300px */
+  }
+}
+
+.sidebar-toggle {
+  position: absolute;
+  opacity: 100%;
+  left: 1%;
+  cursor: pointer;
+  top: 40%;
+  visibility: hidden;
+  transition: left 0.3s;
+}
+
+.sidebar-toggle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  border-radius: 10px;
+  width: 5px; /* Width of the line */
+  height: 30px; /* Height of the line, can be adjusted */
+  background: lightgrey; /* Initial color of the line */
+  visibility: visible; /* Make sure the line is visible */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.sidebar-toggle:hover::before {
+  background: grey; /* Darker shade on hover */
+}
+
+
+
+.sidebar {
+  position: fixed;
+  left: -20%; /* Sidebar starts off-screen */
+  top: 0;
+  width: 20%;
+  height: 100%;
+  background-color: #f9f9f9;
+  overflow-y: auto; /* Allows scrolling for overflow */
+  transition: left 0.3s; /* Smooth transition for opening/closing */
+  z-index: 99;
+}
+
+.conversations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conversation-item {
+  margin-left: 10px;
+  padding: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.new-chat {
+  margin-left: 10px;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+#sendBtn {
+    position: absolute;
+    background: lightblue;
+    right: 23%;
+    border-radius: 10px;
+    width: 30px; /* Sets a fixed width for the button */
+    height: 30px; /* Sets a fixed height for the button, making it bigger */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the button */
+    border: none; /* Removes the border from the button */
+    font-size: 16px; /* Increases the font size inside the button */
+}
+
+.attachmentBtn {
+  position: absolute;
+  background: none; /* Remove any background */
+  border: none; /* Remove the border */
+  padding: 0; /* Adjust padding as needed */
+  cursor: pointer; /* To indicate it's clickable */
+  left: 22%;
+  bottom: 30%;
+}
+
+/* To ensure the button doesn't have any outline when focused, for aesthetic purposes */
+.attachmentBtn:focus {
+  outline: none;
+}
+
+#modelInfoContainer {
+  position: absolute; /* Needed for absolute positioning of children */
+  top: 10%;
+  font-weight: 600;
+  left: 10%;
+  padding: 10px;
+  background-color: none;
+  cursor: pointer;
+  border: none;
+  z-index: 1000; /* Ensures dropdown appears above other content */
+}
+
+#modelDropdown {
+  display: none;
+  background-color: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Adds a drop shadow for depth */
+  z-index: 1000;
+  width: max-content;
+}
+
+#modelDropdown div {
+  padding: 8px 16px;
+  border-bottom: 1px solid #ddd; /* Separates options */
+  background-color: #fff; /* Ensures consistent background */
+}
+
+#modelDropdown div:last-child {
+  border-bottom: none; /* Removes border from the last option */
+}
+
+#modelDropdown div:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+
