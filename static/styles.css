@@ -12,7 +12,7 @@ body, html {
   height: 100%;
   display: flex;
   flex-direction: column;
-  transition: left 0.3s;
+  transition: 0.3s;
 }
 
 .chat-container {
@@ -218,6 +218,7 @@ textarea:focus {
   border: none;
   color: black;
   z-index: 1000; /* Ensures dropdown appears above other content */
+  transition: 0.3s;
 }
 
 #modelVersion {

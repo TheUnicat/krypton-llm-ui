@@ -38,22 +38,28 @@ function selectConversation(conversationId) {
       chatContainer.innerHTML = ''; // Clear existing messages
 
       conversation.conversation.forEach(message => {
-        const messageElement = `
-          <div class="message">
-            <img class="profile-picture" src="/images/chatgpt.png">
-            <div class="message-content">
-              <div class="user-name">${message.role}</div>
-              <div class="message-text">${message.message}</div>
-            </div>
-          </div>
-        `;
-        chatContainer.innerHTML += messageElement;
+        const messageElement = appendMessage(message.role);
+
+
+
+        // Create and append the message text div
+        const messageTextElement = document.createElement('div');
+        messageTextElement.classList.add('message-text');
+        messageTextElement.textContent = message.message;
+
+        messageElement.querySelector('.message-content').appendChild(messageTextElement);
+
+        // Append the complete message element to the chat container
+        chatContainer.appendChild(messageElement);
+
+        // Update conversation ID in localStorage and scroll to the latest message
         localStorage.setItem("conversationId", conversationId);
         chatContainer.scrollTop = chatContainer.scrollHeight;
       });
     })
     .catch(error => console.error('Error fetching conversation:', error));
 }
+
 
 const imagePaths = {
     "ChatGPT": "chatgpt.png",
@@ -70,9 +76,8 @@ function appendMessage(author, text=null) {
   messageElement.classList.add('message');
   let imagePath;
   imagePath = "/images/" + imagePaths[author];
-  console.log(imagePath);
   messageElement.innerHTML = `
-    <img class="profile-picture" src=imagePath alt="ChatGPT">
+    <img class="profile-picture" src=${imagePath} alt="ChatGPT">
     <div class="message-content">
       <div class="user-name">${author}</div>
       <div class="message-text">${text ? text : ""}</div>
@@ -218,6 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // If the sidebar is opened, shift the chat-container and input-container to the right
     document.querySelector('.chat-container').style.marginLeft = isOpen ? '0' : '4%';
     document.querySelector('.input-container').style.marginLeft = isOpen ? '0' : '4%';
+    document.querySelector('#modelInfoContainer').style.marginLeft = isOpen ? '0' : '15%';
   });
 });
 
