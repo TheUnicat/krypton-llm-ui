@@ -4,6 +4,7 @@ from openai_chat import openai_test
 #from eagle_chat import eagle_complete
 import storage
 import json
+from titles import make_title
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -39,10 +40,15 @@ def stream():
     print("Prompt ", prompt)
     print("conversation id ", conversation_id)
     print("model ", model)
+
+    #if new conversation, make a title
+    new_convo = False
+
     if conversation_id is not None and conversation_id != "null":
         storage.append_conversation(conversation_id, prompt, "You")
     else:
         conversation_id = storage.create_conversation(prompt)
+        new_convo = True
 
 
     def generate(model, prompt, conversation_id):
@@ -64,6 +70,8 @@ def stream():
         if conversation_id and accumulated_response:
             print(accumulated_response)
             storage.append_conversation(conversation_id, accumulated_response, model)
+            if new_convo:
+                storage.rename(conversation_id, make_title(prompt, accumulated_response))
 
 
     return Response(generate(model, prompt, conversation_id), mimetype='text/event-stream')

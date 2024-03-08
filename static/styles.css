@@ -28,6 +28,16 @@ body, html {
   transition: 0.3s;
 }
 
+/* Hide scrollbar for Webkit browsers */
+.chat-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.chat-container {
+  scrollbar-width: none;
+}
+
 
 
 .message {

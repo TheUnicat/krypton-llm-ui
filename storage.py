@@ -102,3 +102,14 @@ def format_conversation(conversation):
 
     return simplified_messages
 
+def rename(conversation_id, new_title):
+    with open("conversations.json", "r") as file:
+        data = json.load(file)
+        for conversation in data:
+            if conversation["id"] == conversation_id:
+                conversation["title"] = new_title
+                break  # Stops the loop once the matching conversation is found and updated
+
+    with open("conversations.json", "w") as file:
+        json.dump(data, file, indent=4)
+
