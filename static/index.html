@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="styles.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Include the highlight.js library -->
+  <link rel="stylesheet"
+  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+
 
 
 </head>
@@ -59,7 +64,9 @@
 
       </path></svg></button>
       <input multiple="" type="file" tabindex="-1" class="hidden" style="display: none;"></div>
-    <textarea class="user-input" id="prompt" placeholder="Send a message to the AI...."></textarea>
+
+      <textarea class="user-input" id="prompt" placeholder="Send a message to the AI...."></textarea>
+
     <button id="sendBtn" disabled style="background:lightgrey;">➤</button>
   </div>
   <script src="script.js"></script>

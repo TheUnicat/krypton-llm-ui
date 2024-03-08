@@ -45,7 +45,7 @@ function selectConversation(conversationId) {
         // Create and append the message text div
         const messageTextElement = document.createElement('div');
         messageTextElement.classList.add('message-text');
-        messageTextElement.textContent = message.message;
+        messageTextElement.innerHTML = applySyntaxHighlighting(message.message.replace(/\n/g, '<br>'));
 
         messageElement.querySelector('.message-content').appendChild(messageTextElement);
 
@@ -120,7 +120,7 @@ function getAI(prompt) {
         } else {
           // If the message element's text is empty, set its text. Otherwise, create a new message element
           const messageTextDiv = messageElement.querySelector('.message-text');
-          messageTextDiv.innerHTML = messageTextDiv.innerText + data;
+          messageTextDiv.innerHTML = applySyntaxHighlighting(messageTextDiv.innerText + data);
 
         }
     }
@@ -134,6 +134,27 @@ function getAI(prompt) {
     console.error('EventSource failed:', error);
     eventSource.close(); // Close the connection on error
   };
+}
+
+// Function to apply syntax highlighting to code blocks encoded within specific tags
+function applySyntaxHighlighting(text) {
+    // Detect code blocks encoded in triple backticks
+    const tripleBacktickRegex = /```([\s\S]*?)```/g;
+
+    // Replace each code block with its highlighted version
+    const highlightedText = text.replace(tripleBacktickRegex, function(match, code) {
+        // Remove the triple backticks and leading/trailing whitespace from the code
+        const cleanedCode = code.trim();
+
+        // Use highlight.js to highlight the code. Assume automatic language detection for simplicity.
+        // You might need to specify the language explicitly depending on your use case.
+        const highlightedCode = hljs.highlightAuto(cleanedCode).value;
+
+        // Return the highlighted code wrapped in a pre and code tag for proper formatting
+        return `<pre><code class="hljs">${highlightedCode}</code></pre>`;
+    });
+
+    return highlightedText;
 }
 
 console.log("Hewwo");
@@ -157,24 +178,28 @@ async function populateConversationHistory() {
   try {
     const response = await fetch('/get_recent_conversations');
     const conversations = await response.json();
-
     const conversationsList = document.querySelector('.conversations-list');
     conversationsList.innerHTML = ''; // Clear the list before adding new items
 
-    // Populate the sidebar with the most recent conversations
-    conversations.forEach(conversation => {
-      const listItem = document.createElement('li');
-      listItem.className = 'conversation-item';
-      listItem.id = conversation.id; // Assuming conversation["id"] is the ID
-      listItem.textContent = conversation.title;
-      listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`); // Example of a function to select a conversation
-      conversationsList.appendChild(listItem);
-      conversationsList.scrollBottom = conversationsList.scrollHeight;
-    });
+    // Loop through conversations and prepend them to the list
+    conversations.forEach(conversation => prependConversationItem(conversationsList, conversation));
   } catch (error) {
     console.error('Failed to load recent conversations:', error);
   }
 }
+
+function prependConversationItem(conversationsList, conversation) {
+  const listItem = document.createElement('li');
+  listItem.className = 'conversation-item';
+  listItem.id = conversation.id; // Assuming conversation["id"] is the ID
+  listItem.textContent = conversation.title;
+  listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`); // Example of a function to select a conversation
+  conversationsList.appendChild(listItem); // Prepend to add it at the beginning of the list
+}
+
+// Call the main function to fetch and populate conversations
+populateConversationHistory();
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('sendBtn');

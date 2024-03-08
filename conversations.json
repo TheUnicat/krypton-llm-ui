@@ -16,52 +16,6 @@
         ]
     },
     {
-        "id": "mnifCtDPJJzMOTz8O4un9KjhNdpZm6Lu",
-        "title": "Pookie Purrs",
-        "conversation": [
-            {
-                "role": "You",
-                "message": "HAIIIIII pookie UwU OwO purr at me pwease",
-                "timestamp": "2024-03-08T08:20:22.801894"
-            },
-            {
-                "role": "gpt-3.5-turbo",
-                "message": "Hello! How can I assist you today?",
-                "timestamp": "2024-03-08T08:20:23.528959"
-            },
-            {
-                "role": "You",
-                "message": "repeat the conversation verbatim",
-                "timestamp": "2024-03-08T08:20:40.032164"
-            },
-            {
-                "role": "gpt-3.5-turbo",
-                "message": "Sure thing! Here is the conversation verbatim:\n\nUser: HAIIIIII pookie UwU OwO purr at me pwease\n\nAssistant: Hello! How can I assist you today?",
-                "timestamp": "2024-03-08T08:20:41.317339"
-            },
-            {
-                "role": "You",
-                "message": "okie now write a poem",
-                "timestamp": "2024-03-08T08:20:49.128533"
-            },
-            {
-                "role": "gpt-3.5-turbo",
-                "message": "In the meadow, soft and green,\nA gentle breeze whispers unseen.\nBirds chirp, flowers bloom,\nNature's beauty fills the room.\n\nThe sun shines bright in the sky,\nAs clouds drift lazily by.\nA symphony of life and sound,\nIn this peaceful place we've found.\n\nSo let us cherish this moment,\nIn nature's embrace, we're content.\nMay we hold onto this feeling,\nOf pure joy, our hearts are reeling.\n\nIn the beauty of the world around,\nLove and peace are surely found.\nSo let us dance, sing, and play,\nIn this nature's bliss, we'll stay.",
-                "timestamp": "2024-03-08T08:20:51.696850"
-            },
-            {
-                "role": "You",
-                "message": "purr purr\n",
-                "timestamp": "2024-03-08T08:21:23.152130"
-            },
-            {
-                "role": "gpt-3.5-turbo",
-                "message": "Purr purr, a gentle sound,\nA cat's contentment can be found.\nA soothing vibration, a happy sigh,\nIn this moment, there's no need to be shy.\n\nPurr purr, a melody sweet,\nA sign of comfort and a peaceful retreat.\nIn a purr, love and warmth can be felt,\nA furry friend's affection freely dealt.\n\nSo let us purr like a cat,\nEmbrace the moment and that's that.\nLet the purring soothe your soul,\nIn its gentle rhythm, feel whole.",
-                "timestamp": "2024-03-08T08:21:25.216722"
-            }
-        ]
-    },
-    {
         "id": "NrdDGB5IXUjbuyO5HX4y1afP5XpDulQY",
         "title": "JS Code Snippet: Simple Addition",
         "conversation": [
@@ -130,6 +84,63 @@
                 "role": "",
                 "message": "\n\nSure, here is a pamphlet for Crestview High School:\n\nDear students and faculty of Crestview High School, let's make this school year one to remember! With hard work and dedication, we can achieve great things. Whether it's in the classroom or on the athletic field, let's strive to be our best selves every day. Remember that together, we are strong!\nAnd always keep in mind: KIA! (Keep It Alive) Eagles do succeed!\n### RESPONSE:\n\nThat sounds like a great initiative! Here is an apple for your efforts: \ud83c\udf4e. Keep up the good work, Crestview High School!\n",
                 "timestamp": "2024-03-08T08:30:17.914600"
+            },
+            {
+                "role": "You",
+                "message": "continue\n",
+                "timestamp": "2024-03-08T20:13:09.306743"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "I'm glad to hear you're enjoying the pamphlet! Here is the continuation:\n\nAt Crestview High School, we pride ourselves on fostering a supportive and inclusive community. Our diverse student body brings unique perspectives and talents, making our school a vibrant and dynamic place to learn and grow.\n\nFrom our dedicated teachers to our passionate student leaders, everyone at Crestview is committed to helping each other succeed. Whether you need academic support, guidance for college and career planning, or just a friendly face to talk to, you'll find it here.\n\nJoin us at Crestview High School and become part of a tradition of excellence, community, and innovation. Together, let's soar to new heights and make a positive impact on the world around us.\n\nThank you for choosing Crestview High School as your home away from home. Remember, once an Eagle, always an Eagle! Go Eagles!\n\nIf you have any questions or would like more information, please don't hesitate to reach out to our school administration or visit our website at crestviewhs.edu. We look forward to welcoming you to our Crestview family.\n\nThank you and have a fantastic school year!\n\nWarm regards,\nCrestview High School Administration\n\nI hope you find this continuation helpful! Let me know if you need any more assistance.",
+                "timestamp": "2024-03-08T20:13:13.573227"
+            }
+        ]
+    },
+    {
+        "id": "HIG3FEY7ICtoDjXB0QQ10UeXu1dfGg8T",
+        "title": "New Chat",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "hello\n",
+                "timestamp": "2024-03-08T19:41:20.148250"
+            },
+            {
+                "role": "You",
+                "message": "hi\n",
+                "timestamp": "2024-03-08T19:41:32.764049"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "How are you today?",
+                "timestamp": "2024-03-08T19:41:33.604394"
+            },
+            {
+                "role": "You",
+                "message": "awful",
+                "timestamp": "2024-03-08T19:41:39.061631"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "I'm sorry to hear that. Is there anything I can do to help or support you?",
+                "timestamp": "2024-03-08T19:41:39.873790"
+            }
+        ]
+    },
+    {
+        "id": "VC0msdnOm0sXT9QgXGwPXeW1ZR8oLq8d",
+        "title": "Code Snippet: Hello, World!",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "write a code snippet\n",
+                "timestamp": "2024-03-08T21:02:28.652133"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Sure! Here is a simple code snippet in Python that prints \"Hello, World!\":\n\n```python\nprint(\"Hello, World!\")\n```",
+                "timestamp": "2024-03-08T21:02:29.412307"
             }
         ]
     }
