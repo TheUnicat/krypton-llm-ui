@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Textarea Example</title>
+<title>Krypton</title>
 
     <link rel="stylesheet" href="styles.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 
 </head>
 <body>
-  <div id="modelInfoContainer">
-    <div id="modelDisplay" style=""></div>
+    <div id="modelInfoContainer">
+      <div id="modelName"></div><div id="modelVersion"></div>
 
-    <div id="modelDropdown" style="">
-        <div style="cursor: pointer;" onclick="changeModel('gpt-3.5-turbo')">gpt-3.5-turbo</div>
-        <div style="cursor: pointer;" onclick="changeModel('MrEagle')">MrEagle</div>
-      </div>
-  </div>
+      <div id="modelDropdown">
+          <div style="cursor: pointer;" onclick="changeModel('ChatGPT', '3.5')">ChatGPT</div>
+          <div style="cursor: pointer;" onclick="changeModel('MrEagle', '7B')">MrEagle</div>
+        </div>
+    </div>
+
 
 
   <button id="sidebarToggle" class="sidebar-toggle">&#x25C0;</button>
   <div id="sidebar" class="sidebar">
-    <div id="new-chat-button" class="new-chat">New Chat</div>
+    <div id="new-chat-button" class="new-chat"><img src="/images/chatgpt.png" style="height: 18px; width: 18px; margin-top: 20px;"> New Chat</div>
     <ul class="conversations-list">
       <!-- Conversation items will be populated here -->
     </ul>

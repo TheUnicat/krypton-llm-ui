@@ -55,6 +55,12 @@ function selectConversation(conversationId) {
     .catch(error => console.error('Error fetching conversation:', error));
 }
 
+const imagePaths = {
+    "ChatGPT": "chatgpt.png",
+    "MrEagle": "mreagles.png",
+    "You": "you.jpg"
+};
+
 
 function appendMessage(author, text=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
@@ -63,11 +69,8 @@ function appendMessage(author, text=null) {
   let messageElement = document.createElement('div');
   messageElement.classList.add('message');
   let imagePath;
-  if (author == "MrEagle") {
-    imagePath = "/images/mreagles.png";
-  }  else {
-    imagePath = "/images/chatgpt.png";
-  }
+  imagePath = "/images/" + imagePaths[author];
+  console.log(imagePath);
   messageElement.innerHTML = `
     <img class="profile-picture" src=imagePath alt="ChatGPT">
     <div class="message-content">
@@ -77,7 +80,7 @@ function appendMessage(author, text=null) {
   `;
 
   chatMessagesContainer.append(messageElement);
-  return messageElement
+  return messageElement;
 
   }
 
@@ -85,14 +88,15 @@ function getAI(prompt) {
   const chatMessagesContainer = document.querySelector('.chat-container');
   const conversationId = localStorage.getItem('conversationId'); // Ensure this is the correct key
       // Retrieve the model from localStorage, defaulting to 'gpt-3.5-turbo' if not found
-    const model = localStorage.getItem('model') || 'gpt-3.5-turbo';
+    const modelName = localStorage.getItem('modelName') || 'ChatGPT';
+    const modelVersion = localStorage.getItem('modelVersion') || '3.5';
 
     // Encode the prompt and include the model in the query string
-    const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model=${encodeURIComponent(model)}`);
+    const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}`);
     // Pass the conversationId as a query parameter
 
 
-  let messageElement = appendMessage(model);
+  let messageElement = appendMessage(modelName);
 
   eventSource.onmessage = function(event) {
     console.log(event);
@@ -235,13 +239,16 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function() {
   // Function to display the current model
   function displayCurrentModel() {
-    const currentModel = localStorage.getItem('model') || 'gpt-3.5-turbo';
-    document.getElementById('modelDisplay').textContent = currentModel;
+    const currentModelName = localStorage.getItem('modelName') || 'ChatGPT';
+    document.getElementById('modelName').textContent = currentModelName;
+    const currentModelVersion = localStorage.getItem('modelVersion') || '3.5';
+    document.getElementById('modelVersion').textContent = currentModelVersion;
   }
 
   // Function to change the model
-  window.changeModel = function(model) {
-    localStorage.setItem('model', model);
+  window.changeModel = function(modelName, modelVersion) {
+    localStorage.setItem('modelName', modelName);
+    localStorage.setItem('modelVersion', modelVersion);
     displayCurrentModel();
     toggleDropdown(); // Hide the dropdown after selection
   }
@@ -255,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Event listener for the model display click
-  document.getElementById('modelDisplay').addEventListener('click', toggleDropdown);
+  document.getElementById('modelName').addEventListener('click', toggleDropdown);
 
   displayCurrentModel(); // Display the current model when the page loads
 });

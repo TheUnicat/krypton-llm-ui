@@ -380,6 +380,76 @@
                 "role": "gpt-3.5-turbo",
                 "message": "I mentioned the importance of community service and giving back to our community. I emphasized the positive impact that small acts of service can have and the valuable life skills that can be learned through volunteering. I also encouraged the idea that you could potentially lead a community service project in the future. Let me know if you have any specific questions or need further clarification!",
                 "timestamp": "2024-03-06T07:17:43.423067"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:20.763282"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How are you doing today?",
+                "timestamp": "2024-03-08T05:20:23.055059"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:26.063739"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello there! How can I assist you today?",
+                "timestamp": "2024-03-08T05:20:27.354418"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:30.364900"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-08T05:20:30.981619"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:33.991174"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-08T05:20:35.188357"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:38.201192"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-08T05:20:39.499829"
+            },
+            {
+                "role": "You",
+                "message": "hi",
+                "timestamp": "2024-03-08T05:20:42.509889"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-08T05:20:43.081049"
+            },
+            {
+                "role": "You",
+                "message": "haiii",
+                "timestamp": "2024-03-08T05:25:29.262812"
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hello! How can I assist you today?",
+                "timestamp": "2024-03-08T05:25:30.302876"
             }
         ]
     }

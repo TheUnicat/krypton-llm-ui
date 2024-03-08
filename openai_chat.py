@@ -4,7 +4,9 @@ import storage
 import random
 import json
 
-openai_key = json.load("secrets.json")["openai"]
+
+with open("secrets.json", "r") as file:
+    openai_key = json.load(file)["openai"]
 
 
 client = OpenAI(api_key=openai_key)

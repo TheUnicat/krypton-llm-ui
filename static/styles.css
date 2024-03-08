@@ -20,7 +20,7 @@ body, html {
   position: absolute; /* Positioning relative to its nearest positioned ancestor */
   bottom: 0; /* Align the bottom with the parent */
   width: 50%;
-  height: 95%;
+  height: 93%;
   overflow-y: auto; /* Allows scrolling for overflow */
   padding: 10px;
   padding-bottom: 10%; /* Bottom padding to create space */
@@ -156,9 +156,16 @@ textarea:focus {
 
 .conversation-item {
   margin-left: 10px;
+  margin-right: 10px;
   padding: 10px;
   font-size: 15px;
   cursor: pointer;
+  border-radius: 10px;
+
+}
+
+.conversation-item:hover {
+    background-color: lightgrey;
 }
 
 .new-chat {
@@ -197,16 +204,25 @@ textarea:focus {
   outline: none;
 }
 
+
 #modelInfoContainer {
   position: absolute; /* Needed for absolute positioning of children */
-  top: 10%;
-  font-weight: 600;
-  left: 10%;
+  top: 1%;
+  display: flex;
+  justify-content: start;
+  font-size: 18px;
+  font-weight: 500;
+  left: 6%;
   padding: 10px;
-  background-color: none;
   cursor: pointer;
   border: none;
+  color: black;
   z-index: 1000; /* Ensures dropdown appears above other content */
+}
+
+#modelVersion {
+    margin-left: 5px;
+    color: grey;
 }
 
 #modelDropdown {
@@ -215,20 +231,24 @@ textarea:focus {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Adds a drop shadow for depth */
   z-index: 1000;
   width: max-content;
+  position: absolute; /* Position the dropdown below the name/version */
+  top: 100%; /* Align the top of the dropdown with the bottom of the container */
+  left: 0; /* Align the dropdown to the left edge of the container */
+  border-radius: 8px; /* Rounded corners */
 }
 
 #modelDropdown div {
   padding: 8px 16px;
   border-bottom: 1px solid #ddd; /* Separates options */
   background-color: #fff; /* Ensures consistent background */
+  border-radius: 0; /* Resets any rounded corners for individual items, can be adjusted if desired */
 }
 
 #modelDropdown div:last-child {
   border-bottom: none; /* Removes border from the last option */
+  border-radius: 0 0 8px 8px; /* Rounded corners for the bottom of the dropdown */
 }
 
 #modelDropdown div:hover {
   background-color: #f0f0f0; /* Highlight on hover */
 }
-
-

@@ -3,9 +3,13 @@ from openai_chat import openai_complete
 from openai_chat import openai_test
 #from eagle_chat import eagle_complete
 import storage
+import json
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
+
+with open("models.json", "r") as file:
+    models = json.load(file)
 
 @app.route('/')
 def index():
@@ -27,7 +31,11 @@ def retrieve_conversation():
 def stream():
     conversation_id = request.args.get('id')
     prompt = request.args.get('prompt')  # Capture the 'prompt' query parameter as a string
-    model = request.args.get('model')
+    model_name = request.args.get('model_name')
+    model_version = request.args.get('model_version')
+
+    model = models[model_name][model_version]
+
     print("Prompt ", prompt)
     print("conversation id ", conversation_id)
     print("model ", model)
