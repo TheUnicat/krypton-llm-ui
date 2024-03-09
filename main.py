@@ -34,6 +34,7 @@ def stream():
     prompt = request.args.get('prompt')  # Capture the 'prompt' query parameter as a string
     model_name = request.args.get('model_name')
     model_version = request.args.get('model_version')
+    message_id = request.args.get('model_id')
 
     model = models[model_name][model_version]
 
@@ -45,26 +46,26 @@ def stream():
     new_convo = False
 
     if conversation_id is not None and conversation_id != "null":
-        storage.append_conversation(conversation_id, prompt, "You")
+        message_id = storage.append_conversation(conversation_id, prompt, "You")
     else:
-        conversation_id = storage.create_conversation(prompt)
+        conversation_id, message_id = storage.create_conversation(prompt)
         new_convo = True
 
-    def generate(model, prompt, conversation_id):
+    def generate(model, prompt, conversation_id, message_id):
         try:
-            yield f"data: {{\"conversation_id\": \"{conversation_id}\"}}\n\n"
+            yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
             # Accumulate responses from the generator
             accumulated_response = ""
             if model == "gpt-3.5-turbo":
-                for response in openai_complete(model, prompt, conversation_id):
+                for response in openai_complete(model, prompt, conversation_id, message_id):
                     if response:
                         accumulated_response += response
-                        yield f"data: {json.dumps({'text': response})}\n\n"
+                        yield f"data: {response}\n\n"
             else:
                 for response in eagle_complete(model, prompt, conversation_id):
                     if response:
                         accumulated_response += response
-                        yield f"data: {json.dumps({'text': response})}\n\n"
+                        yield f"data: {response}\n\n"
 
             # Once generation is complete, append the whole conversation
             if conversation_id and accumulated_response:
@@ -79,7 +80,7 @@ def stream():
             # Return a JSON response with the error attribute
             yield f"data: {{\"error\": \"{error_message}\"}}\n\n"
 
-    return Response(generate(model, prompt, conversation_id), mimetype='text/event-stream')
+    return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
 
 if __name__ == '__main__':
     app.run(debug=True, port="8080")

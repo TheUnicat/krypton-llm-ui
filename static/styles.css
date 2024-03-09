@@ -13,6 +13,8 @@ body, html {
   display: flex;
   flex-direction: column;
   transition: 0.3s;
+  line-height: 1.75;
+  font-size: 1rem;
 }
 
 .chat-container {
@@ -47,15 +49,16 @@ body, html {
 
 .message {
   display: flex;
+  width: 100%;
   align-items: flex-start; /* Aligns items to the start of the flex container */
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   padding: 10px;
-
   background-color: white;
 }
 
 .profile-picture {
   width: 20px; /* Adjust size as needed */
+  margin-top: 4px;
   height: 20px; /* Adjust size as needed */
   border-radius: 50%; /* Makes the image round */
   margin-right: 10px; /* Adds space between the image and the message text */
@@ -64,6 +67,18 @@ body, html {
 
 .message-content {
   flex: 1; /* Takes up the remaining space */
+}
+
+.message-toolbar {
+  display: none;
+  position: absolute;
+  justify-content: flex-start; /* Align items to the start of the container */
+  gap: 5px; /* Space between toolbar items */
+  margin-left: -8px;
+}
+
+.message-toolbar:hover {
+    color: black;
 }
 
 .user-name {
@@ -88,10 +103,8 @@ body, html {
   width: 50%;
   padding: 10px;
   height: 25px;
-
   margin-right: 10px;
   border: 1px solid lightgrey;
-  resize: none;
   border-radius: 15px;
   font-family: 'Noto Sans', sans serif;
   padding-right: 4%;
@@ -105,8 +118,7 @@ textarea {
   transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus styles */
 }
 
-textarea:focus {
-  outline: none;
+.user-input:focus {
   border-color: #999; /* Darken the border a bit */
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Subtle outer shadow */
 }
@@ -298,12 +310,15 @@ textarea:focus {
     padding: 16px; /* Padding around the code */
     margin-top: -10px; /* Negative margin to pull the content under the header */
     overflow-x: auto; /* Adds a horizontal scrollbar if the code is too wide */
+    line-height: 1.75; /* Adjust the line height as needed for more space */
+    font-family: monospace;
+    font-size: 14px;
 }
 
 /* Adjust the <pre> tag that wraps the .hljs block */
 .code-container pre {
     margin: 0; /* Remove any default margin */
-    padding-top: 25px; /* Add padding on top to push the code below the header */
+    padding-top: 15px; /* Add padding on top to push the code below the header */
 }
 
 .copy-btn {
@@ -334,4 +349,37 @@ textarea:focus {
     padding: 10px;
     width: 100%; /* Ensure it takes full width */
 }
+
+
+.edit-btn {
+  background-color: white;
+  border: none;
+  color: grey;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+    color: black;
+}
+
+.message:hover .message-toolbar {
+  display: flex;
+}
+
+.message.editing .message-toolbar {
+  display: none !important; /* Force hide the toolbar during editing */
+}
+
+textarea {
+      font-family: 'Noto Sans', sans serif;
+      font-size: 1rem;
+      border: none;
+      resize: none;
+      margin: none;
+      padding: none;
+}
+
+textarea:focus {
+  outline: none;
+  }
 

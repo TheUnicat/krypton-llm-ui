@@ -12,10 +12,11 @@ with open("secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-def openai_complete(model, prompt, conversation_id):
+def openai_complete(model, prompt, conversation_id, message_id):
 
 
-    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id)["conversation"])
+    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
+
 
     print(messages)
 

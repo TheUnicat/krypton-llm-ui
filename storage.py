@@ -12,12 +12,13 @@ def generate_id(size=32, chars=string.ascii_letters + string.digits):
 
 def create_conversation(message):
     conversation_id = generate_id()
+    message_id = generate_id()
     title = "New Chat"
     timestamp = datetime.datetime.utcnow().isoformat()
     conversation = {
         "id": conversation_id,
         "title": title,
-        "conversation": [{"role": "You", "message": message, "timestamp": timestamp}]
+        "conversation": [{"role": "You", "message": message, "timestamp": timestamp, "id": message_id}]
     }
     if not os.path.isfile("conversations.json"):
         with open("conversations.json", "w") as file:
@@ -28,25 +29,27 @@ def create_conversation(message):
             data.append(conversation)
             file.seek(0)
             json.dump(data, file, indent=4)
-    return conversation_id
+    return conversation_id, message_id
 
 
 def append_conversation(conversation_id, message, author):
     if not os.path.isfile("conversations.json"):
         return None
+
+    message_id = generate_id()
     with open("conversations.json", "r+") as file:
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == conversation_id:
                 timestamp = datetime.datetime.utcnow().isoformat()
-                conversation["conversation"].append({"role": author, "message": message, "timestamp": timestamp})
+                conversation["conversation"].append({"role": author, "message": message, "timestamp": timestamp, "id": message_id})
                 break
         else:  # If the conversation ID was not found
             return None
         file.seek(0)
         file.truncate()
         json.dump(data, file, indent=4)
-    return True
+    return message_id
 
 def find_recent_conversation_ids(n=5):
     if not os.path.isfile("conversations.json"):
@@ -59,23 +62,28 @@ def find_recent_conversation_ids(n=5):
         recent_conversations_ids = [conv["id"] for conv in sorted_conversations[:n]]
     return recent_conversations_ids
 
-def retrieve_conversation(id):
+def retrieve_conversation(id, message_id=None):
+    # Check if the file exists
     if not os.path.isfile("conversations.json"):
         return None
+
+    if message_id:
+        truncate_conversation_at_message(id, message_id)
+
     with open("conversations.json", "r") as file:
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == id:
-                if True:
+                try:
                     for message in conversation["conversation"]:
-                        print()
-                        try:
-                            if message["role"] in nicknames:
-                                message["role"] = nicknames[message["role"]]
-                        except Exception as e:
-                            print(e)
+                        if message["role"] in nicknames:
+                            message["role"] = nicknames[message["role"]]
+                except Exception as e:
+                    print(e)
+
                 return conversation
     return None
+
 
 def fetch_recent_conversations(n=5):
     ids = find_recent_conversation_ids(n)
@@ -101,6 +109,38 @@ def format_conversation(conversation):
         simplified_messages.append({"role": role, "content": message["message"]})
 
     return simplified_messages
+
+def truncate_conversation_at_message(id, message_id):
+    # Check if the file exists
+    if not os.path.isfile("conversations.json"):
+        print("File not found.")
+        return False
+
+    with open("conversations.json", "r") as file:
+        data = json.load(file)
+
+    conversation_found = False
+    for conversation in data:
+        if conversation["id"] == id:
+            conversation_found = True
+            new_conversation = []
+            for message in conversation["conversation"]:
+                if message["id"] == message_id:
+                    break
+                new_conversation.append(message)
+            # Update the conversation with the truncated version
+            conversation["conversation"] = new_conversation
+            break
+
+    if not conversation_found:
+        print("Conversation not found.")
+        return False
+
+    with open("conversations.json", "w") as file:
+        json.dump(data, file, indent=4)
+
+    return True
+
 
 def rename(conversation_id, new_title):
     with open("conversations.json", "r") as file:

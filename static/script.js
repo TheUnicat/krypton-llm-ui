@@ -43,11 +43,13 @@ function selectConversation(conversationId) {
 
 
         // Create and append the message text div
-        const messageTextElement = document.createElement('div');
-        messageTextElement.classList.add('message-text');
+        const messageTextElement = messageElement.querySelector('.message-content .message-text');
         messageTextElement.innerHTML = processText(message.message);
 
-        messageElement.querySelector('.message-content').appendChild(messageTextElement);
+        if (message.role == "You") {
+            addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
+           }
+        messageElement.id = message.id;
 
         // Append the complete message element to the chat container
         chatContainer.appendChild(messageElement);
@@ -67,29 +69,50 @@ const imagePaths = {
     "You": "you.jpg"
 };
 
+function addEditButton(targetElement) {
+  // Create the button element
+  const button = document.createElement('button');
+  button.setAttribute('class', 'edit-btn');
+  button.setAttribute('onclick', 'editMessage(this)');
 
-function appendMessage(author, text=null) {
+  // Set the innerHTML of the button to include the SVG
+  button.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-md">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.2929 4.29291C15.0641 2.52167 17.9359 2.52167 19.7071 4.2929C21.4783 6.06414 21.4783 8.93588 19.7071 10.7071L18.7073 11.7069L11.1603 19.2539C10.7182 19.696 10.1489 19.989 9.53219 20.0918L4.1644 20.9864C3.84584 21.0395 3.52125 20.9355 3.29289 20.7071C3.06453 20.4788 2.96051 20.1542 3.0136 19.8356L3.90824 14.4678C4.01103 13.8511 4.30396 13.2818 4.7461 12.8397L13.2929 4.29291ZM13 7.41422L6.16031 14.2539C6.01293 14.4013 5.91529 14.591 5.88102 14.7966L5.21655 18.7835L9.20339 18.119C9.40898 18.0847 9.59872 17.9871 9.7461 17.8397L16.5858 11L13 7.41422ZM18 9.5858L14.4142 6.00001L14.7071 5.70712C15.6973 4.71693 17.3027 4.71693 18.2929 5.70712C19.2831 6.69731 19.2831 8.30272 18.2929 9.29291L18 9.5858Z" fill="currentColor">
+  </path></svg>
+  `;
+
+  // Append the newly created button to the targetElement
+  targetElement.appendChild(button);
+}
+
+
+function appendMessage(author, text = null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
 
   // Initialize an empty message element
   let messageElement = document.createElement('div');
   messageElement.classList.add('message');
-  let imagePath;
-  imagePath = "/images/" + imagePaths[author];
+  let imagePath = "/images/" + imagePaths[author];
   messageElement.innerHTML = `
-    <img class="profile-picture" src=${imagePath} alt="ChatGPT">
+    <img class="profile-picture" src=${imagePath} alt="${author}">
     <div class="message-content">
-      <div class="user-name">${author}</div>
-      <div class="message-text">${text ? text : ""}</div>
+        <div class="user-name">${author}</div>
+        <div class="message-text">${text ? text : ""}</div>
+        <div class="message-toolbar"></div>
     </div>
+
   `;
 
+  // Append the new message element with the edit button to the chat container
   chatMessagesContainer.append(messageElement);
+
+  // Return the new message element in case further manipulation is needed
   return messageElement;
+}
 
-  }
 
-function getAI(prompt) {
+
+function getAI(prompt, promptElement, isEdit=false, messageId=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
   const conversationId = localStorage.getItem('conversationId'); // Ensure this is the correct key
       // Retrieve the model from localStorage, defaulting to 'gpt-3.5-turbo' if not found
@@ -112,6 +135,7 @@ function getAI(prompt) {
         data = JSON.parse(data);
      if (data.conversation_id) {
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
+        promptElement.id = data.message_id;
        } else if (data.error) {
             let errorMessage = JSON.stringify(data.error);
 
@@ -197,16 +221,12 @@ function applySyntaxHighlighting(codeBlock) {
 
 
 function copyToClipboard(button) {
-    const codeBlock = button.previousElementSibling.querySelector('code');
-    // Split the text content into an array of lines
-    const lines = codeBlock.textContent.split('\n');
-    // Remove the first line (which contains the language name)
-    lines.shift();
-    // Join the remaining lines back into a single string
-    const codeToCopy = lines.join('\n');
+    // Get the code block within the same container as the button
+    const codeContainer = button.closest('.code-container');
+    const codeBlock = codeContainer.querySelector('pre code');
 
-    // Copy the modified code to the clipboard
-    navigator.clipboard.writeText(codeToCopy).then(() => {
+    // Copy the code text to the clipboard
+    navigator.clipboard.writeText(codeBlock.textContent.split("\n").slice(1).join("\n")).then(() => {
         // Provide feedback that the text was copied
         button.textContent = 'Copied!';
         // Reset button text after 2 seconds
@@ -225,11 +245,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     hljs.highlightAll();
 });
 
-
-console.log("Hewwo");
-
     const textarea = document.getElementById('prompt');
-    console.log(textarea);
     const sendButton = document.getElementById('sendBtn');
 
     textarea.addEventListener('input', () => {
@@ -266,7 +282,6 @@ function prependConversationItem(conversationsList, conversation) {
   conversationsList.appendChild(listItem); // Prepend to add it at the beginning of the list
 }
 
-// Call the main function to fetch and populate conversations
 populateConversationHistory();
 
 
@@ -282,10 +297,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const userText = userPrompt.innerText || userPrompt.value; // Works for both divs and input fields
 
             // Calling appendMessage with "You" and the extracted text
-            appendMessage("You", userText);
+            let promptElement = appendMessage("You", userText);
 
             // Calling getAI function afterwards
-            getAI(userText);
+            getAI(userText, promptElement);
 
             // Optionally, clear the prompt input after sending the message
             if (userPrompt.value !== undefined) {
@@ -301,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     userPrompt.addEventListener('keydown', function(event) {
         // Check if the ENTER key was pressed
         if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent the default action to avoid form submission or newline
+            event.preventDefault();
             sendMessage(); // Call the sendMessage function
         }
     });
@@ -384,4 +399,49 @@ document.addEventListener('DOMContentLoaded', function() {
   displayCurrentModel(); // Display the current model when the page loads
 });
 
+function editMessage(editButton) {
+  const messageElement = editButton.closest('.message');
+  const messageContent = messageElement.querySelector('.message-content .message-text');
+  const originalText = messageContent.innerText;
 
+  // Indicate editing is starting
+  messageElement.classList.add('editing');
+
+  const textarea = document.createElement('textarea');
+  textarea.value = originalText;
+  textarea.rows = 4;
+  textarea.style.width = '100%';
+  messageContent.innerHTML = '';
+  messageContent.appendChild(textarea);
+
+  // Create Cancel button
+  const cancelButton = document.createElement('button');
+  cancelButton.innerText = 'Cancel';
+  cancelButton.onclick = function() {
+    messageContent.innerText = originalText;
+    cancelButton.remove();
+    saveButton.remove();
+    // Editing is done, remove the class
+    messageElement.classList.remove('editing');
+  };
+
+  // Create Save button
+  const saveButton = document.createElement('button');
+  saveButton.innerText = 'Save';
+  saveButton.onclick = function() {
+    saveMessage(messageElement, textarea.value);
+    messageContent.innerText = textarea.value;
+    cancelButton.remove();
+    saveButton.remove();
+    // Editing is done, remove the class
+    messageElement.classList.remove('editing');
+  };
+
+  messageContent.appendChild(cancelButton);
+  messageContent.appendChild(saveButton);
+}
+
+function saveMessage(messageElement, newText) {
+  console.log('Saving message:', newText);
+
+}
