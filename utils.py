@@ -1,6 +1,10 @@
 import storage
 from openai_chat import openai_complete
+import json
 #from eagle_chat import eagle_complete
+
+with open("models.json", "r") as file:
+    models = json.load(file)
 
 def format_to_chat(model, prompt, conversation_id, message_id):
 
@@ -21,4 +25,8 @@ def format_to_chat(model, prompt, conversation_id, message_id):
         return openai_complete(model, messages)
     else:
         return eagle_complete(model, messages)
+
+def get_model(model_name, model_version):
+    model = models[model_name][model_version]
+    return model
 

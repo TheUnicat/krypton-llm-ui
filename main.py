@@ -1,7 +1,4 @@
 from flask import Flask, send_from_directory, Response, jsonify, request
-from openai_chat import openai_complete
-from openai_chat import openai_test
-#from eagle_chat import eagle_complete
 import storage
 import json
 import utils
@@ -10,8 +7,6 @@ from titles import make_title
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-with open("models.json", "r") as file:
-    models = json.load(file)
 
 @app.route('/')
 def index():
@@ -38,13 +33,8 @@ def stream():
     message_id_for_edit = request.args.get('message_id')
     print(message_id_for_edit)
 
-    model = models[model_name][model_version]
+    model = utils.get_model(model_name, model_version)
 
-    print("Prompt ", prompt)
-    print("conversation id ", conversation_id)
-    print("model ", model)
-
-    #if new conversation, make a title
     new_convo = False
 
     if conversation_id is not None and conversation_id != "null":
@@ -75,5 +65,6 @@ def stream():
                 storage.rename(conversation_id, make_title(prompt, accumulated_response))
 
     return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
+
 if __name__ == '__main__':
     app.run(debug=True, port="8080")
