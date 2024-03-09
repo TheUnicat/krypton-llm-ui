@@ -45,7 +45,7 @@ function selectConversation(conversationId) {
         // Create and append the message text div
         const messageTextElement = document.createElement('div');
         messageTextElement.classList.add('message-text');
-        messageTextElement.innerHTML = applySyntaxHighlighting(message.message.replace(/\n/g, '<br>'));
+        messageTextElement.innerHTML = processText(message.message);
 
         messageElement.querySelector('.message-content').appendChild(messageTextElement);
 
@@ -107,20 +107,33 @@ function getAI(prompt) {
     console.log(event);
     let data = event.data;
 
-    console.log(data)
 
     try {
         data = JSON.parse(data);
      if (data.conversation_id) {
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
+       } else if (data.error) {
+            let errorMessage = JSON.stringify(data.error);
+
+            // Define the formatted error message with the error-box class
+            let formattedErrorMessage = `<div class="error-box">${errorMessage}</div>`;
+
+            // Append the formatted error message to the current innerHTML of the messageElement
+            messageElement.innerHTML += formattedErrorMessage;
+             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+            eventSource.close();
         }
+
+
     } catch (error) {
         if (data === 'None') {
           eventSource.close(); // Close the connection if it's the last message
         } else {
+          console.log("extra error", error);
           // If the message element's text is empty, set its text. Otherwise, create a new message element
           const messageTextDiv = messageElement.querySelector('.message-text');
-          messageTextDiv.innerHTML = applySyntaxHighlighting(messageTextDiv.innerText + data);
+          messageTextDiv.innerHTML = processText(messageTextDiv.innerHTML + data);
+          hljs.highlightAll();
 
         }
     }
@@ -136,26 +149,82 @@ function getAI(prompt) {
   };
 }
 
-// Function to apply syntax highlighting to code blocks encoded within specific tags
-function applySyntaxHighlighting(text) {
-    // Detect code blocks encoded in triple backticks
-    const tripleBacktickRegex = /```([\s\S]*?)```/g;
+function processText(text) {
+    // Regular expression to match code blocks and non-code blocks
+    const regex = /```([\s\S]*?)```|([^`]+)/g;
+    let parts = [];
+    let match;
 
-    // Replace each code block with its highlighted version
-    const highlightedText = text.replace(tripleBacktickRegex, function(match, code) {
-        // Remove the triple backticks and leading/trailing whitespace from the code
-        const cleanedCode = code.trim();
+    // Iterate over the text and collect all matches
+    while ((match = regex.exec(text)) !== null) {
+        // If it's a code block (matched by the first group of the regex), keep it unchanged
+        if (match[1]) {
+            // Wrap the code block with triple backticks and apply syntax highlighting
+            const highlightedCode = applySyntaxHighlighting(`\`\`\`${match[1]}\`\`\``);
+            parts.push(highlightedCode);
+        } else if (match[2]) {
+            // If it's not a code block (matched by the second group of the regex), replace \n with <br>
+            const modifiedText = match[2].replace(/\n/g, '<br>');
+            parts.push(modifiedText);
+        }
+    }
 
-        // Use highlight.js to highlight the code. Assume automatic language detection for simplicity.
-        // You might need to specify the language explicitly depending on your use case.
-        const highlightedCode = hljs.highlightAuto(cleanedCode).value;
-
-        // Return the highlighted code wrapped in a pre and code tag for proper formatting
-        return `<pre><code class="hljs">${highlightedCode}</code></pre>`;
-    });
-
-    return highlightedText;
+    // Join all parts back together
+    return parts.join('');
 }
+
+function applySyntaxHighlighting(codeBlock) {
+    // Extract the code from within the triple backticks, and add a newline
+    const code = codeBlock.slice(3, -3).trim();
+
+    // Apply syntax highlighting using highlight.js
+    // `language` variable can be used to detect the language automatically or set manually
+    const highlightedCode = hljs.highlightAuto(code).value;
+    const language = hljs.highlightAuto(code).language;
+
+    // Return the highlighted code wrapped in a div with pre and code tags, including a top bar
+    // with the language name and a "Copy code" button
+    return `
+        <div class="code-container" style="position: relative;">
+            <div class="code-header">
+                <span class="language-label">${language}</span>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy code</button>
+            </div>
+            <pre><code class="hljs">${highlightedCode}</code></pre>
+        </div>
+    `;
+}
+
+
+function copyToClipboard(button) {
+    const codeBlock = button.previousElementSibling.querySelector('code');
+    // Split the text content into an array of lines
+    const lines = codeBlock.textContent.split('\n');
+    // Remove the first line (which contains the language name)
+    lines.shift();
+    // Join the remaining lines back into a single string
+    const codeToCopy = lines.join('\n');
+
+    // Copy the modified code to the clipboard
+    navigator.clipboard.writeText(codeToCopy).then(() => {
+        // Provide feedback that the text was copied
+        button.textContent = 'Copied!';
+        // Reset button text after 2 seconds
+        setTimeout(() => { button.textContent = 'Copy code'; }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text', err);
+        // Provide feedback for a failed copy
+        button.textContent = 'Copy failed';
+    });
+}
+
+
+
+// Assume this initialization code is already part of your code base, calling highlightAll on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', (event) => {
+    hljs.highlightAll();
+});
+
 
 console.log("Hewwo");
 
@@ -205,21 +274,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('sendBtn');
     const userPrompt = document.getElementById('prompt');
 
-    sendBtn.addEventListener('click', function() {
-        // Extracting the text from the element with ID 'prompt'
-        const userText = userPrompt.innerText || userPrompt.value; // Works for both divs and input fields
+    // Function to handle sending the message
+    function sendMessage() {
+        // Check if the button is not disabled
+        if (!sendBtn.disabled) {
+            // Extracting the text from the element with ID 'prompt'
+            const userText = userPrompt.innerText || userPrompt.value; // Works for both divs and input fields
 
-        // Calling appendMessage with "You" and the extracted text
-        appendMessage("You", userText);
+            // Calling appendMessage with "You" and the extracted text
+            appendMessage("You", userText);
 
-        // Calling getAI function afterwards
-        getAI(userText);
+            // Calling getAI function afterwards
+            getAI(userText);
 
-        // Optionally, clear the prompt input after sending the message
-        if (userPrompt.value !== undefined) {
-            userPrompt.value = ''; // Only clear if it's an input field
+            // Optionally, clear the prompt input after sending the message
+            if (userPrompt.value !== undefined) {
+                userPrompt.value = ''; // Only clear if it's an input field
+                sendBtn.disabled = true;
+                sendBtn.style.background = 'lightgrey'; // Disabled state color
+            }
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    userPrompt.addEventListener('keydown', function(event) {
+        // Check if the ENTER key was pressed
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action to avoid form submission or newline
+            sendMessage(); // Call the sendMessage function
         }
     });
+
 
     // Optionally, enable the button when there's text to send
     userPrompt.addEventListener('input', function() {

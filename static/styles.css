@@ -16,6 +16,8 @@ body, html {
 }
 
 .chat-container {
+  display: flex; /* Ensure flex display is set */
+  flex-direction: column; /* Stack children vertically */
   flex: 1;
   position: absolute; /* Positioning relative to its nearest positioned ancestor */
   bottom: 0; /* Align the bottom with the parent */
@@ -23,10 +25,14 @@ body, html {
   height: 93%;
   overflow-y: auto; /* Allows scrolling for overflow */
   padding: 10px;
+
+  padding-left: 0px; /* Ensures no left padding that could offset children */
+  align-items: flex-start; /* Align children to the start (left) */
   padding-bottom: 10%; /* Bottom padding to create space */
   box-sizing: border-box; /* Ensures padding is included in height */
   transition: 0.3s;
 }
+
 
 /* Hide scrollbar for Webkit browsers */
 .chat-container::-webkit-scrollbar {
@@ -39,12 +45,12 @@ body, html {
 }
 
 
-
 .message {
   display: flex;
   align-items: flex-start; /* Aligns items to the start of the flex container */
   margin-bottom: 10px;
   padding: 10px;
+
   background-color: white;
 }
 
@@ -264,3 +270,68 @@ textarea:focus {
 #modelDropdown div:hover {
   background-color: #f0f0f0; /* Highlight on hover */
 }
+.code-container {
+    position: relative;
+    border-radius: 8px; /* Rounded corners for the container */
+    margin: 1em 0; /* Adjust the margin around the whole container */
+    overflow: hidden; /* Ensures the child elements do not overflow the rounded corners */
+}
+
+.code-header {
+    padding: 0.5em 1em;
+    background-color: #2f2f2f; /* Lighter grey for the header bar */
+    color: #61aeee; /* Color of the language and copy button */
+    font-size: 0.85em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0px 0px;
+    position: absolute; /* Position absolutely within the container */
+    width: calc(100% - 2em); /* Adjust the width taking padding into account */
+    top: 0;
+    z-index: 10; /* Ensure it's above the .hljs block */
+}
+
+.hljs {
+    background: #1e1e1e; /* Dark background for the code block */
+    color: #ccc; /* Light grey text color for contrast */
+    padding: 16px; /* Padding around the code */
+    margin-top: -10px; /* Negative margin to pull the content under the header */
+    overflow-x: auto; /* Adds a horizontal scrollbar if the code is too wide */
+}
+
+/* Adjust the <pre> tag that wraps the .hljs block */
+.code-container pre {
+    margin: 0; /* Remove any default margin */
+    padding-top: 25px; /* Add padding on top to push the code below the header */
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background-color: #61aeee; /* Color similar to the language label */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    outline: none;
+}
+
+.copy-btn:hover {
+    background-color: #4b9cd3; /* Slightly darker color on hover */
+}
+
+
+
+.error-box {
+    border: 1px solid red;
+    background-color: #f8d7da; /* Light red background */
+    color: grey; /* Grey text */
+    border-radius: 4px; /* Rounded corners */
+    display: flex;
+    justify-content: start;
+    margin-top: 30px;
+    padding: 10px;
+    width: 100%; /* Ensure it takes full width */
+}
+
