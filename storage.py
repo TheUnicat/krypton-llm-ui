@@ -67,7 +67,8 @@ def retrieve_conversation(id, message_id=None):
     if not os.path.isfile("conversations.json"):
         return None
 
-    if message_id is not None and message_id != "null":
+    if message_id is not None and message_id.strip() != "null":
+        print("1",message_id,"2")
         truncate_conversation_at_message(id, message_id)
         print("TRUNCATED")
 

@@ -57,7 +57,7 @@ def stream():
         try:
             accumulated_response = ""
             yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
-            for response in utils.format_to_chat(model, prompt, conversation_id, message_id):
+            for response in utils.format_to_chat(model, prompt, conversation_id, message_id_for_edit):
                 if response:
                     # Replace newlines for correct client-side handling
                     response = response.replace("\n", "\\n")
