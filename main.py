@@ -34,7 +34,8 @@ def stream():
     prompt = request.args.get('prompt')  # Capture the 'prompt' query parameter as a string
     model_name = request.args.get('model_name')
     model_version = request.args.get('model_version')
-    message_id = request.args.get('model_id')
+    message_id_for_edit = request.args.get('message_id')
+    print(message_id_for_edit)
 
     model = models[model_name][model_version]
 
@@ -57,10 +58,12 @@ def stream():
             # Accumulate responses from the generator
             accumulated_response = ""
             if model == "gpt-3.5-turbo":
-                for response in openai_complete(model, prompt, conversation_id, message_id):
+                for response in openai_complete(model, prompt, conversation_id, message_id_for_edit):
                     if response:
                         accumulated_response += response
-                        yield f"data: {response}\n\n"
+                        accumulated_response = accumulated_response.replace("\n", "\\n")
+                        yield f"data: {accumulated_response}\n\n"
+
             else:
                 for response in eagle_complete(model, prompt, conversation_id):
                     if response:

@@ -30,37 +30,36 @@ const namesToImages = {
 
 
 
-function selectConversation(conversationId) {
-  fetch(`/retrieve_conversation?id=${conversationId}`)
-    .then(response => response.json())
-    .then(conversation => {
-      const chatContainer = document.querySelector('.chat-container');
-      chatContainer.innerHTML = ''; // Clear existing messages
+async function selectConversation(conversationId) {
+  try {
+    const response = await fetch(`/retrieve_conversation?id=${conversationId}`);
+    const conversation = await response.json();
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.innerHTML = ''; // Clear existing messages
 
-      conversation.conversation.forEach(message => {
-        const messageElement = appendMessage(message.role);
+    for (const message of conversation.conversation) {
+      const messageElement = appendMessage(message.role);
+      // Create and append the message text div
+      const messageTextElement = messageElement.querySelector('.message-content .message-text');
+      messageTextElement.innerHTML = processText(message.message);
 
+      if (message.role == "You") {
+          addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
+      }
+      messageElement.id = message.id;
 
+      // Append the complete message element to the chat container
+      chatContainer.appendChild(messageElement);
+    }
 
-        // Create and append the message text div
-        const messageTextElement = messageElement.querySelector('.message-content .message-text');
-        messageTextElement.innerHTML = processText(message.message);
-
-        if (message.role == "You") {
-            addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
-           }
-        messageElement.id = message.id;
-
-        // Append the complete message element to the chat container
-        chatContainer.appendChild(messageElement);
-
-        // Update conversation ID in localStorage and scroll to the latest message
-        localStorage.setItem("conversationId", conversationId);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      });
-    })
-    .catch(error => console.error('Error fetching conversation:', error));
+    // Update conversation ID in localStorage and scroll to the latest message
+    localStorage.setItem("conversationId", conversationId);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  } catch (error) {
+    console.error('Error fetching conversation:', error);
+  }
 }
+
 
 
 const imagePaths = {
@@ -112,7 +111,7 @@ function appendMessage(author, text = null) {
 
 
 
-function getAI(prompt, promptElement, isEdit=false, messageId=null) {
+async function getAI(prompt, promptElement, messageId=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
   const conversationId = localStorage.getItem('conversationId'); // Ensure this is the correct key
       // Retrieve the model from localStorage, defaulting to 'gpt-3.5-turbo' if not found
@@ -120,20 +119,26 @@ function getAI(prompt, promptElement, isEdit=false, messageId=null) {
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
 
     // Encode the prompt and include the model in the query string
-    const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}`);
+    const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}`);
     // Pass the conversationId as a query parameter
 
 
-  let messageElement = appendMessage(modelName);
+  var messageElement = appendMessage(modelName);
+  let accumulatedResponse = "";
 
-  eventSource.onmessage = function(event) {
-    console.log(event);
+
+  eventSource.onmessage = async function(event) {
+    //console.log(event);
     let data = event.data;
-
 
     try {
         data = JSON.parse(data);
      if (data.conversation_id) {
+        if (messageId) {
+            clearChatMessages();
+            await selectConversation(conversationId);
+            messageElement = appendMessage(modelName);
+        }
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
         promptElement.id = data.message_id;
        } else if (data.error) {
@@ -144,20 +149,22 @@ function getAI(prompt, promptElement, isEdit=false, messageId=null) {
 
             // Append the formatted error message to the current innerHTML of the messageElement
             messageElement.innerHTML += formattedErrorMessage;
+
              chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
             eventSource.close();
         }
-
 
     } catch (error) {
         if (data === 'None') {
           eventSource.close(); // Close the connection if it's the last message
         } else {
-          console.log("extra error", error);
-          // If the message element's text is empty, set its text. Otherwise, create a new message element
-          const messageTextDiv = messageElement.querySelector('.message-text');
-          messageTextDiv.innerHTML = processText(messageTextDiv.innerHTML + data);
-          hljs.highlightAll();
+              // If the message element's text is empty, set its text. Otherwise, create a new message element
+              const messageTextDiv = messageElement.querySelector('.message-text');
+              messageTextDiv.innerHTML = processText(data);
+
+              hljs.highlightAll();
+
+
 
         }
     }
@@ -188,7 +195,7 @@ function processText(text) {
             parts.push(highlightedCode);
         } else if (match[2]) {
             // If it's not a code block (matched by the second group of the regex), replace \n with <br>
-            const modifiedText = match[2].replace(/\n/g, '<br>');
+            const modifiedText = match[2].replace(/\\n/g, '<br>');
             parts.push(modifiedText);
         }
     }
@@ -442,6 +449,5 @@ function editMessage(editButton) {
 }
 
 function saveMessage(messageElement, newText) {
-  console.log('Saving message:', newText);
-
+  getAI(newText, messageElement, messageElement.id);
 }
