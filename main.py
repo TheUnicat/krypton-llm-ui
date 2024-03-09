@@ -4,6 +4,7 @@ from openai_chat import openai_test
 #from eagle_chat import eagle_complete
 import storage
 import json
+import utils
 from titles import make_title
 
 
@@ -54,36 +55,25 @@ def stream():
 
     def generate(model, prompt, conversation_id, message_id):
         try:
-            yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
-            # Accumulate responses from the generator
             accumulated_response = ""
-            if model == "gpt-3.5-turbo":
-                for response in openai_complete(model, prompt, conversation_id, message_id_for_edit):
-                    if response:
-                        accumulated_response += response
-                        accumulated_response = accumulated_response.replace("\n", "\\n")
-                        yield f"data: {accumulated_response}\n\n"
-
-            else:
-                for response in eagle_complete(model, prompt, conversation_id):
-                    if response:
-                        accumulated_response += response
-                        yield f"data: {response}\n\n"
-
-            # Once generation is complete, append the whole conversation
-            if conversation_id and accumulated_response:
-                print(accumulated_response)
-                storage.append_conversation(conversation_id, accumulated_response, model)
-                if new_convo:
-                    storage.rename(conversation_id, make_title(prompt, accumulated_response))
-
+            yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
+            for response in utils.format_to_chat(model, prompt, conversation_id, message_id):
+                if response:
+                    # Replace newlines for correct client-side handling
+                    response = response.replace("\n", "\\n")
+                    accumulated_response += response
+                    yield f"data: {accumulated_response}\n\n"
         except Exception as e:
             error_message = str(e)
             print("An error occurred: ", error_message)
-            # Return a JSON response with the error attribute
             yield f"data: {{\"error\": \"{error_message}\"}}\n\n"
 
-    return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
+        # If needed, handle the storage append and rename operations here, outside of the try-except block
+        if conversation_id and accumulated_response:
+            storage.append_conversation(conversation_id, accumulated_response, model)
+            if new_convo:
+                storage.rename(conversation_id, make_title(prompt, accumulated_response))
 
+    return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
 if __name__ == '__main__':
     app.run(debug=True, port="8080")

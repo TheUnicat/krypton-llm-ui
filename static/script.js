@@ -24,12 +24,6 @@ function clearChatMessages() {
   chatContainer.innerHTML = ''; // Clears the chat container
 }
 
-const namesToImages = {
-
-}
-
-
-
 async function selectConversation(conversationId) {
   try {
     const response = await fetch(`/retrieve_conversation?id=${conversationId}`);

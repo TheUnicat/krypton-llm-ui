@@ -12,23 +12,7 @@ with open("secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-def openai_complete(model, prompt, conversation_id, message_id):
-
-
-    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
-
-    if message_id and message_id != "null":
-        #if truncated, we need to add back the prompt, both in the storage and in the current messages list
-        storage.append_conversation(conversation_id, prompt, "You")
-        messages.append(
-            {
-                "role": "user",
-                "content": prompt
-            }
-        )
-
-
-
+def openai_complete(model, messages):
     print(messages)
 
     completion = client.chat.completions.create(
