@@ -139,7 +139,7 @@ textarea {
 .sidebar-toggle {
   position: absolute;
   opacity: 100%;
-  left: 1%;
+  left: 10px;
   cursor: pointer;
   top: 40%;
   visibility: hidden;

@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
+function chatScrollToBottom() {
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
 // JavaScript function to clear the chat messages
 function clearChatMessages() {
   const chatContainer = document.querySelector('.chat-container');
@@ -48,7 +53,7 @@ async function selectConversation(conversationId) {
 
     // Update conversation ID in localStorage and scroll to the latest message
     localStorage.setItem("conversationId", conversationId);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatScrollToBottom();
   } catch (error) {
     console.error('Error fetching conversation:', error);
   }
@@ -98,6 +103,7 @@ function appendMessage(author, text = null) {
 
   // Append the new message element with the edit button to the chat container
   chatMessagesContainer.append(messageElement);
+  chatScrollToBottom();
 
   // Return the new message element in case further manipulation is needed
   return messageElement;
@@ -144,7 +150,7 @@ async function getAI(prompt, promptElement, messageId=null) {
             // Append the formatted error message to the current innerHTML of the messageElement
             messageElement.innerHTML += formattedErrorMessage;
 
-             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+             chatScrollToBottom();
             eventSource.close();
         }
 
@@ -157,14 +163,10 @@ async function getAI(prompt, promptElement, messageId=null) {
               messageTextDiv.innerHTML = processText(data);
 
               hljs.highlightAll();
-
-
-
+              chatScrollToBottom();
         }
     }
-
-    // Auto-scroll to the newest message
-    chatMessagesContainer.scrollBottom = chatMessagesContainer.scrollHeight;
+    chatScrollToBottom();
   };
 
   // Handle any errors that occur by logging them
@@ -299,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Calling appendMessage with "You" and the extracted text
             let promptElement = appendMessage("You", userText);
-
             // Calling getAI function afterwards
             getAI(userText, promptElement);
 
