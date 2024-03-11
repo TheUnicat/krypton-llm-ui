@@ -434,10 +434,6 @@ textarea:focus {
   display: flex;
 }
 
-.conversation-item:hover .conversation-item-text::after {
-
-}
-
 
 .title-text {
   flex-grow: 1; /* Allows the element to grow */
@@ -462,9 +458,8 @@ textarea:focus {
   display: flex; /* Initially hidden */
   position: absolute; /* Positioned relative to its nearest positioned ancestor */
   right: 0;
-  height: 1000px;
-  width: 1000px;
-  top: 100%; /* Positioned just below the conversation-item */
+  color: black;
+  top: 10%; /* Positioned just below the conversation-item */
   background-color: white; /* White background */
   z-index: 99999; /* Ensure it's above other items */
   border-radius: 4px; /* Optional: for rounded corners */

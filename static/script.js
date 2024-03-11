@@ -297,7 +297,6 @@ function prependConversationItem(conversation) {
       </button>
       <div class="options-bar" style="display: none;">
         <button>Delete</button>
-        HAIIII
       </div>
     </div>`;
 
@@ -323,10 +322,7 @@ function prependConversationItem(conversation) {
   conversationsList.appendChild(listItem);
 }
 
-
-
 populateConversationHistory();
-
 
 document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('sendBtn');
@@ -352,24 +348,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-
     sendBtn.addEventListener('click', sendMessage);
 
     userPrompt.addEventListener('keydown', function(event) {
-        // Check if the ENTER key was pressed
         if (event.key === 'Enter') {
             event.preventDefault();
             sendMessage(); // Call the sendMessage function
         }
     });
 
-
-    // Optionally, enable the button when there's text to send
     userPrompt.addEventListener('input', function() {
         const text = userPrompt.value.trim();
         sendBtn.disabled = text.length === 0;
         if(text.length > 0) {
-            sendBtn.style.background = ''; // Restore original background or set to a new color
+            sendBtn.style.background = '';
         } else {
             sendBtn.style.background = 'lightgrey'; // Disabled state color
         }
@@ -486,3 +478,7 @@ function editMessage(editButton) {
 function saveMessage(messageElement, newText) {
   getAI(newText, messageElement, messageElement.id);
 }
+
+document.getElementById('attachmentBtn').addEventListener('click', function() {
+    document.getElementById('fileInputButton').click();
+});

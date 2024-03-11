@@ -39,6 +39,6 @@ def format_to_chat(model, prompt, conversation_id, message_id):
         return test_complete(model, messages)
 
 def get_model(model_name, model_version):
-    model = models[model_name][model_version]
+    model = models[model_name]["models"][model_version]["name"]
     return model
 
