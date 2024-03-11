@@ -141,7 +141,11 @@ async function getAI(prompt, promptElement, messageId=null) {
         }
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
         promptElement.id = data.message_id;
-       } else if (data.error) {
+       } else if (data.new_title) {
+          await selectConversation(localStorage.getItem("conversationId"));
+          eventSource.close();
+          return;
+        }    else if (data.error) {
             let errorMessage = JSON.stringify(data.error);
 
             // Define the formatted error message with the error-box class
@@ -153,10 +157,12 @@ async function getAI(prompt, promptElement, messageId=null) {
              chatScrollToBottom();
             eventSource.close();
         }
-
     } catch (error) {
         if (data === 'None') {
-          eventSource.close(); // Close the connection if it's the last message
+          if (!conversationId) {
+            eventSource.close(); // Close the connection if it's the last message
+            return;
+            }
         } else {
               // If the message element's text is empty, set its text. Otherwise, create a new message element
               const messageTextDiv = messageElement.querySelector('.message-text');
@@ -270,13 +276,14 @@ async function populateConversationHistory() {
     conversationsList.innerHTML = ''; // Clear the list before adding new items
 
     // Loop through conversations and prepend them to the list
-    conversations.forEach(conversation => prependConversationItem(conversationsList, conversation));
+    conversations.forEach(conversation => prependConversationItem(conversation));
   } catch (error) {
     console.error('Failed to load recent conversations:', error);
   }
 }
 
-function prependConversationItem(conversationsList, conversation) {
+function prependConversationItem(conversation) {
+  const conversationsList = document.querySelector('.conversations-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
   listItem.id = conversation.id; // Assuming conversation["id"] is the ID

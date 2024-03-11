@@ -56,13 +56,16 @@ def stream():
         except Exception as e:
             error_message = str(e)
             print("An error occurred: ", error_message)
+
             yield f"data: {{\"error\": \"{error_message}\"}}\n\n"
 
         # If needed, handle the storage append and rename operations here, outside of the try-except block
         if conversation_id and accumulated_response:
             storage.append_conversation(conversation_id, accumulated_response, model)
             if new_convo:
-                storage.rename(conversation_id, make_title(prompt, accumulated_response))
+                new_title = make_title(prompt, accumulated_response)
+                storage.rename(conversation_id, new_title)
+            yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 
     return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
 
