@@ -5,14 +5,17 @@ from test import test_complete
 #from eagle_chat import eagle_complete
 
 
-TEST = True
+#if test is enabled use a lorem ipsum generator as AI
+with open("test_mode.json", "r") as file:
+    test_mode = json.load(file)["test_mode"]
+    print(test_mode)
 
 with open("models.json", "r") as file:
     models = json.load(file)
 
 def format_to_chat(model, prompt, conversation_id, message_id):
 
-    if TEST:
+    if test_mode:
         model = "test"
 
 

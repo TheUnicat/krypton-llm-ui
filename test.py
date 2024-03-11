@@ -1,3 +1,8 @@
+import random
+from time import sleep
+
+
+
 def test_complete(model, messages):
 
     lorem_ipsum_words = [

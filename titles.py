@@ -1,6 +1,9 @@
 from openai import OpenAI
 import json
 
+with open("test_mode.json", "r") as file:
+    test_mode = json.load(file)["test_mode"]
+
 
 with open("secrets.json", "r") as file:
     openai_key = json.load(file)["openai"]
@@ -10,6 +13,10 @@ client = OpenAI(api_key=openai_key)
 
 
 def make_title(user_message, ai_response):
+
+    if test_mode:
+        return " ".join(user_message.split()[:3])
+
     messages = [{
         "role": "user",
         "content": f"""

@@ -4,6 +4,9 @@ import random
 import string
 import datetime
 
+with open("test_mode.json", "r") as file:
+    test_mode = json.load(file)["test_mode"]
+
 
 nicknames = {"gpt-3.5-turbo": "ChatGPT"}
 
