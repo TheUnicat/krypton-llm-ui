@@ -23,11 +23,31 @@ function chatScrollToBottom() {
 }
 
 // JavaScript function to clear the chat messages
-function clearChatMessages() {
+function clearChatMessages(id=null) {
   const chatContainer = document.querySelector('.chat-container');
-  localStorage.removeItem("conversationId");
-  chatContainer.innerHTML = ''; // Clears the chat container
+  if (!id) {
+      localStorage.removeItem("conversationId");
+      chatContainer.innerHTML = ''; // Clears the chat container
+      return;
+      }
+
+  const targetElement = chatContainer.querySelector(`#${id}`);
+
+
+    let nextSibling = targetElement.nextElementSibling;
+
+    // Remove all elements after the target element
+    while (nextSibling) {
+      const toRemove = nextSibling;
+      nextSibling = nextSibling.nextElementSibling;
+      chatContainer.removeChild(toRemove);
+    }
+
 }
+
+
+
+
 
 async function selectConversation(conversationId) {
   try {
@@ -54,6 +74,7 @@ async function selectConversation(conversationId) {
     // Update conversation ID in localStorage and scroll to the latest message
     localStorage.setItem("conversationId", conversationId);
     chatScrollToBottom();
+    console.log("donee");
   } catch (error) {
     console.error('Error fetching conversation:', error);
   }
@@ -130,13 +151,14 @@ async function getAI(prompt, promptElement, messageId=null) {
   eventSource.onmessage = async function(event) {
     //console.log(event);
     let data = event.data;
+    console.log(data);
 
     try {
         data = JSON.parse(data);
      if (data.conversation_id) {
         if (messageId) {
-            clearChatMessages();
-            await selectConversation(conversationId);
+            clearChatMessages(messageId);
+            console.log("HAIIIIIII");
             messageElement = appendMessage(modelName);
         }
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
@@ -159,8 +181,10 @@ async function getAI(prompt, promptElement, messageId=null) {
     } catch (error) {
         if (data === 'None') {
           if (!conversationId) {
-            eventSource.close(); // Close the connection if it's the last message
-            return;
+            if (messageId) {
+                await selectConversation(conversationId);
+            }
+               eventSource.close();
             }
         } else {
               // If the message element's text is empty, set its text. Otherwise, create a new message element
@@ -296,26 +320,30 @@ function prependConversationItem(conversation) {
         </svg>
       </button>
       <div class="options-bar" style="display: none;">
-        <button>Delete</button>
+        <div>Delete</div>
+        <div>Rename</div>
       </div>
     </div>`;
 
   const optionsBtn = listItem.querySelector('.conversation-options-btn');
   const optionsBar = listItem.querySelector('.options-bar');
 
-  optionsBtn.addEventListener('click', function(event) {
-    console.log("OwO");
-
-    // Toggle the options bar visibility
-    optionsBar.style.display = optionsBar.style.display === 'flex' ? 'none' : 'flex';
+  // Function to toggle options bar
+  optionsBtn.addEventListener('click', (event) => {
+    const isDisplayed = optionsBar.style.display !== 'none';
+    optionsBar.style.display = isDisplayed ? 'none' : 'block';
+    listItem.classList.toggle('options-bar-visible', !isDisplayed);
+    event.stopPropagation(); // Prevent event from bubbling to document click listener
   });
 
-  // Listen for click outside the listItem to hide the options bar
-  document.addEventListener('click', function(event) {
+  // Hide options bar when clicking outside
+  document.addEventListener('click', (event) => {
     if (!listItem.contains(event.target)) {
       optionsBar.style.display = 'none';
+      listItem.classList.remove('options-bar-visible');
     }
   });
+
 
   listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`); // Example function to select a conversation
 

@@ -284,6 +284,7 @@ textarea {
 #modelDropdown div:hover {
   background-color: #f0f0f0; /* Highlight on hover */
 }
+
 .code-container {
     position: relative;
     border-radius: 8px; /* Rounded corners for the container */
@@ -397,7 +398,7 @@ textarea:focus {
   font-size: 15px;
   cursor: pointer;
   border-radius: 10px;
-  overflow: hidden; /* Hide the gradient overflow */
+  overflow: visible; /* allow dropdown to show */
 }
 
 .conversation-item-text {
@@ -454,17 +455,46 @@ textarea:focus {
   cursor: pointer;
 }
 
+
+.conversation-item.options-bar-visible .conversation-toolbar {
+  display: flex; /* Keep the toolbar visible */
+}
+
+.conversation-item:hover .conversation-toolbar,
+.conversation-item.options-bar-visible .conversation-toolbar {
+  display: flex; /* Show toolbar on hover or when options bar is visible */
+}
+
+
 .options-bar {
-  display: flex; /* Initially hidden */
-  position: absolute; /* Positioned relative to its nearest positioned ancestor */
-  right: 0;
-  color: black;
-  top: 10%; /* Positioned just below the conversation-item */
-  background-color: white; /* White background */
-  z-index: 99999; /* Ensure it's above other items */
-  border-radius: 4px; /* Optional: for rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: for subtle shadow */
-  /* Add padding, width or other styling as needed */
+  display: none;
+  background-color: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Adds a drop shadow for depth */
+  z-index: 9999999;
+  width: max-content;
+  position: absolute;
+  top: 10px;
+  border-radius: 8px; /* Rounded corners */
+}
+
+.options-bar div {
+  padding: 8px 16px;
+  border-bottom: 1px solid #ddd; /* Separates options */
+  background-color: #fff; /* Ensures consistent background */
+  border-radius: 0; /* Resets any rounded corners for individual items, can be adjusted if desired */
+}
+
+.options-bar div:last-child {
+  border-bottom: none; /* Removes border from the last option */
+  border-radius: 0 0 8px 8px; /* Rounded corners for the bottom of the dropdown */
+}
+
+.options-bar div:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.conversation-item-options-visible {
+  background-color: lightgrey; /* Or the specific shade of light grey you prefer */
 }
 
 

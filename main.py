@@ -65,7 +65,7 @@ def stream():
             if new_convo:
                 new_title = make_title(prompt, accumulated_response)
                 storage.rename(conversation_id, new_title)
-            yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
+                yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 
     return Response(generate(model, prompt, conversation_id, message_id), mimetype='text/event-stream')
 
