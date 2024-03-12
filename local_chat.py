@@ -2,47 +2,60 @@ from llama_cpp import Llama
 import storage
 global completion
 global client_id
+import json
 
-
+global llm
+llm = False
 
 def load_model(path):
     global llm
     llm = Llama(model_path=path, use_mlock=True,#Vera-Q4_K_M.gguf", use_mlock=True,
                 n_gpu_layers=1, seed=-1, n_ctx=768)
+    return llm
 
 #this is a function that completes a conversation between the user and the ai
 #It adds a system message, then takes the first message and adds it to messages as an ai message, and then alternates between user and ai messages
-def local_complete(messages, max_tokens):
+def local_complete(model, messages, max_tokens=1000):
+    global llm
+    print("hiii")
+    messages = fit_to_grammar(messages, get_template(model[0]))
     if llm:
-        # Start streaming from the LLM
-        if True:
-            chunks = 0
-            stream = llm(messages, max_tokens=max_tokens, stream=True)
-            for output in stream:
-                generated_text = output["choices"][0]["text"]
-                chunks += 1
-                yield generated_text
+        pass
     else:
-        yield "Error: LLM not available"
+        llm = load_model(path="/Users/hongyang/Downloads/text-generation-webui/models/MrEagle-Q4_K_M.gguf")
+    # Start streaming from the LLM
+    chunks = 0
+    stream = llm(messages, max_tokens=max_tokens, stream=True)
+    for output in stream:
+        generated_text = output["choices"][0]["text"]
+        chunks += 1
+        yield generated_text
 
 
 
+def get_template(model_name):
+    with open("models.json", "r") as file:
+        models = json.load(file)
+        template_name = models[model_name]["template"]
 
-# Function to process the entire conversation
-def eagle_complete(model, prompt, conversation_id):
-    conversation_string = ""
+    with open("prompt_templates.json", "r") as file:
+        templates = json.load(file)
+        template = templates[template_name]
 
-    conversation = storage.format_conversation(storage.retrieve_conversation(conversation_id)["conversation"])
+    return template
 
-    for message in conversation:
-        if message["role"] != "You":  # AI messages
-            conversation_string += "\n### RESPONSE:\n\n" + message["content"]
-        else:
-            conversation_string += "\n### INPUT:\n\n" + message["content"]
+def fit_to_grammar(messages, template):
+    final_string = ""
+    for msg in messages:
+        role = msg["role"]  # Get the role of the message
+        content = msg["content"]  # Get the content of the message
+        formatted_message = template[role].replace("{message}", content)  # Replace {message} in template
+        final_string += formatted_message  # Concat to the final string
 
-    conversation_string += "\n\n### RESPONSE:\n"
-    if len(conversation) > 2:
-        conversation_string = " " + conversation_string
+    # Add the half-response template for the assistant's part
+    assistant_template_half = template["assistant"].split("{message}")[0]
+    final_string += assistant_template_half
 
-    return chat_complete(conversation_string, 400)
+    return final_string
+
 

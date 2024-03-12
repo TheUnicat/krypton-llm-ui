@@ -11,6 +11,7 @@
 
   "MrEagle": {
     "api": "local",
+    "template": "Alpaca",
     "models": {
       "7B": {
         "name": "MrEagle7B.gguf",

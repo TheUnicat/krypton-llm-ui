@@ -2,7 +2,7 @@ import storage
 from openai_chat import openai_complete
 import json
 from test import test_complete
-#from eagle_chat import eagle_complete
+from local_chat import local_complete
 
 
 #if test is enabled use a lorem ipsum generator as AI
@@ -14,10 +14,8 @@ with open("models.json", "r") as file:
     models = json.load(file)
 
 def format_to_chat(model, prompt, conversation_id, message_id):
-
     if test_mode:
-        model = "test"
-
+        model_name = "test"
 
     messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
 
@@ -31,11 +29,17 @@ def format_to_chat(model, prompt, conversation_id, message_id):
             }
         )
 
-    if model == "gpt-3.5-turbo":
+
+    print(model)
+
+    model_name = get_model(model[0], model[1])
+
+    if model_name == "gpt-3.5-turbo":
         return openai_complete(model, messages)
-    elif model == "MrEagle 7B":
-        return eagle_complete(model, messages)
-    elif model == "test":
+    elif model_name == "MrEagle7B.gguf":
+        print("locally completing")
+        return local_complete(model, messages)
+    elif model_name == "test":
         return test_complete(model, messages)
 
 def get_model(model_name, model_version):

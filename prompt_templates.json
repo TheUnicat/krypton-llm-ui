@@ -1,0 +1,7 @@
+{
+  "Alpaca": {
+    "system": "### INSTRUCTION:\n{message}\n\n",
+    "user": "### INPUT:\n{message}\n\n",
+    "assistant": "### RESPONSE:\n{message}\n\n"
+  }
+}
