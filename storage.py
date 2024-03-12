@@ -54,7 +54,7 @@ def append_conversation(conversation_id, message, author):
         json.dump(data, file, indent=4)
     return message_id
 
-def find_recent_conversation_ids(n=5):
+def find_recent_conversation_ids(n=20):
     if not os.path.isfile("conversations.json"):
         return None
     with open("conversations.json", "r") as file:
@@ -90,7 +90,7 @@ def retrieve_conversation(id, message_id=None):
     return None
 
 
-def fetch_recent_conversations(n=5):
+def fetch_recent_conversations(n=20):
     ids = find_recent_conversation_ids(n)
     conversations = []
     for id in ids:

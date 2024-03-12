@@ -439,7 +439,7 @@ textarea:focus {
 .title-text {
   flex-grow: 1; /* Allows the element to grow */
   white-space: nowrap;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   max-width: 84%; /* Adjust as needed */
   overflow: hidden;
   position: relative; /* Position relative to allow absolute positioning within it */
