@@ -14,11 +14,10 @@ def test_complete(model, messages):
         "ut", "aliquip", "ex", "ea", "commodo", "consequat"
     ]
 
-    # Randomly select 20 words from the lorem_ipsum_words list
-    random_words = random.sample(lorem_ipsum_words, 20)
+    for i in range(20):
 
-    # Join the selected words into a single string
-    random_lorem_ipsum = ' '.join(random_words)
-
-    # Yield the generated string
-    yield random_lorem_ipsum
+        # Randomly select 20 words from the lorem_ipsum_words list
+        random_lorem_ipsum = random.choice(lorem_ipsum_words)
+        sleep(0.1)
+        # Yield the generated string
+        yield random_lorem_ipsum

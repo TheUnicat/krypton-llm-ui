@@ -38,10 +38,6 @@ def stream():
     message_id_for_edit = request.args.get('message_id')
     print(message_id_for_edit)
 
-
-
-    model = utils.get_model(model_name, model_version)
-
     new_convo = False
 
     if conversation_id is not None and conversation_id != "null":
@@ -69,7 +65,7 @@ def stream():
 
         # If needed, handle the storage append and rename operations here, outside of the try-except block
         if conversation_id and accumulated_response:
-            storage.append_conversation(conversation_id, accumulated_response, utils.get_model(model[0], model[1]))
+            storage.append_conversation(conversation_id, accumulated_response, utils.get_model(model_name, model_version))
             if new_convo:
                 new_title = make_title(prompt, accumulated_response)
                 storage.rename(conversation_id, new_title)
