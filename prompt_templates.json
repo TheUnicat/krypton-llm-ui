@@ -3,5 +3,11 @@
     "system": "### INSTRUCTION:\n{message}\n\n",
     "user": "### INPUT:\n{message}\n\n",
     "assistant": "### RESPONSE:\n{message}\n\n"
+  },
+
+  "Gemma": {
+    "system": "<start_of_turn>user\n{message}<end_of_turn>",
+    "user": "<start_of_turn>user\n{message}<end_of_turn>",
+    "assistant": "<start_of_turn>model\n{message}<end_of_turn>"
   }
 }
