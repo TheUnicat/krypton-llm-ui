@@ -74,5 +74,20 @@ def stream():
 
     return Response(generate([], prompt, conversation_id, message_id), mimetype='text/event-stream')
 
+
+@app.route("/get_models_html")
+def get_models_html():
+    with open("models.json", "r") as file:
+        models_data = json.load(file)
+
+    dropdown_html = ""
+
+    for model_name, model_info in models_data.items():
+        for version_name in model_info["models"]:
+            dropdown_html += f'<div style="cursor: pointer;" onclick="changeModel(\'{model_name}\', \'{version_name}\')">{model_name}</div>\n'
+
+    print(dropdown_html)
+    return Response(dropdown_html, mimetype='text/html')
+
 if __name__ == '__main__':
     app.run(debug=True, port="8080")

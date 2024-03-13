@@ -1,6 +1,7 @@
 from llama_cpp import Llama
 import storage
 import utils
+from os import path as ospath
 
 global completion
 global client_id
@@ -11,7 +12,9 @@ llm = False
 
 def load_model(path):
     global llm
-    llm = Llama(model_path=path, use_mlock=True,#Vera-Q4_K_M.gguf", use_mlock=True,
+    print(path)
+    assert ospath.exists(path)
+    llm = Llama(model_path=path, use_mlock=True,
                 n_gpu_layers=1, seed=-1, n_ctx=768)
     return llm
 

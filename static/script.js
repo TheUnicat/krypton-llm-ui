@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    loadAndAppendModels();
     const replyButton = document.getElementById('replyButton'); // Get the button by ID
 
     // Function to be called when button is clicked
@@ -510,3 +511,12 @@ function saveMessage(messageElement, newText) {
 document.getElementById('attachmentBtn').addEventListener('click', function() {
     document.getElementById('fileInputButton').click();
 });
+
+function loadAndAppendModels() {
+    fetch('/get_models_html')
+    .then(response => response.ok ? response.text() : Promise.reject('Failed to load'))
+    .then(html => document.getElementById('modelDropdown').innerHTML = html)
+    .catch(error => console.error('There has been a problem with your fetch operation:', error));
+}
+
+
