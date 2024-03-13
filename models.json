@@ -15,7 +15,8 @@
     "models": {
       "7B": {
         "name": "MrEagle7B.gguf",
-        "vision": false
+        "vision": false,
+        "path": "MrEagle-Q4_K_M.gguf"
       }
     }
   }

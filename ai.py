@@ -35,7 +35,7 @@ def format_to_chat(model, prompt, conversation_id, message_id):
 
     if model_name == "gpt-3.5-turbo":
         return openai_complete(model, messages)
-    elif model_name == "MrEagle7B.gguf":
+    elif utils.is_local_model(model[0], model[1]):
         print("locally completing")
         return local_complete(model, messages)
     elif model_name == "test":

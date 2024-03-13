@@ -14,6 +14,10 @@ def get_model(model_name, model_version):
     model = models[model_name]["models"][model_version]["name"]
     return model
 
+def get_model_info(model_name, model_version):
+    model = models[model_name]["models"][model_version]
+    return model
+
 
 def is_local_model(model_name, model_version):
     # Open and read the models.json file
@@ -22,7 +26,7 @@ def is_local_model(model_name, model_version):
 
     # Check if the specified model and version exist and if its API is set to 'local'
     if model_name in models_data and model_version in models_data[model_name]['models']:
-        return models_data[model_name]['models'][model_version]['api'] == 'local'
+        return models_data[model_name]['api'] == 'local'
     else:
         return False
 

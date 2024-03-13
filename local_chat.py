@@ -1,5 +1,7 @@
 from llama_cpp import Llama
 import storage
+import utils
+
 global completion
 global client_id
 import json
@@ -17,12 +19,16 @@ def load_model(path):
 #It adds a system message, then takes the first message and adds it to messages as an ai message, and then alternates between user and ai messages
 def local_complete(model, messages, max_tokens=1000):
     global llm
-    print("hiii")
+
     messages = fit_to_grammar(messages, get_template(model[0]))
+    model_info = utils.get_model_info(model[0], model[1])
+
+    #load llm if needed
     if llm:
         pass
     else:
-        llm = load_model(path="/Users/hongyang/Downloads/text-generation-webui/models/MrEagle-Q4_K_M.gguf")
+        llm = load_model(path="models/" + model_info["path"])
+
     # Start streaming from the LLM
     chunks = 0
     stream = llm(messages, max_tokens=max_tokens, stream=True)
