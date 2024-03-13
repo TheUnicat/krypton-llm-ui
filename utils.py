@@ -1,8 +1,5 @@
 import storage
-from openai_chat import openai_complete
 import json
-from test import test_complete
-from local_chat import local_complete
 
 
 #if test is enabled use a lorem ipsum generator as AI
@@ -13,36 +10,19 @@ with open("test_mode.json", "r") as file:
 with open("models.json", "r") as file:
     models = json.load(file)
 
-def format_to_chat(model, prompt, conversation_id, message_id):
-    if test_mode:
-        model_name = "test"
-
-    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
-
-    if message_id and message_id.strip() != "null":
-        #if truncated, we need to add back the prompt, both in the storage and in the current messages list
-        storage.append_conversation(conversation_id, prompt, "You")
-        messages.append(
-            {
-                "role": "user",
-                "content": prompt
-            }
-        )
-
-
-    print(model)
-
-    model_name = get_model(model[0], model[1])
-
-    if model_name == "gpt-3.5-turbo":
-        return openai_complete(model, messages)
-    elif model_name == "MrEagle7B.gguf":
-        print("locally completing")
-        return local_complete(model, messages)
-    elif model_name == "test":
-        return test_complete(model, messages)
-
 def get_model(model_name, model_version):
     model = models[model_name]["models"][model_version]["name"]
     return model
+
+
+def is_local_model(model_name, model_version):
+    # Open and read the models.json file
+    with open('models.json', 'r') as file:
+        models_data = json.load(file)
+
+    # Check if the specified model and version exist and if its API is set to 'local'
+    if model_name in models_data and model_version in models_data[model_name]['models']:
+        return models_data[model_name]['models'][model_version]['api'] == 'local'
+    else:
+        return False
 

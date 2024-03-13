@@ -4,6 +4,7 @@ import json
 import utils
 from titles import make_title
 import traceback
+import ai
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
@@ -50,7 +51,7 @@ def stream():
         try:
             accumulated_response = ""
             yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
-            for response in utils.format_to_chat([model_name, model_version], prompt, conversation_id, message_id_for_edit):
+            for response in ai.format_to_chat([model_name, model_version], prompt, conversation_id, message_id_for_edit):
                 if response:
                     # Replace newlines for correct client-side handling
                     response = response.replace("\n", "\\n")
