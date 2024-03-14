@@ -18,6 +18,13 @@ def index():
 def get_recent_conversations():
     return storage.fetch_recent_conversations()
 
+@app.route('/delete_conversation')
+def delete_conversation():
+    conversation_id = request.args.get('id')
+    print(conversation_id)
+    storage.delete_conversation(conversation_id)
+    return "200"
+
 @app.route('/retrieve_conversation')
 def retrieve_conversation():
     # Assume we have a function to get conversation by ID
@@ -70,7 +77,7 @@ def stream():
         if conversation_id and accumulated_response:
             storage.append_conversation(conversation_id, accumulated_response, utils.get_model(model_name, model_version))
             if new_convo:
-                new_title = make_title(prompt, accumulated_response)
+                new_title = make_title(prompt, accumulated_response, [model_name, model_version])
                 storage.rename(conversation_id, new_title)
                 yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 

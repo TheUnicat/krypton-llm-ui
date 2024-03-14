@@ -12,7 +12,7 @@ with open("secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-def make_title(user_message, ai_response):
+def make_title(user_message, ai_response, model):
 
     if test_mode:
         return " ".join(user_message.split()[:3])

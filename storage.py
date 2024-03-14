@@ -160,5 +160,16 @@ def rename(conversation_id, new_title):
         json.dump(data, file, indent=4)
 
 
+def delete_conversation(conversation_id):
+    # Load the conversation data from the JSON file
+    with open('conversations.json', 'r') as file:
+        conversations = json.load(file)
+
+    # Find and remove the conversation with the specified ID
+    conversations = [conversation for conversation in conversations if conversation["id"] != conversation_id]
+
+    # Save the updated conversations back to the JSON file
+    with open('conversations.json', 'w') as file:
+        json.dump(conversations, file, indent=4)
 
 

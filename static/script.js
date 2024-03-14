@@ -321,7 +321,7 @@ function prependConversationItem(conversation) {
         </svg>
       </button>
       <div class="options-bar" style="display: none;">
-        <div>Delete</div>
+        <div class="delete-option">Delete</div>
         <div>Rename</div>
       </div>
     </div>`;
@@ -329,15 +329,13 @@ function prependConversationItem(conversation) {
   const optionsBtn = listItem.querySelector('.conversation-options-btn');
   const optionsBar = listItem.querySelector('.options-bar');
 
-  // Function to toggle options bar
   optionsBtn.addEventListener('click', (event) => {
     const isDisplayed = optionsBar.style.display !== 'none';
     optionsBar.style.display = isDisplayed ? 'none' : 'block';
     listItem.classList.toggle('options-bar-visible', !isDisplayed);
-    event.stopPropagation(); // Prevent event from bubbling to document click listener
+    event.stopPropagation();
   });
 
-  // Hide options bar when clicking outside
   document.addEventListener('click', (event) => {
     if (!listItem.contains(event.target)) {
       optionsBar.style.display = 'none';
@@ -345,10 +343,15 @@ function prependConversationItem(conversation) {
     }
   });
 
+  // Add event listener for Delete option
+  const deleteOption = listItem.querySelector('.delete-option');
+  deleteOption.addEventListener('click', function() {
+    deleteConversation(conversation.id); // Call the delete function
+  });
 
-  listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`); // Example function to select a conversation
+  listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`);
 
-  conversationsList.appendChild(listItem);
+  conversationsList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
 }
 
 populateConversationHistory();
@@ -504,6 +507,11 @@ function editMessage(editButton) {
   messageContent.appendChild(saveButton);
 }
 
+async function deleteConversation(conversationId) {
+    await fetch(`/delete_conversation?id=${conversationId}`);
+}
+
+
 function saveMessage(messageElement, newText) {
   getAI(newText, messageElement, messageElement.id);
 }
@@ -518,5 +526,6 @@ function loadAndAppendModels() {
     .then(html => document.getElementById('modelDropdown').innerHTML = html)
     .catch(error => console.error('There has been a problem with your fetch operation:', error));
 }
+
 
 
