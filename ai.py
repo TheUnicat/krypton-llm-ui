@@ -4,6 +4,7 @@ import json
 from openai_chat import openai_complete
 from test import test_complete
 from local_chat import local_complete
+from fireworks_complete import fireworks_complete
 
 with open("test_mode.json", "r") as file:
     test_mode = json.load(file)["test_mode"]
@@ -28,16 +29,18 @@ def format_to_chat(model, prompt, conversation_id, message_id):
 
     print(model)
 
-    model_name = utils.get_model(model[0], model[1])
-
     if test_mode:
-        model_name = "test"
-
-    if model_name == "gpt-3.5-turbo":
-        return openai_complete(model, messages)
-    elif utils.is_local_model(model[0], model[1]):
-        print("locally completing")
-        return local_complete(model, messages)
-    elif model_name == "test":
         return test_complete(model, messages)
 
+
+    model_family_info = utils.get_model_family_info(model[0])
+    model_api = model_family_info["api"]
+    function_name = f"{model_api}_complete"
+
+    # Get the function from globals() based on constructed function name
+    complete_function = globals().get(function_name)
+
+    if complete_function:
+        return complete_function(model, messages)
+    else:
+        raise ValueError(f"No completion function found for API: {model_api}")

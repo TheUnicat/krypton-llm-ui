@@ -18,6 +18,14 @@ def get_model_info(model_name, model_version):
     model = models[model_name]["models"][model_version]
     return model
 
+def get_model_path(model_name, model_version):
+    model_path = models[model_name]["models"][model_version]["path"]
+    return model_path
+
+def get_model_family_info(model_name):
+    model_family_info = models[model_name]
+    return model_family_info
+
 
 def is_local_model(model_name, model_version):
     # Open and read the models.json file

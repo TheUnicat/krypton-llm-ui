@@ -6,6 +6,7 @@ from titles import make_title
 import traceback
 import ai
 
+
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 
@@ -63,6 +64,7 @@ def stream():
             print_error_with_traceback(str(e))
 
             yield f"data: {{\"error\": \"{error_message}\"}}\n\n"
+            return
 
         # If needed, handle the storage append and rename operations here, outside of the try-except block
         if conversation_id and accumulated_response:

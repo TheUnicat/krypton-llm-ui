@@ -1,5 +1,6 @@
 import json
 from fireworks.client import Fireworks
+import utils
 
 def load_api_key():
     with open("secrets.json", "r") as file:
@@ -9,11 +10,17 @@ def load_api_key():
 client = Fireworks(api_key=load_api_key())
 
 def fireworks_complete(model, messages):
+    model_name = utils.get_model_path(model[0], model[1])
+    print(model_name)
     completion = client.chat.completions.create(
-        model=model,
+        model=model_name,
         messages=messages,
         stream=True
     )
 
     for chunk in completion:
-        yield chunk.choices[0].delta.content
+        print(chunk)
+        try:
+            yield chunk[1][0].message.content
+        except Exception as e:
+            print(e)

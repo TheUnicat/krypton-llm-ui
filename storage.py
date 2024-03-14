@@ -10,8 +10,10 @@ with open("test_mode.json", "r") as file:
 
 nicknames = {"gpt-3.5-turbo": "ChatGPT"}
 
+
 def generate_id(size=32, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
 
 def create_conversation(message):
     conversation_id = generate_id()
