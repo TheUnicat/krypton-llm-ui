@@ -351,7 +351,7 @@ function prependConversationItem(conversation) {
 
   listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`);
 
-  conversationsList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
+  conversationsList.appendChild(listItem); // Changed to prepend to add it at the beginning of the list
 }
 
 populateConversationHistory();
