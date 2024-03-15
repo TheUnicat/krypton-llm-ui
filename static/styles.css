@@ -497,5 +497,44 @@ textarea:focus {
   background-color: lightgrey; /* Or the specific shade of light grey you prefer */
 }
 
+.modal {
+  position: relative; /* Stay in place */
+  z-index: 999999;
+  background-color: white;
+  overflow: auto;
+  border-radius: 20px;
+}
+
+.modal-content {
+  padding: 5px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.close-button {
+  color: lightgrey;
+  float: right;
+  font-size: 28px;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s;
+}
+
 
 

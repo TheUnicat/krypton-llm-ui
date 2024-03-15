@@ -527,5 +527,32 @@ function loadAndAppendModels() {
     .catch(error => console.error('There has been a problem with your fetch operation:', error));
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('modal-overlay');
+    const closeButton = document.querySelector('.close-button');
+    const modalBody = document.getElementById('modal-body');
+
+    function openModal(htmlContent) {
+        modalBody.innerHTML = htmlContent; // Set the HTML content
+        modal.style.visibility = 'visible';
+        modal.style.opacity = 1;
+        overlay.style.visibility = 'visible';
+        overlay.style.opacity = 1;
+    }
+
+    function closeModal() {
+        modal.style.visibility = 'hidden';
+        modal.style.opacity = 0;
+        overlay.style.visibility = 'hidden';
+        overlay.style.opacity = 0;
+    }
+
+    closeButton.addEventListener('click', closeModal);
+
+    //openModal("<p>Hello, World!</p>");
+});
+
+
 
 
