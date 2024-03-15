@@ -1,10 +1,10 @@
 import storage
 import utils
 import json
-from openai_chat import openai_complete
-from test import test_complete
-from local_chat import local_complete
-from fireworks_complete import fireworks_complete
+from apis.openai_chat import openai_complete
+from apis.test import test_complete
+from apis.local_chat import local_complete
+from apis.fireworks_complete import fireworks_complete
 
 with open("test_mode.json", "r") as file:
     test_mode = json.load(file)["test_mode"]

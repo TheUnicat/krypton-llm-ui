@@ -135,15 +135,12 @@ function appendMessage(author, text = null) {
 
 async function getAI(prompt, promptElement, messageId=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
-  const conversationId = localStorage.getItem('conversationId'); // Ensure this is the correct key
-      // Retrieve the model from localStorage, defaulting to 'gpt-3.5-turbo' if not found
+  const conversationId = localStorage.getItem('conversationId');
+    //default gpt-3.5-turbo
     const modelName = localStorage.getItem('modelName') || 'ChatGPT';
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
-
     // Encode the prompt and include the model in the query string
     const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}`);
-    // Pass the conversationId as a query parameter
-
 
   var messageElement = appendMessage(modelName);
   let accumulatedResponse = "";
