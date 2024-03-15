@@ -332,8 +332,10 @@ function prependConversationItem(conversation) {
     const renameOption = listItem.querySelector('.rename-option'); // Assuming your rename option has a class 'rename-option'
 
     renameOption.addEventListener('click', function() {
+      const currentTitle = this.closest('.conversation-item').querySelector('.title-text').innerText;
+
       const modalContent = `
-        <textarea id="renameTextarea" placeholder="Enter new name"></textarea>
+        <textarea id="renameTextarea" placeholder="Enter new name">${currentTitle}</textarea>
         <button id="submitRename">Submit</button>
       `;
 
@@ -341,7 +343,6 @@ function prependConversationItem(conversation) {
       openModal(modalContent);
 
       // Assuming modal's submit button can be immediately selected after modal is opened
-      // This might need adjustment based on how your modal implementation works
       document.querySelector('#submitRename').addEventListener('click', function() {
         const newName = document.querySelector('#renameTextarea').value.trim();
         if (newName) {

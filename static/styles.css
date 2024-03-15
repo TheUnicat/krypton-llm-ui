@@ -506,7 +506,7 @@ textarea:focus {
 }
 
 .modal-content {
-  padding: 5px;
+  padding: 15px;
   padding-left: 25px;
   padding-right: 25px;
 }
@@ -515,7 +515,10 @@ textarea:focus {
   display: none;
   color: lightgrey;
   float: right;
+  position: absolute;
   font-size: 28px;
+  right: 10px;
+  top: 0px;
 }
 
 .close-button:hover,
