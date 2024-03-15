@@ -25,6 +25,15 @@ def delete_conversation():
     storage.delete_conversation(conversation_id)
     return "200"
 
+@app.route('/rename_conversation')
+def rename_conversation():
+    conversation_id = request.args.get('id')
+    new_name = request.args.get('new_name')
+    print(conversation_id)
+    print(new_name)
+    storage.rename_conversation(conversation_id, new_name)
+    return "200"
+
 @app.route('/retrieve_conversation')
 def retrieve_conversation():
     # Assume we have a function to get conversation by ID
@@ -78,7 +87,7 @@ def stream():
             storage.append_conversation(conversation_id, accumulated_response, utils.get_model(model_name, model_version))
             if new_convo:
                 new_title = make_title(prompt, accumulated_response, [model_name, model_version])
-                storage.rename(conversation_id, new_title)
+                storage.rename_conversation(conversation_id, new_title)
                 yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 
     return Response(generate([], prompt, conversation_id, message_id), mimetype='text/event-stream')

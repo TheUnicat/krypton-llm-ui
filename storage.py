@@ -148,7 +148,7 @@ def truncate_conversation_at_message(id, message_id):
     return True
 
 
-def rename(conversation_id, new_title):
+def rename_conversation(conversation_id, new_title):
     with open("conversations.json", "r") as file:
         data = json.load(file)
         for conversation in data:

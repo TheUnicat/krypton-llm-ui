@@ -322,12 +322,35 @@ function prependConversationItem(conversation) {
       </button>
       <div class="options-bar" style="display: none;">
         <div class="delete-option">Delete</div>
-        <div>Rename</div>
+        <div class="rename-option">Rename</div>
       </div>
     </div>`;
 
   const optionsBtn = listItem.querySelector('.conversation-options-btn');
   const optionsBar = listItem.querySelector('.options-bar');
+
+    const renameOption = listItem.querySelector('.rename-option'); // Assuming your rename option has a class 'rename-option'
+
+    renameOption.addEventListener('click', function() {
+      const modalContent = `
+        <textarea id="renameTextarea" placeholder="Enter new name"></textarea>
+        <button id="submitRename">Submit</button>
+      `;
+
+      // Assuming openModal function exists and takes HTML string as parameter
+      openModal(modalContent);
+
+      // Assuming modal's submit button can be immediately selected after modal is opened
+      // This might need adjustment based on how your modal implementation works
+      document.querySelector('#submitRename').addEventListener('click', function() {
+        const newName = document.querySelector('#renameTextarea').value.trim();
+        if (newName) {
+          renameConversation(conversation.id, newName); // Placeholder function
+          closeModal(); // Assuming you have a function to close the modal
+        }
+      });
+    });
+
 
   optionsBtn.addEventListener('click', (event) => {
     const isDisplayed = optionsBar.style.display !== 'none';
@@ -354,7 +377,6 @@ function prependConversationItem(conversation) {
   conversationsList.appendChild(listItem); // Changed to prepend to add it at the beginning of the list
 }
 
-populateConversationHistory();
 
 document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('sendBtn');
@@ -511,6 +533,9 @@ async function deleteConversation(conversationId) {
     await fetch(`/delete_conversation?id=${conversationId}`);
 }
 
+async function renameConversation(conversationId, newName) {
+    await fetch(`/rename_conversation?id=${conversationId}&new_name=${newName}`);
+}
 
 function saveMessage(messageElement, newText) {
   getAI(newText, messageElement, messageElement.id);
@@ -527,31 +552,30 @@ function loadAndAppendModels() {
     .catch(error => console.error('There has been a problem with your fetch operation:', error));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('modal');
-    const overlay = document.getElementById('modal-overlay');
-    const closeButton = document.querySelector('.close-button');
-    const modalBody = document.getElementById('modal-body');
+const modal = document.getElementById('modal');
+const overlay = document.getElementById('modal-overlay');
+const closeButton = document.querySelector('.close-button');
+const modalBody = document.getElementById('modal-body');
 
-    function openModal(htmlContent) {
-        modalBody.innerHTML = htmlContent; // Set the HTML content
-        modal.style.visibility = 'visible';
-        modal.style.opacity = 1;
-        overlay.style.visibility = 'visible';
-        overlay.style.opacity = 1;
-    }
+function openModal(htmlContent) {
+    modalBody.innerHTML = htmlContent; // Set the HTML content
+    modal.style.visibility = 'visible';
+    modal.style.opacity = 1;
+    overlay.style.visibility = 'visible';
+    overlay.style.opacity = 1;
+}
 
-    function closeModal() {
-        modal.style.visibility = 'hidden';
-        modal.style.opacity = 0;
-        overlay.style.visibility = 'hidden';
-        overlay.style.opacity = 0;
-    }
+function closeModal() {
+    modal.style.visibility = 'hidden';
+    modal.style.opacity = 0;
+    overlay.style.visibility = 'hidden';
+    overlay.style.opacity = 0;
+}
 
-    closeButton.addEventListener('click', closeModal);
+closeButton.addEventListener('click', closeModal);
 
-    //openModal("<p>Hello, World!</p>");
-});
+//openModal("<p>Hello, World!</p>");
+populateConversationHistory();
 
 
 
