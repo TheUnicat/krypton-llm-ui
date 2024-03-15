@@ -561,6 +561,7 @@ function openModal(htmlContent) {
     modalBody.innerHTML = htmlContent; // Set the HTML content
     modal.style.visibility = 'visible';
     modal.style.opacity = 1;
+    closeButton.style.display = 'flex';
     overlay.style.visibility = 'visible';
     overlay.style.opacity = 1;
 }

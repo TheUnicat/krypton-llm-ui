@@ -512,6 +512,7 @@ textarea:focus {
 }
 
 .close-button {
+  display: none;
   color: lightgrey;
   float: right;
   font-size: 28px;
