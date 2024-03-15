@@ -1,5 +1,5 @@
 import storage
-import utils
+from utils import model_utils
 import json
 from apis.openai_chat import openai_complete
 from apis.test_chat import test_complete
@@ -33,7 +33,7 @@ def format_to_chat(model, prompt, conversation_id, message_id):
         return test_complete(model, messages)
 
 
-    model_family_info = utils.get_model_family_info(model[0])
+    model_family_info = model_utils.get_model_family_info(model[0])
     model_api = model_family_info["api"]
     function_name = f"{model_api}_complete"
 
