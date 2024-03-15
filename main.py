@@ -5,7 +5,6 @@ from flask import Flask, send_from_directory, Response, jsonify, request
 
 import storage
 import ai
-from titles import make_title
 from utils import model_utils
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -53,7 +52,6 @@ def stream():
     model_name = request.args.get('model_name')
     model_version = request.args.get('model_version')
     message_id_for_edit = request.args.get('message_id')
-    print(message_id_for_edit)
 
     new_convo = False
 
@@ -85,7 +83,7 @@ def stream():
         if conversation_id and accumulated_response:
             storage.append_conversation(conversation_id, accumulated_response, model_utils.get_model(model_name, model_version))
             if new_convo:
-                new_title = make_title(prompt, accumulated_response, [model_name, model_version])
+                new_title = ai.make_title([model_name, model_version], prompt, accumulated_response)
                 storage.rename_conversation(conversation_id, new_title)
                 yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 
@@ -103,7 +101,6 @@ def get_models_html():
         for version_name in model_info["models"]:
             dropdown_html += f'<div style="cursor: pointer;" onclick="changeModel(\'{model_name}\', \'{version_name}\')">{model_name}</div>\n'
 
-    print(dropdown_html)
     return Response(dropdown_html, mimetype='text/html')
 
 if __name__ == '__main__':

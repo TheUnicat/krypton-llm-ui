@@ -45,10 +45,7 @@ function clearChatMessages(id=null) {
     }
 
 }
-
-
-
-
+console.log("hi")
 
 async function selectConversation(conversationId) {
   try {
@@ -364,11 +361,22 @@ function prependConversationItem(conversation) {
     }
   });
 
-  // Add event listener for Delete option
-  const deleteOption = listItem.querySelector('.delete-option');
-  deleteOption.addEventListener('click', function() {
-    deleteConversation(conversation.id); // Call the delete function
-  });
+    // Add event listener for Delete option
+    const deleteOption = listItem.querySelector('.delete-option');
+    deleteOption.addEventListener('click', function() {
+      // Call the delete function
+      deleteConversation(conversation.id);
+
+      // Find the nearest ancestor .conversation-item element and remove it from the DOM
+      const conversationItem = this.closest('.conversation-item');
+      if (conversationItem) {
+        conversationItem.remove();
+      }
+
+      if (conversation.id == localStorage.getItem("conversationId")) {
+        clearChatMessages();
+      }
+    });
 
   listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`);
 

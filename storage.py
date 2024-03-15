@@ -3,10 +3,9 @@ import os
 import random
 import string
 import datetime
+from utils.settings_utils import get_test_mode
 
-with open("krypton_storage/test_mode.json", "r") as file:
-    test_mode = json.load(file)["test_mode"]
-
+test_mode = get_test_mode()
 
 nicknames = {"gpt-3.5-turbo": "ChatGPT"}
 
@@ -73,9 +72,7 @@ def retrieve_conversation(id, message_id=None):
         return None
 
     if message_id is not None and message_id.strip() != "null":
-        print("1",message_id,"2")
         truncate_conversation_at_message(id, message_id)
-        print("TRUNCATED")
 
     with open("krypton_storage/conversations.json", "r") as file:
         data = json.load(file)
@@ -119,7 +116,6 @@ def format_conversation(conversation):
 def truncate_conversation_at_message(id, message_id):
     # Check if the file exists
     if not os.path.isfile("krypton_storage/conversations.json"):
-        print("File not found.")
         return False
 
     with open("krypton_storage/conversations.json", "r") as file:
@@ -139,7 +135,6 @@ def truncate_conversation_at_message(id, message_id):
             break
 
     if not conversation_found:
-        print("Conversation not found.")
         return False
 
     with open("krypton_storage/conversations.json", "w") as file:
