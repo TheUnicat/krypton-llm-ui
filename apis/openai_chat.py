@@ -2,7 +2,7 @@ from openai import OpenAI
 import json
 import utils
 
-with open("secrets.json", "r") as file:
+with open("krypton_storage/secrets.json", "r") as file:
     openai_key = json.load(file)["openai"]
 
 client = OpenAI(api_key=openai_key)

@@ -6,11 +6,11 @@ from apis.test_chat import test_complete
 from apis.local_chat import local_complete
 from apis.fireworks_chat import fireworks_complete
 
-with open("test_mode.json", "r") as file:
+with open("krypton_storage/test_mode.json", "r") as file:
     test_mode = json.load(file)["test_mode"]
     print(test_mode)
 
-with open("models.json", "r") as file:
+with open("krypton_storage/models.json", "r") as file:
     models = json.load(file)
 
 def format_to_chat(model, prompt, conversation_id, message_id):

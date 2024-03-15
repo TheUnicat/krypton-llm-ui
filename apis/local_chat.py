@@ -42,11 +42,11 @@ def local_complete(model, messages, max_tokens=1000):
 
 
 def get_template(model_name):
-    with open("models.json", "r") as file:
+    with open("krypton_storage/models.json", "r") as file:
         models = json.load(file)
         template_name = models[model_name]["template"]
 
-    with open("prompt_templates.json", "r") as file:
+    with open("krypton_storage/prompt_templates.json", "r") as file:
         templates = json.load(file)
         template = templates[template_name]
 

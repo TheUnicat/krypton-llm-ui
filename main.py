@@ -95,7 +95,7 @@ def stream():
 
 @app.route("/get_models_html")
 def get_models_html():
-    with open("models.json", "r") as file:
+    with open("krypton_storage/models.json", "r") as file:
         models_data = json.load(file)
 
     dropdown_html = ""

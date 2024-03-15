@@ -4,7 +4,7 @@ import random
 import string
 import datetime
 
-with open("test_mode.json", "r") as file:
+with open("krypton_storage/test_mode.json", "r") as file:
     test_mode = json.load(file)["test_mode"]
 
 
@@ -25,11 +25,11 @@ def create_conversation(message):
         "title": title,
         "conversation": [{"role": "You", "message": message, "timestamp": timestamp, "id": message_id}]
     }
-    if not os.path.isfile("conversations.json"):
-        with open("conversations.json", "w") as file:
+    if not os.path.isfile("krypton_storage/conversations.json"):
+        with open("krypton_storage/conversations.json", "w") as file:
             json.dump([conversation], file, indent=4)
     else:
-        with open("conversations.json", "r+") as file:
+        with open("krypton_storage/conversations.json", "r+") as file:
             data = json.load(file)
             data.append(conversation)
             file.seek(0)
@@ -38,11 +38,11 @@ def create_conversation(message):
 
 
 def append_conversation(conversation_id, message, author):
-    if not os.path.isfile("conversations.json"):
+    if not os.path.isfile("krypton_storage/conversations.json"):
         return None
 
     message_id = generate_id()
-    with open("conversations.json", "r+") as file:
+    with open("krypton_storage/conversations.json", "r+") as file:
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == conversation_id:
@@ -57,9 +57,9 @@ def append_conversation(conversation_id, message, author):
     return message_id
 
 def find_recent_conversation_ids(n=20):
-    if not os.path.isfile("conversations.json"):
+    if not os.path.isfile("krypton_storage/conversations.json"):
         return None
-    with open("conversations.json", "r") as file:
+    with open("krypton_storage/conversations.json", "r") as file:
         data = json.load(file)
         # Sort the conversations based on the timestamp of the last message
         sorted_conversations = sorted(data, key=lambda x: x["conversation"][-1]["timestamp"], reverse=True)
@@ -69,7 +69,7 @@ def find_recent_conversation_ids(n=20):
 
 def retrieve_conversation(id, message_id=None):
     # Check if the file exists
-    if not os.path.isfile("conversations.json"):
+    if not os.path.isfile("krypton_storage/conversations.json"):
         return None
 
     if message_id is not None and message_id.strip() != "null":
@@ -77,7 +77,7 @@ def retrieve_conversation(id, message_id=None):
         truncate_conversation_at_message(id, message_id)
         print("TRUNCATED")
 
-    with open("conversations.json", "r") as file:
+    with open("krypton_storage/conversations.json", "r") as file:
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == id:
@@ -118,11 +118,11 @@ def format_conversation(conversation):
 
 def truncate_conversation_at_message(id, message_id):
     # Check if the file exists
-    if not os.path.isfile("conversations.json"):
+    if not os.path.isfile("krypton_storage/conversations.json"):
         print("File not found.")
         return False
 
-    with open("conversations.json", "r") as file:
+    with open("krypton_storage/conversations.json", "r") as file:
         data = json.load(file)
 
     conversation_found = False
@@ -142,34 +142,34 @@ def truncate_conversation_at_message(id, message_id):
         print("Conversation not found.")
         return False
 
-    with open("conversations.json", "w") as file:
+    with open("krypton_storage/conversations.json", "w") as file:
         json.dump(data, file, indent=4)
 
     return True
 
 
 def rename_conversation(conversation_id, new_title):
-    with open("conversations.json", "r") as file:
+    with open("krypton_storage/conversations.json", "r") as file:
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == conversation_id:
                 conversation["title"] = new_title
                 break  # Stops the loop once the matching conversation is found and updated
 
-    with open("conversations.json", "w") as file:
+    with open("krypton_storage/conversations.json", "w") as file:
         json.dump(data, file, indent=4)
 
 
 def delete_conversation(conversation_id):
     # Load the conversation data from the JSON file
-    with open('conversations.json', 'r') as file:
+    with open('krypton_storage/conversations.json', 'r') as file:
         conversations = json.load(file)
 
     # Find and remove the conversation with the specified ID
     conversations = [conversation for conversation in conversations if conversation["id"] != conversation_id]
 
     # Save the updated conversations back to the JSON file
-    with open('conversations.json', 'w') as file:
+    with open('krypton_storage/conversations.json', 'w') as file:
         json.dump(conversations, file, indent=4)
 
 

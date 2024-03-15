@@ -3,11 +3,11 @@ import json
 
 
 #if test is enabled use a lorem ipsum generator as AI
-with open("test_mode.json", "r") as file:
+with open("krypton_storage/test_mode.json", "r") as file:
     test_mode = json.load(file)["test_mode"]
     print(test_mode)
 
-with open("models.json", "r") as file:
+with open("krypton_storage/models.json", "r") as file:
     models = json.load(file)
 
 def get_model(model_name, model_version):
@@ -29,7 +29,7 @@ def get_model_family_info(model_name):
 
 def is_local_model(model_name, model_version):
     # Open and read the models.json file
-    with open('models.json', 'r') as file:
+    with open('krypton_storage/models.json', 'r') as file:
         models_data = json.load(file)
 
     # Check if the specified model and version exist and if its API is set to 'local'

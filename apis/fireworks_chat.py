@@ -3,7 +3,7 @@ from fireworks.client import Fireworks
 import utils
 
 def load_api_key():
-    with open("secrets.json", "r") as file:
+    with open("krypton_storage/secrets.json", "r") as file:
         secrets = json.load(file)
     return secrets["fireworks"]
 
