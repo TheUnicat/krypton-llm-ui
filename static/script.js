@@ -291,7 +291,8 @@ function prependConversationItem(conversation) {
     const renameOption = listItem.querySelector('.rename-option'); // Assuming your rename option has a class 'rename-option'
 
     renameOption.addEventListener('click', function() {
-      const currentTitle = this.closest('.conversation-item').querySelector('.title-text').innerText;
+      const currentTitleElement = this.closest('.conversation-item').querySelector('.title-text');
+      const currentTitle = currentTitleElement.innerText;
 
       const modalContent = `
         <textarea id="renameTextarea" placeholder="Enter new name">${currentTitle}</textarea>
@@ -305,6 +306,7 @@ function prependConversationItem(conversation) {
       document.querySelector('#submitRename').addEventListener('click', function() {
         const newName = document.querySelector('#renameTextarea').value.trim();
         if (newName) {
+          currentTitleElement.innerText = newName;
           renameConversation(conversation.id, newName); // Placeholder function
           closeModal(); // Assuming you have a function to close the modal
         }
@@ -393,15 +395,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+// Define the toggleSidebar function at a higher scope
+function toggleSidebar() {
   var sidebar = document.getElementById('sidebar');
   var toggleButton = document.getElementById('sidebarToggle');
+  var isOpen = sidebar.style.left === '0px';
 
-
-  populateConversationHistory();
-
-  toggleButton.addEventListener('click', function () {
-    var isOpen = sidebar.style.left === '0px';
     sidebar.style.left = isOpen ? '-20%' : '0px';
     toggleButton.style.left = isOpen ? '1%' : '19%';
 
@@ -409,8 +408,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.chat-container').style.marginLeft = isOpen ? '0' : '4%';
     document.querySelector('.input-container').style.marginLeft = isOpen ? '0' : '4%';
     document.querySelector('#modelInfoContainer').style.marginLeft = isOpen ? '0' : '15%';
-  });
+
+  localStorage.setItem("sidebarStatus", !isOpen);
+}
+
+// Use the DOMContentLoaded event listener to wait for the document to be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+  var toggleButton = document.getElementById('sidebarToggle');
+  populateConversationHistory();
+
+  // Attach the toggleSidebar function to the click event of the toggle button
+  toggleButton.addEventListener('click', toggleSidebar);
+
+  // Retrieve the sidebar status from localStorage and open/close the sidebar accordingly
+  var savedStatus = localStorage.getItem("sidebarStatus") === 'true'; // Ensure correct comparison
+  if (savedStatus) {
+    toggleSidebar(); // This will open the sidebar if it was open previously
+  }
 });
+
 
 // Event listener for the new chat button
 document.addEventListener('DOMContentLoaded', function () {
@@ -425,9 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
   newChatButton.addEventListener('click', function () {
     clearChatMessages();
   });
-});
 
-document.addEventListener('DOMContentLoaded', function() {
   hljs.highlightAll();
   // Function to display the current model
   function displayCurrentModel() {

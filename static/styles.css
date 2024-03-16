@@ -470,10 +470,10 @@ textarea:focus {
   display: none;
   background-color: white;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Adds a drop shadow for depth */
-  z-index: 9999999;
+  z-index: 99999;
   width: max-content;
   position: absolute;
-  top: 10px;
+  top: 35px;
   border-radius: 8px; /* Rounded corners */
 }
 
@@ -487,6 +487,10 @@ textarea:focus {
 .options-bar div:last-child {
   border-bottom: none; /* Removes border from the last option */
   border-radius: 0 0 8px 8px; /* Rounded corners for the bottom of the dropdown */
+}
+
+.options-bar div:first-child {
+  border-radius: 8px 8px 0 0; /* Rounded corners for the top of the dropdown */
 }
 
 .options-bar div:hover {
