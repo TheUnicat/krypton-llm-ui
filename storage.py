@@ -78,13 +78,6 @@ def retrieve_conversation(id, message_id=None):
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == id:
-                try:
-                    for message in conversation["conversation"]:
-                        if message["role"] in nicknames:
-                            message["role"] = nicknames[message["role"]]
-                except Exception as e:
-                    print(e)
-
                 return conversation
     return None
 

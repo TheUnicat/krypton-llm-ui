@@ -83,7 +83,7 @@ def stream():
 
         # If needed, handle the storage append and rename operations here, outside of the try-except block
         if conversation_id and accumulated_response:
-            storage.append_conversation(conversation_id, accumulated_response, model_utils.get_model(combined_model_info))
+            storage.append_conversation(conversation_id, accumulated_response, combined_model_info)
             if new_convo:
                 new_title = ai.make_title(combined_model_info, prompt, accumulated_response)
                 storage.rename_conversation(conversation_id, new_title)

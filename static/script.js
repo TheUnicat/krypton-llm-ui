@@ -33,7 +33,15 @@ async function selectConversation(conversationId) {
     chatContainer.innerHTML = ''; // Clear existing messages
 
     for (const message of conversation.conversation) {
-      const messageElement = appendMessage(message.role);
+    let messageElement;
+
+    if (typeof message.role === "string") {
+        messageElement = appendMessage(message.role);
+    } else {
+        // Assuming message.role is an array and contains at least two elements
+        messageElement = appendMessage(`${message.role[0]} ${message.role[1]}`);
+    }
+
       // Create and append the message text div
       const messageTextElement = messageElement.querySelector('.message-content .message-text');
       messageTextElement.innerHTML = processText(message.message);
@@ -60,7 +68,9 @@ async function selectConversation(conversationId) {
 const imagePaths = {
     "ChatGPT": "chatgpt.png",
     "MrEagle": "mreagles.png",
-    "You": "you.jpg"
+    "You": "you.jpg",
+    "Claude": "claude.png",
+    "Fireworks": "fireworks.png"
 };
 
 function addEditButton(targetElement) {
@@ -86,7 +96,7 @@ function appendMessage(author, text = null) {
   // Initialize an empty message element
   let messageElement = document.createElement('div');
   messageElement.classList.add('message');
-  let imagePath = "/images/" + imagePaths[author];
+  let imagePath = "/images/" + imagePaths[author.split(" ")[0]];
   messageElement.innerHTML = `
     <img class="profile-picture" src=${imagePath} alt="${author}">
     <div class="message-content">
