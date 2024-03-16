@@ -1,58 +1,71 @@
 {
-  "ChatGPT": {
+  "OpenAI": {
     "api": "openai",
-    "models": {
+    "ChatGPT": {
       "3.5": {
         "name": "gpt-3.5-turbo",
         "vision": false,
         "path": null
-        }
-      }
-    },
-
-  "MrEagle": {
-    "api": "local",
-    "template": "Alpaca",
-    "models": {
-      "7B": {
-        "name": "MrEagle7B.gguf",
-        "vision": false,
-        "path": "MrEagle-Q4_K_M.gguf"
+      },
+      "4": {
+        "name": "gpt-4",
+        "vision": true,
+        "path": null
       }
     }
   },
-
-  "Gemma": {
-    "api": "local",
-    "template": "Gemma",
-    "models": {
-      "2B": {
-        "name": "Gemma 2B",
-        "vision": false,
-        "path": "gemma-2b-it.Q5_K_M.gguf"
-      }
-    }
-  },
-
-  "FireFunction": {
+  "Fireworks": {
     "api": "fireworks",
-    "models": {
+    "FireFunction": {
       "v1": {
         "name": "firefunction-v1",
         "vision": false,
         "path": "https://api.fireworks.ai/inference/v1"
       }
-    }
-  },
-
-  "Llama2": {
-    "api": "fireworks",
-    "models": {
+    },
+    "Llama2": {
       "7B": {
         "name": "Llama2-7B-Chat",
         "vision": false,
         "path": "accounts/fireworks/models/llama-v2-7b-chat"
       }
     }
-  }
+  },
+  "Anthropic": {
+    "api": "anthropic",
+    "Claude": {
+      "Opus": {
+        "name": "claude-3-opus-20240229",
+        "vision": true,
+        "path": null
+      },
+      "Sonnet": {
+        "name": "claude-3-sonnet-20240229",
+        "vision": true,
+        "path": null
+      },
+      "Haiku": {
+        "name": "claude-3-haiku-20240307",
+        "vision": false,
+        "path": null
       }
+    }
+  },
+  "Local": {
+    "api": "local",
+    "MrEagle": {
+      "7B": {
+        "name": "MrEagle7B.gguf",
+        "vision": false,
+        "path": "MrEagle-Q4_K_M.gguf"
+      }
+    },
+    "Gemma": {
+      "2B": {
+        "name": "Gemma 2B",
+        "vision": false,
+        "path": "gemma-2b-it.Q5_K_M.gguf"
+      }
+    }
+  }
+}

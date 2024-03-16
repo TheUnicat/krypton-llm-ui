@@ -23,7 +23,7 @@ def local_complete(model, messages, max_tokens=1000):
     global llm
 
     messages = fit_to_grammar(messages, get_template(model[0]))
-    model_info = model_utils.get_model_info(model[0], model[1])
+    model_info = model_utils.get_model_info(model)
 
     #load llm if needed
     if llm:

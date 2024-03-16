@@ -113,8 +113,9 @@ async function getAI(prompt, promptElement, messageId=null) {
     //default gpt-3.5-turbo
     const modelName = localStorage.getItem('modelName') || 'ChatGPT';
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
+    const api = localStorage.getItem('api') || 'OpenAI';
     // Encode the prompt and include the model in the query string
-    const eventSource = new EventSource(`/stream?id=${conversationId}&prompt=${encodeURIComponent(prompt)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}`);
+    const eventSource = new EventSource(`/stream?id=${encodeURIComponent(conversationId)}&prompt=${encodeURIComponent(prompt)}&api=${encodeURIComponent(api)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}`);
 
   var messageElement = appendMessage(modelName);
   let accumulatedResponse = "";
@@ -453,7 +454,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to change the model
-  window.changeModel = function(modelName, modelVersion) {
+  window.changeModel = function(api, modelName, modelVersion) {
+    localStorage.setItem('api', api);
     localStorage.setItem('modelName', modelName);
     localStorage.setItem('modelVersion', modelVersion);
     displayCurrentModel();

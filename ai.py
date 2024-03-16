@@ -7,6 +7,7 @@ from apis.openai_chat import openai_complete
 from apis.test_chat import test_complete
 from apis.local_chat import local_complete
 from apis.fireworks_chat import fireworks_complete
+from apis.anthropic_chat import anthropic_complete
 
 test_mode = get_test_mode()
 
@@ -29,9 +30,8 @@ def format_to_chat(model, prompt, conversation_id, message_id):
     if test_mode:
         return test_complete(model, messages)
 
+    model_api = model[2].lower()
 
-    model_family_info = model_utils.get_model_family_info(model[0])
-    model_api = model_family_info["api"]
     function_name = f"{model_api}_complete"
 
     # Get the function from globals() based on constructed function name
@@ -55,7 +55,7 @@ def make_title(model, user_message, ai_response):
     }]
 
     # Identify the model family and get the appropriate API for completion
-    model_family_info = model_utils.get_model_family_info(model[0])
+    model_family_info = model_utils.get_model_family_info(model[2], model[0])
     model_api = model_family_info["api"]
     function_name = f"{model_api}_complete"
 

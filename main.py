@@ -52,6 +52,7 @@ def stream():
     model_name = request.args.get('model_name')
     model_version = request.args.get('model_version')
     message_id_for_edit = request.args.get('message_id')
+    api = request.args.get('api')
 
     new_convo = False
 
@@ -61,11 +62,12 @@ def stream():
         conversation_id, message_id = storage.create_conversation(prompt)
         new_convo = True
 
-    def generate(model, prompt, conversation_id, message_id):
+    def generate(api, prompt, conversation_id, message_id):
+        combined_model_info = [model_name, model_version, api]
         try:
             accumulated_response = ""
             yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
-            for response in ai.format_to_chat([model_name, model_version], prompt, conversation_id, message_id_for_edit):
+            for response in ai.format_to_chat(combined_model_info, prompt, conversation_id, message_id_for_edit):
                 if response:
                     # Replace newlines for correct client-side handling
                     response = response.replace("\n", "\\n")
@@ -81,14 +83,13 @@ def stream():
 
         # If needed, handle the storage append and rename operations here, outside of the try-except block
         if conversation_id and accumulated_response:
-            storage.append_conversation(conversation_id, accumulated_response, model_utils.get_model(model_name, model_version))
+            storage.append_conversation(conversation_id, accumulated_response, model_utils.get_model(combined_model_info))
             if new_convo:
-                new_title = ai.make_title([model_name, model_version], prompt, accumulated_response)
+                new_title = ai.make_title(combined_model_info, prompt, accumulated_response)
                 storage.rename_conversation(conversation_id, new_title)
                 yield f"data: {{\"new_title\": \"{new_title}\"}}\n\n"
 
-    return Response(generate([], prompt, conversation_id, message_id), mimetype='text/event-stream')
-
+    return Response(generate(api, prompt, conversation_id, message_id), mimetype='text/event-stream')
 
 @app.route("/get_models_html")
 def get_models_html():
@@ -97,9 +98,16 @@ def get_models_html():
 
     dropdown_html = ""
 
-    for model_name, model_info in models_data.items():
-        for version_name in model_info["models"]:
-            dropdown_html += f'<div style="cursor: pointer;" onclick="changeModel(\'{model_name}\', \'{version_name}\')">{model_name}</div>\n'
+    # Iterate over APIs
+    for api, api_info in models_data.items():
+        # Iterate over product families within each API
+        for product_family, family_info in api_info.items():
+            # Now iterate over model versions within each product family
+            if not type(family_info) == dict:
+                continue
+            for model_version in family_info:
+                model_display_name = f"{api} - {product_family} - {model_version}"
+                dropdown_html += f'<div style="cursor: pointer;" onclick="changeModel(\'{api}\', \'{product_family}\', \'{model_version}\')">{model_display_name}</div>\n'
 
     # Append the additional div for "Add Model" at the end
     dropdown_html += '<div style="cursor: pointer;" onclick="addModel()">Add Model</div>\n'
