@@ -94,7 +94,7 @@ def format_conversation(conversation):
     simplified_messages = []
 
     for message in conversation:
-        author = message['role'].lower()  # Convert to lowercase for easier comparison
+        author = message['role'].lower() if type(message['role']) == str else message['role']  # Convert to lowercase for easier comparison
         role = 'assistant'  # Default role
 
         if author in ['user', 'you']:
