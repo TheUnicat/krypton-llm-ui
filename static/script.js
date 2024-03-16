@@ -352,6 +352,7 @@ function prependConversationItem(conversation) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    loadAndAppendModels();
     const sendBtn = document.getElementById('sendBtn');
     const userPrompt = document.getElementById('prompt');
 
