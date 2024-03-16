@@ -468,6 +468,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Event listener for the model display click
   document.getElementById('modelName').addEventListener('click', toggleDropdown);
+  document.getElementById('modelVersion').addEventListener('click', toggleDropdown);
 
   displayCurrentModel(); // Display the current model when the page loads
 });

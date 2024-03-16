@@ -279,6 +279,7 @@ textarea {
 #modelDropdown div:last-child {
   border-bottom: none; /* Removes border from the last option */
   border-radius: 0 0 8px 8px; /* Rounded corners for the bottom of the dropdown */
+  font-weight: 600;
 }
 
 #modelDropdown div:hover {

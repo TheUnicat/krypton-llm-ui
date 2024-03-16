@@ -101,7 +101,11 @@ def get_models_html():
         for version_name in model_info["models"]:
             dropdown_html += f'<div style="cursor: pointer;" onclick="changeModel(\'{model_name}\', \'{version_name}\')">{model_name}</div>\n'
 
+    # Append the additional div for "Add Model" at the end
+    dropdown_html += '<div style="cursor: pointer;" onclick="addModel()">Add Model</div>\n'
+
     return Response(dropdown_html, mimetype='text/html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port="8080")
