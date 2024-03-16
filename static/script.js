@@ -45,7 +45,6 @@ function clearChatMessages(id=null) {
     }
 
 }
-console.log("hi")
 
 async function selectConversation(conversationId) {
   try {
@@ -562,6 +561,7 @@ const modal = document.getElementById('modal');
 const overlay = document.getElementById('modal-overlay');
 const closeButton = document.querySelector('.close-button');
 const modalBody = document.getElementById('modal-body');
+const modalContent = document.getElementById('modal-content');
 
 function openModal(htmlContent) {
     modalBody.innerHTML = htmlContent; // Set the HTML content
@@ -570,6 +570,7 @@ function openModal(htmlContent) {
     closeButton.style.display = 'flex';
     overlay.style.visibility = 'visible';
     overlay.style.opacity = 1;
+    modalContent.style.display = 'flex';
 }
 
 function closeModal() {
@@ -581,8 +582,34 @@ function closeModal() {
 
 closeButton.addEventListener('click', closeModal);
 
-//openModal("<p>Hello, World!</p>");
 populateConversationHistory();
+
+document.getElementById('prompt').addEventListener('input', function() {
+  const textarea = this;
+
+  // Immediately adjust the height to 'auto' to calculate the potential scrollHeight correctly
+  textarea.style.height = 'auto';
+
+  // Determine if the content exceeds the visible boundary of the textarea
+  const isOverflowing = textarea.scrollHeight > textarea.clientHeight;
+  const maxHeight = 150;
+
+  // Only adjust the height if there is overflow
+  if (isOverflowing) {
+    let newHeight = textarea.scrollHeight;
+    if (newHeight > maxHeight) {
+      newHeight = maxHeight; // Ensure the new height does not exceed the max height
+      textarea.style.overflowY = 'scroll'; // Enable scrolling
+    } else {
+      textarea.style.overflowY = 'hidden'; // Hide scrollbar if the content is within the max height
+    }
+    textarea.style.height = newHeight + 'px';
+  } else {
+    textarea.style.height = '25px'; // Default height
+    textarea.style.overflowY = 'hidden'; // Hide scrollbar when not overflowing
+  }
+});
+
 
 
 
