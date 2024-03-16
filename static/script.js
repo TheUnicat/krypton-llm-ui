@@ -1,23 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    loadAndAppendModels();
-    const replyButton = document.getElementById('replyButton'); // Get the button by ID
-
-    // Function to be called when button is clicked
-    function getReply() {
-        console.log("Button clicked!");
-        // Your code to get a reply or perform an action goes here
-    }
-
-    // Check if the button exists and is not disabled before adding the event listener
-    if (replyButton) {
-        replyButton.addEventListener('click', function() {
-            if (!this.disabled) {
-                getReply();
-            }
-        });
-    }
-});
-
 function chatScrollToBottom() {
     const chatContainer = document.querySelector('.chat-container');
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -33,7 +13,6 @@ function clearChatMessages(id=null) {
       }
 
   const targetElement = chatContainer.querySelector(`#${id}`);
-
 
     let nextSibling = targetElement.nextElementSibling;
 
@@ -76,7 +55,6 @@ async function selectConversation(conversationId) {
     console.error('Error fetching conversation:', error);
   }
 }
-
 
 
 const imagePaths = {
@@ -141,9 +119,7 @@ async function getAI(prompt, promptElement, messageId=null) {
   var messageElement = appendMessage(modelName);
   let accumulatedResponse = "";
 
-
   eventSource.onmessage = async function(event) {
-    //console.log(event);
     let data = event.data;
     console.log(data);
 
@@ -152,7 +128,6 @@ async function getAI(prompt, promptElement, messageId=null) {
      if (data.conversation_id) {
         if (messageId) {
             clearChatMessages(messageId);
-            console.log("HAIIIIIII");
             messageElement = appendMessage(modelName);
         }
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
@@ -226,9 +201,7 @@ function processText(text) {
 function applySyntaxHighlighting(codeBlock) {
     // Extract the code from within the triple backticks, and add a newline
     const code = codeBlock.slice(3, -3).trim();
-
     // Apply syntax highlighting using highlight.js
-    // `language` variable can be used to detect the language automatically or set manually
     const highlightedCode = hljs.highlightAuto(code).value;
     const language = hljs.highlightAuto(code).language;
 
@@ -263,13 +236,6 @@ function copyToClipboard(button) {
         button.textContent = 'Copy failed';
     });
 }
-
-
-
-// Assume this initialization code is already part of your code base, calling highlightAll on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', (event) => {
-    hljs.highlightAll();
-});
 
     const textarea = document.getElementById('prompt');
     const sendButton = document.getElementById('sendBtn');
@@ -462,6 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  hljs.highlightAll();
   // Function to display the current model
   function displayCurrentModel() {
     const currentModelName = localStorage.getItem('modelName') || 'ChatGPT';
@@ -480,9 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to toggle the dropdown visibility
   function toggleDropdown() {
-    console.log("OwO toggling");
     const dropdown = document.getElementById('modelDropdown');
-    console.log(dropdown);
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
   }
 
