@@ -50,13 +50,12 @@ def make_title(model, user_message, ai_response):
         "content": f"""
         "User: {user_message}\nAI: {ai_response}"
 
-        "Make a short title, no more than a few words, for this conversation, in the language of the message."
+        "Make a short title, no more than a few words, for this conversation, in same language as the conversation."
         """
     }]
 
-    # Identify the model family and get the appropriate API for completion
-    model_family_info = model_utils.get_model_family_info(model[2], model[0])
-    model_api = model[2]
+    #get the appropriate API for completion
+    model_api = model[2].lower()
     function_name = f"{model_api}_complete"
 
     # Retrieve the global completion function based on the model's API
