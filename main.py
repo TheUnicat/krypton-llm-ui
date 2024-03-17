@@ -5,7 +5,7 @@ from flask import Flask, send_from_directory, Response, jsonify, request
 
 import storage
 import ai
-from utils import model_utils
+from store_images import process_and_store_images
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
@@ -114,6 +114,20 @@ def get_models_html():
 
     return Response(dropdown_html, mimetype='text/html')
 
+
+@app.route('/upload-images', methods=['POST'])
+def upload_images():
+    if 'images' not in request.files:
+        return jsonify({'error': 'No images part'}), 400
+
+    images = request.files.getlist('images')
+
+    if not images:
+        return jsonify({'error': 'No selected file'}), 400
+
+    process_and_store_images(images)
+
+    return jsonify({'message': 'Images uploaded and saved successfully'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port="8080")
