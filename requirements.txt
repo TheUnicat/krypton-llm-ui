@@ -1,3 +1,5 @@
 Flask
 openai
 llama-cpp-python
+anthropic
+fireworks-ai
