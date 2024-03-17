@@ -289,8 +289,9 @@ textarea {
 .code-container {
     position: relative;
     border-radius: 8px; /* Rounded corners for the container */
+    max-width: 300px;
     margin: 1em 0; /* Adjust the margin around the whole container */
-    overflow: hidden; /* Ensures the child elements do not overflow the rounded corners */
+    overflow: show; /* Ensures the child elements do not overflow the rounded corners */
 }
 
 .code-header {
@@ -317,6 +318,7 @@ textarea {
     line-height: 1.75; /* Adjust the line height as needed for more space */
     font-family: monospace;
     font-size: 14px;
+    height: 1000px;
 }
 
 /* Adjust the <pre> tag that wraps the .hljs block */

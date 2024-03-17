@@ -37,23 +37,30 @@
       "Opus": {
         "name": "claude-3-opus-20240229",
         "vision": true,
-        "path": null
+        "path": null,
+        "input_cost": 0.015,
+        "output_cost": 0.075
       },
       "Sonnet": {
         "name": "claude-3-sonnet-20240229",
         "vision": true,
-        "path": null
+        "path": null,
+        "input_cost": 0.003,
+        "output_cost": 0.015
       },
       "Haiku": {
         "name": "claude-3-haiku-20240307",
-        "vision": false,
-        "path": null
+        "vision": true,
+        "path": null,
+        "input_cost": 0.00025,
+        "output_cost": 0.0125
       }
     }
   },
   "Local": {
     "api": "local",
     "MrEagle": {
+      "template": "Alpaca",
       "7B": {
         "name": "MrEagle7B.gguf",
         "vision": false,

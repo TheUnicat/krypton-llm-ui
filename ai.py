@@ -56,7 +56,7 @@ def make_title(model, user_message, ai_response):
 
     # Identify the model family and get the appropriate API for completion
     model_family_info = model_utils.get_model_family_info(model[2], model[0])
-    model_api = model_family_info["api"]
+    model_api = model[2]
     function_name = f"{model_api}_complete"
 
     # Retrieve the global completion function based on the model's API
