@@ -91,6 +91,7 @@ body, html {
   justify-content: center;
   align-items: center;
   position: fixed;
+  flex-direction: column;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -225,6 +226,7 @@ textarea {
     cursor: pointer; /* Changes the cursor to a pointer when hovering over the button */
     border: none; /* Removes the border from the button */
     font-size: 16px; /* Increases the font size inside the button */
+    bottom: 18px;
 }
 
 .attachmentBtn {
@@ -234,7 +236,7 @@ textarea {
   padding: 0; /* Adjust padding as needed */
   cursor: pointer; /* To indicate it's clickable */
   left: 22%;
-  bottom: 30%;
+  bottom: 18px;
 }
 
 /* To ensure the button doesn't have any outline when focused, for aesthetic purposes */
@@ -556,5 +558,47 @@ textarea:focus {
   transition: visibility 0s, opacity 0.5s;
 }
 
+.file-preview {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  background-color: lightgrey;
+}
 
+.file-name {
+  margin-left: 10px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: auto; /* Pushes the button to the right */
+}
+
+.preview-container {
+  display: none; /* Initially hidden */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 5px;
+  position: relative;
+  width: 50%;
+  padding: 10px;
+  height: 25px;
+  margin-right: 10px;
+  background-color: #f0f0f0; /* Very light grey */
+  border-radius: 8px 8px 0 0; /* Rounded corners on the top */
+}
 

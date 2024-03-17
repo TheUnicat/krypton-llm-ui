@@ -615,6 +615,41 @@ document.getElementById('prompt').addEventListener('input', function() {
   adjustTextareaHeight(this);
 });
 
+document.getElementById('fileInputButton').addEventListener('change', function(e) {
+  var fileInput = document.getElementById('fileInputButton');
+  var files = fileInput.files;
+  var previewContainer = document.getElementById('previewContainer');
+
+
+  // Show or hide the preview container based on file selection
+  previewContainer.style.display = files.length > 0 ? 'flex' : 'none';
+
+  // Create previews for selected files
+  Array.from(files).forEach(file => {
+    if(file.type === "image/png" || file.type === "image/jpeg") {
+      var filePreview = document.createElement('div');
+      filePreview.className = 'file-preview';
+
+      var fileName = document.createElement('span');
+      fileName.className = 'file-name';
+      fileName.textContent = file.name;
+
+      var closeBtn = document.createElement('div');
+      closeBtn.className = 'close-btn';
+      closeBtn.textContent = '×';
+      closeBtn.onclick = function() {
+        // Logic to handle removing individual file previews
+        filePreview.remove();
+        // Additional logic needed to adjust file input if removing specific files
+        // Consideration needed for managing fileInput.files since it's a read-only property
+      };
+
+      filePreview.appendChild(closeBtn);
+      filePreview.appendChild(fileName);
+      previewContainer.appendChild(filePreview);
+    }
+  });
+});
 
 
 
