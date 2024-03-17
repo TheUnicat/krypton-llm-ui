@@ -195,8 +195,11 @@ function processText(text) {
     while ((match = regex.exec(text)) !== null) {
         // If it's a code block (matched by the first group of the regex), keep it unchanged
         if (match[1]) {
-            // Wrap the code block with triple backticks and apply syntax highlighting
-            const highlightedCode = applySyntaxHighlighting(`\`\`\`${match[1]}\`\`\``);
+            // First, replace all newline characters with <br>
+            const codeWithLineBreaks = match[1].replace(/\\n/g, '\n');
+
+            // Wrap the modified code block with triple backticks and apply syntax highlighting
+            const highlightedCode = applySyntaxHighlighting(`\`\`\`${codeWithLineBreaks}\`\`\``);
             parts.push(highlightedCode);
         } else if (match[2]) {
             // If it's not a code block (matched by the second group of the regex), replace \n with <br>
