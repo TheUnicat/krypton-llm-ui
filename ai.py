@@ -67,7 +67,8 @@ def make_title(model, user_message, ai_response):
             if response:
                 new_title += response
 
-        return new_title
+        #return after escaping quotes and stripping quotes
+        return new_title.strip('"').replace('"', '\\"')
     else:
         # If no specific completion function is found, raise an error
         raise ValueError(f"No completion function found for API: {model_api}")

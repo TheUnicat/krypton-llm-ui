@@ -144,7 +144,12 @@ async function getAI(prompt, promptElement, messageId=null) {
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
         promptElement.id = data.message_id;
        } else if (data.new_title) {
-          await selectConversation(localStorage.getItem("conversationId"));
+          console.log("new title!");
+          try {
+                await prependConversationItem({ "id": localStorage.getItem("conversationId"), "title": data.new_title });
+              } catch (error) {
+                console.log(error)
+              }
           eventSource.close();
           return;
         }    else if (data.error) {
@@ -159,6 +164,7 @@ async function getAI(prompt, promptElement, messageId=null) {
             eventSource.close();
         }
     } catch (error) {
+        console.error(error);
         if (data === 'None') {
           if (!conversationId) {
             if (messageId) {
@@ -273,7 +279,7 @@ async function populateConversationHistory() {
     conversationsList.innerHTML = ''; // Clear the list before adding new items
 
     // Loop through conversations and prepend them to the list
-    conversations.forEach(conversation => prependConversationItem(conversation));
+    conversations.reverse().forEach(conversation => prependConversationItem(conversation));
   } catch (error) {
     console.error('Failed to load recent conversations:', error);
   }
@@ -286,7 +292,7 @@ function prependConversationItem(conversation) {
   listItem.id = conversation.id; // Assuming conversation["id"] is the ID
 
   listItem.innerHTML = `
-    <span class="title-text">${conversation.title}</span>
+    <span class="title-text">${conversation.title.replace(/\\/g, '')}</span>
     <div class="conversation-toolbar">
       <button class="conversation-options-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-md">
@@ -361,7 +367,7 @@ function prependConversationItem(conversation) {
 
   listItem.setAttribute('onclick', `selectConversation('${conversation.id}')`);
 
-  conversationsList.appendChild(listItem); // Changed to prepend to add it at the beginning of the list
+  conversationsList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
 }
 
 
