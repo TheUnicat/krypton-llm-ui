@@ -382,9 +382,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Calling getAI function afterwards
             getAI(userText, promptElement);
 
-            // Optionally, clear the prompt input after sending the message
+            // clear the prompt input after sending the message
             if (userPrompt.value !== undefined) {
-                userPrompt.value = ''; // Only clear if it's an input field
+                userPrompt.value = '';
+                adjustTextareaHeight(userPrompt);
                 sendBtn.disabled = true;
                 sendBtn.style.background = 'lightgrey'; // Disabled state color
             }
@@ -580,9 +581,7 @@ closeButton.addEventListener('click', closeModal);
 
 populateConversationHistory();
 
-document.getElementById('prompt').addEventListener('input', function() {
-  const textarea = this;
-
+function adjustTextareaHeight(textarea) {
   // Immediately adjust the height to 'auto' to calculate the potential scrollHeight correctly
   textarea.style.height = 'auto';
 
@@ -604,6 +603,10 @@ document.getElementById('prompt').addEventListener('input', function() {
     textarea.style.height = '25px'; // Default height
     textarea.style.overflowY = 'hidden'; // Hide scrollbar when not overflowing
   }
+}
+
+document.getElementById('prompt').addEventListener('input', function() {
+  adjustTextareaHeight(this);
 });
 
 
