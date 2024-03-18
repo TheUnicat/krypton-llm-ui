@@ -490,14 +490,25 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to toggle the dropdown visibility
+  const dropdown = document.getElementById('modelDropdown');
   function toggleDropdown() {
-    const dropdown = document.getElementById('modelDropdown');
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    console.log("OwO toggling");
   }
 
   // Event listener for the model display click
   document.getElementById('modelName').addEventListener('click', toggleDropdown);
   document.getElementById('modelVersion').addEventListener('click', toggleDropdown);
+
+    document.addEventListener('click', (event) => {
+      // Check if the clicked target is outside the modelDropdown element
+      if (!document.getElementById("modelInfoContainer").contains(event.target)) {
+        // Hide the modelDropdown
+        if (dropdown.style.display != 'none') {
+            dropdown.style.display = 'none';
+        }
+      }
+    });
 
   displayCurrentModel(); // Display the current model when the page loads
 });

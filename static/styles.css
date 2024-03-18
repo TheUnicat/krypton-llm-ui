@@ -27,8 +27,7 @@ body, html {
   height: 93%;
   overflow-y: auto; /* Allows scrolling for overflow */
   padding: 10px;
-
-  padding-left: 0px; /* Ensures no left padding that could offset children */
+  padding-left: 0; /* Ensures no left padding that could offset children */
   align-items: flex-start; /* Align children to the start (left) */
   padding-bottom: 10%; /* Bottom padding to create space */
   box-sizing: border-box; /* Ensures padding is included in height */
@@ -153,7 +152,7 @@ textarea {
   content: '';
   position: absolute;
   top: 50%;
-  left: 0%;
+  left: 0;
   border-radius: 10px;
   width: 5px; /* Width of the line */
   height: 30px; /* Height of the line, can be adjusted */
@@ -253,17 +252,26 @@ textarea {
   font-size: 18px;
   font-weight: 500;
   left: 6%;
-  padding: 10px;
+  padding: 5px;
   cursor: pointer;
   border: none;
   color: black;
   z-index: 1000; /* Ensures dropdown appears above other content */
   transition: 0.3s;
+  border-radius: 10px;
+}
+
+#modelInfoContainer:hover {
+    background-color: lightgrey;
 }
 
 #modelVersion {
     margin-left: 5px;
     color: grey;
+}
+
+#modelVersion, #modelName {
+    padding-top: 0;
 }
 
 #modelDropdown {
@@ -294,6 +302,7 @@ textarea {
 #modelDropdown div:hover {
   background-color: #f0f0f0; /* Highlight on hover */
 }
+
 .code-container {
     position: relative;
     border-radius: 8px;
@@ -391,8 +400,6 @@ textarea {
       font-size: 1rem;
       border: none;
       resize: none;
-      margin: none;
-      padding: none;
 }
 
 textarea:focus {
@@ -456,14 +463,12 @@ textarea:focus {
   max-width: 84%; /* Adjust as needed */
   overflow: hidden;
   position: relative; /* Position relative to allow absolute positioning within it */
-  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
   mask-image: linear-gradient(to right, black 50%, transparent 100%);
 }
 
 
 .conversation-options-btn {
   background: transparent;
-  background-color: transparent;
   border: none;
   cursor: pointer;
 }
@@ -536,7 +541,7 @@ textarea:focus {
   position: absolute;
   font-size: 28px;
   right: 10px;
-  top: 0px;
+  top: 0;
 }
 
 .close-button:hover,
@@ -592,7 +597,6 @@ textarea:focus {
   display: none; /* Initially hidden */
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 5px;
   position: relative;
   width: 50%;
   padding: 10px;
