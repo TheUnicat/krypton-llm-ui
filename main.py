@@ -1,5 +1,4 @@
 import json
-import traceback
 
 from flask import Flask, send_from_directory, Response, jsonify, request
 

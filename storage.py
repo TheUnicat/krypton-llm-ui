@@ -102,7 +102,7 @@ def retrieve_conversation(id, message_id=None, should_load_images=False):
     return None
 
 
-def fetch_recent_conversations(n=20):
+def fetch_recent_conversations(n=1000):
     ids = find_recent_conversation_ids(n)
     conversations = []
     for id in ids:
@@ -175,12 +175,26 @@ def delete_conversation(conversation_id):
     with open('krypton_storage/conversations.json', 'r') as file:
         conversations = json.load(file)
 
-    # Find and remove the conversation with the specified ID
-    conversations = [conversation for conversation in conversations if conversation["id"] != conversation_id]
+    # Also load the image data to prepare for possible image deletion
+    # Assuming 'delete_image' function exists and operates on image_storage.json
 
-    # Save the updated conversations back to the JSON file
-    with open('krypton_storage/conversations.json', 'w') as file:
-        json.dump(conversations, file, indent=4)
+    for conversation in conversations:
+        if conversation["id"] == conversation_id:
+            # Iterate over each message in the conversation
+            for message in conversation["conversation"]:
+                # Check if 'image_data' exists and is not an empty list
+                if "image_data" in message and message["image_data"]:
+                    # Delete each image referenced by the message
+                    for image_id in message["image_data"]:
+                        image_storage.delete_image(image_id)
+
+            # Once images are deleted, remove the conversation itself
+            conversations = [conv for conv in conversations if conv["id"] != conversation_id]
+
+            # Save the updated conversations back to the JSON file
+            with open('krypton_storage/conversations.json', 'w') as file:
+                json.dump(conversations, file, indent=4)
+            break  #
 
 def load_images(conversation):
     for message in conversation["conversation"]:
