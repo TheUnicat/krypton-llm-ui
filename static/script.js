@@ -56,7 +56,7 @@ async function selectConversation(conversationId) {
         messageTextElement.appendChild(img);
     });
 
-      if (message.role == "You") {
+      if (message.role === "You") {
           addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
       }
       messageElement.id = message.id;
@@ -127,7 +127,6 @@ function appendMessage(author, text = null) {
 
 
 async function getAI(prompt, promptElement, messageId=null) {
-  const chatMessagesContainer = document.querySelector('.chat-container');
   const conversationId = localStorage.getItem('conversationId');
     //default gpt-3.5-turbo
     const modelName = localStorage.getItem('modelName') || 'ChatGPT';
@@ -141,7 +140,6 @@ async function getAI(prompt, promptElement, messageId=null) {
       const eventSource = new EventSource(eventSourceUrl);
 
   var messageElement = appendMessage(modelName);
-  let accumulatedResponse = "";
 
   eventSource.onmessage = async function(event) {
     let data = event.data;
@@ -367,7 +365,7 @@ function prependConversationItem(conversation) {
         conversationItem.remove();
       }
 
-      if (conversation.id == localStorage.getItem("conversationId")) {
+      if (conversation.id === localStorage.getItem("conversationId")) {
         clearChatMessages();
       }
     });
@@ -474,10 +472,9 @@ document.addEventListener('DOMContentLoaded', function () {
   hljs.highlightAll();
   // Function to display the current model
   function displayCurrentModel() {
-    const currentModelName = localStorage.getItem('modelName') || 'ChatGPT';
-    document.getElementById('modelName').textContent = currentModelName;
-    const currentModelVersion = localStorage.getItem('modelVersion') || '3.5';
-    document.getElementById('modelVersion').textContent = currentModelVersion;
+    document.getElementById('modelName').textContent = localStorage.getItem('modelName') || 'ChatGPT';
+    document.getElementById('modelVersion').textContent = localStorage.getItem('modelVersion') || '3.5';
+
   }
 
   // Function to change the model
@@ -504,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Check if the clicked target is outside the modelDropdown element
       if (!document.getElementById("modelInfoContainer").contains(event.target)) {
         // Hide the modelDropdown
-        if (dropdown.style.display != 'none') {
+        if (dropdown.style.display !== 'none') {
             dropdown.style.display = 'none';
         }
       }
@@ -633,7 +630,7 @@ document.getElementById('prompt').addEventListener('input', function() {
   adjustTextareaHeight(this);
 });
 
-document.getElementById('fileInputButton').addEventListener('change', function(e) {
+document.getElementById('fileInputButton').addEventListener('change', function() {
   var fileInput = document.getElementById('fileInputButton');
   var files = fileInput.files;
   var previewContainer = document.getElementById('previewContainer');
@@ -682,22 +679,15 @@ async function uploadImages() {
 
     try {
       // Perform the actual upload
-      const response = await fetch('/upload_images', {
+      await fetch('/upload_images', {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to upload images');
-      }
-
-      const result = await response.json();
-
-      // Optionally, clear the input after successful upload
+      //clear the input after upload
       previewContainer.innerHTML = "";
       previewContainer.style.display = 'none';
       fileInput.value = "";
-
 
       return true; // Indicate successful upload
     } catch (error) {
