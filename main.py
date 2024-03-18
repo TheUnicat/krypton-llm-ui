@@ -4,8 +4,8 @@ from flask import Flask, send_from_directory, Response, jsonify, request
 
 import storage
 import ai
-import store_images
-from store_images import process_and_store_images
+import image_storage
+from image_storage import process_and_store_images
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
@@ -58,7 +58,7 @@ def stream():
     new_convo = False
 
     if has_images == "true" or has_images is True:
-        image_data = store_images.load_images()
+        image_data = image_storage.load_images()
     else:
         image_data = []
 
