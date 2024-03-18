@@ -28,3 +28,16 @@ def retrieve_image(id):
     data = load_data()
     return data.get(id)
 
+
+def delete_image(id):
+    """Delete an image by its ID."""
+    # Load the current data from the JSON file
+    data = load_data()
+
+    # Check if the image id exists in the data. If it does, remove it and savee
+    if id in data:
+        del data[id]
+        save_data(data)
+        return True
+
+
