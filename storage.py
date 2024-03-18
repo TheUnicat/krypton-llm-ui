@@ -185,10 +185,11 @@ def delete_conversation(conversation_id):
 def load_images(conversation):
     for message in conversation["conversation"]:
         # Check if image_data is not empty
-        if message["image_data"]:
-            # Replace each ID in image_data with the actual image data from image_storage
-            message["image_data"] = [image_storage.retrieve_image(image_id) for image_id in message["image_data"]]
+        try:
+            if message["image_data"]:
+                # Replace each ID in image_data with the actual image data from image_storage
+                message["image_data"] = [image_storage.retrieve_image(image_id) for image_id in message["image_data"]]
+        except:
+            return conversation
 
     return conversation
-
-
