@@ -48,7 +48,6 @@ async function selectConversation(conversationId) {
 
       message.image_data.forEach(item => {
         const img = new Image();
-        console.log(item)
         img.src = "data:" + item.mime + ";base64," + item.base64;
         img.alt = 'Loaded from base64 data';
         img.style.width = '80%'; // Set the width or adjust as needed
@@ -133,13 +132,34 @@ async function getAI(prompt, promptElement, messageId=null) {
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
     const api = localStorage.getItem('api') || 'OpenAI';
     // Encode the prompt and include the model in the query string
+    var messageElement = appendMessage(modelName);
+    const messageContentElement = promptElement.querySelector('.message-content');
+
+    const fileInput = document.getElementById('fileInputButton');
+    const files = fileInput.files;
+
+    if (files.length > 0) {
+        // Directly append each file under the 'images' field
+        Array.from(files).forEach(file => {
+            // Create an image element for the selected file
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.width = '80%';
+            img.style.height = 'auto';
+
+            // Append the image element to the message-content element
+            messageContentElement.appendChild(img);
+            alert("hi");
+        });
+    }
+
       const imagesFlag = await uploadImages(); // This now returns a boolean
-      console.log(imagesFlag);
       // Modify the event source URL to include the images flag
       const eventSourceUrl = `/stream?id=${encodeURIComponent(conversationId)}&prompt=${encodeURIComponent(prompt)}&api=${encodeURIComponent(api)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}&images=${imagesFlag}`;
       const eventSource = new EventSource(eventSourceUrl);
 
-  var messageElement = appendMessage(modelName);
+
+
 
   eventSource.onmessage = async function(event) {
     let data = event.data;
@@ -490,7 +510,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const dropdown = document.getElementById('modelDropdown');
   function toggleDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-    console.log("OwO toggling");
   }
 
   // Event listener for the model display click
