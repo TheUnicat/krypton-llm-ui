@@ -44,6 +44,7 @@ async function selectConversation(conversationId) {
 
       // Create and append the message text div
       const messageTextElement = messageElement.querySelector('.message-content .message-text');
+      const messageContentElement = messageElement.querySelector('.message-content')
       messageTextElement.innerHTML = processText(message.message);
 
       message.image_data.forEach(item => {
@@ -548,11 +549,7 @@ function editMessage(editButton) {
   const cancelButton = document.createElement('button');
   cancelButton.innerText = 'Cancel';
   cancelButton.onclick = function() {
-    messageContent.innerText = originalText;
-    cancelButton.remove();
-    saveButton.remove();
-    // Editing is done, remove the class
-    messageElement.classList.remove('editing');
+    selectConversation(localStorage.getItem("conversationId"));
   };
 
   // Create Save button

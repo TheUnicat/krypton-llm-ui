@@ -68,6 +68,14 @@ body, html {
   flex: 1; /* Takes up the remaining space */
 }
 
+.message-text {
+  flex: 1; /* Takes up the remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Align items vertically */
+  align-items: flex-start; /* Align items to the left */
+}
+
 .message-toolbar {
   display: none;
   position: absolute;
