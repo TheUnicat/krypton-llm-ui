@@ -36,8 +36,6 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096):
             "content": new_content
         }
 
-    print(messages)
-
     # Continue with your existing logic for streaming messages
     with client.messages.stream(
             max_tokens=max_tokens,

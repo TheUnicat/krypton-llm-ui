@@ -3,6 +3,7 @@ import json
 import storage
 from utils import model_utils
 from utils.settings_utils import get_test_mode
+
 from apis.openai_chat import openai_complete
 from apis.test_chat import test_complete
 from apis.local_chat import local_complete
@@ -50,7 +51,7 @@ def make_title(model, user_message, ai_response):
         "content": f"""
         "User: {user_message}\nAI: {ai_response}"
 
-        "Make a short title, no more than a few words, for this conversation, in same language as the conversation."
+        "Make a short title, no more than a few words, for this conversation, in the same language as the conversation."
         """
     }]
 

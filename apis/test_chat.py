@@ -1,8 +1,7 @@
 import random
 from time import sleep
 
-def test_complete(model, messages):
-
+def test_complete(model, messages, image_data=None):
     lorem_ipsum_words = [
         "lorem", "ipsum", "dolor", "sit", "amet", "consectetur",
         "adipiscing", "elit", "sed", "do", "eiusmod", "tempor",

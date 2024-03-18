@@ -134,9 +134,8 @@ async function getAI(prompt, promptElement, messageId=null) {
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
     const api = localStorage.getItem('api') || 'OpenAI';
     // Encode the prompt and include the model in the query string
-      const imagesUploaded = await uploadImages(); // This now returns a boolean
-      const imagesFlag = imagesUploaded ? 'true' : 'false';
-
+      const imagesFlag = await uploadImages(); // This now returns a boolean
+      console.log(imagesFlag);
       // Modify the event source URL to include the images flag
       const eventSourceUrl = `/stream?id=${encodeURIComponent(conversationId)}&prompt=${encodeURIComponent(prompt)}&api=${encodeURIComponent(api)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}&images=${imagesFlag}`;
       const eventSource = new EventSource(eventSourceUrl);
@@ -685,11 +684,18 @@ async function uploadImages() {
 
       // Optionally, clear the input after successful upload
       previewContainer.innerHTML = "";
+      previewContainer.style.display = 'none';
+      fileInput.value = "";
+
 
       return true; // Indicate successful upload
     } catch (error) {
       console.error('Error uploading images:', error);
       return false; // Indicate failure
     }
+  } else {
+      console.log("nopity nnope");
+      return false;
+
   }
 }

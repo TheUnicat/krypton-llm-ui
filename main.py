@@ -1,5 +1,5 @@
 import json
-
+import traceback
 from flask import Flask, send_from_directory, Response, jsonify, request
 
 import storage
@@ -21,7 +21,6 @@ def get_recent_conversations():
 @app.route('/delete_conversation')
 def delete_conversation():
     conversation_id = request.args.get('id')
-    print(conversation_id)
     storage.delete_conversation(conversation_id)
     return "200"
 
@@ -29,8 +28,6 @@ def delete_conversation():
 def rename_conversation():
     conversation_id = request.args.get('id')
     new_name = request.args.get('new_name')
-    print(conversation_id)
-    print(new_name)
     storage.rename_conversation(conversation_id, new_name)
     return "200"
 
@@ -55,10 +52,12 @@ def stream():
     message_id_for_edit = request.args.get('message_id')
     api = request.args.get('api')
     has_images = request.args.get('images')
+    print(has_images)
+    print("has image?")
 
     new_convo = False
 
-    if has_images:
+    if has_images == "true" or has_images is True:
         image_data = store_images.load_images()
     else:
         image_data = []
