@@ -5,6 +5,7 @@ from flask import Flask, send_from_directory, Response, jsonify, request
 
 import storage
 import ai
+import store_images
 from store_images import process_and_store_images
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -38,7 +39,8 @@ def rename_conversation():
 def retrieve_conversation():
     # Assume we have a function to get conversation by ID
     conversation_id = request.args.get('id')
-    conversation = storage.retrieve_conversation(conversation_id)
+    conversation = storage.retrieve_conversation(conversation_id, should_load_images=True)
+
     return jsonify(conversation)
 
 def print_error_with_traceback(error_message):
@@ -53,21 +55,29 @@ def stream():
     model_version = request.args.get('model_version')
     message_id_for_edit = request.args.get('message_id')
     api = request.args.get('api')
+    has_images = request.args.get('images')
 
     new_convo = False
 
-    if conversation_id is not None and conversation_id != "null":
-        message_id = storage.append_conversation(conversation_id, prompt, "You")
+    if has_images:
+        image_data = store_images.load_images()
     else:
-        conversation_id, message_id = storage.create_conversation(prompt)
+        image_data = []
+
+    if conversation_id is not None and conversation_id != "null":
+        message_id = storage.append_conversation(conversation_id, prompt, "You", image_data)
+    else:
+        conversation_id, message_id = storage.create_conversation(prompt, image_data)
         new_convo = True
+
 
     def generate(api, prompt, conversation_id, message_id):
         combined_model_info = [model_name, model_version, api]
+
         try:
             accumulated_response = ""
             yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
-            for response in ai.format_to_chat(combined_model_info, prompt, conversation_id, message_id_for_edit):
+            for response in ai.format_to_chat(combined_model_info, prompt, conversation_id, message_id_for_edit, image_data):
                 if response:
                     # Replace newlines for correct client-side handling
                     response = response.replace("\n", "\\n")
@@ -115,7 +125,7 @@ def get_models_html():
     return Response(dropdown_html, mimetype='text/html')
 
 
-@app.route('/upload-images', methods=['POST'])
+@app.route('/upload_images', methods=['POST'])
 def upload_images():
     if 'images' not in request.files:
         return jsonify({'error': 'No images part'}), 400

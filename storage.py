@@ -4,6 +4,7 @@ import random
 import string
 import datetime
 from utils.settings_utils import get_test_mode
+import image_storage
 
 test_mode = get_test_mode()
 
@@ -14,15 +15,24 @@ def generate_id(size=32, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def create_conversation(message):
+def create_conversation(message, image_data=[]):
     conversation_id = generate_id()
     message_id = generate_id()
     title = "New Chat"
     timestamp = datetime.datetime.utcnow().isoformat()
+
+    list_of_image_ids = []
+
+    if image_data != []:
+        for image in image_data:
+            image_id = generate_id()
+            image_storage.store_image(image["type"], image["image"], image_id)
+            list_of_image_ids.append(image_id)
+
     conversation = {
         "id": conversation_id,
         "title": title,
-        "conversation": [{"role": "You", "message": message, "timestamp": timestamp, "id": message_id}]
+        "conversation": [{"role": "You", "message": message, "timestamp": timestamp, "id": message_id, "image_data": list_of_image_ids}]
     }
     if not os.path.isfile("krypton_storage/conversations.json"):
         with open("krypton_storage/conversations.json", "w") as file:
@@ -36,7 +46,7 @@ def create_conversation(message):
     return conversation_id, message_id
 
 
-def append_conversation(conversation_id, message, author):
+def append_conversation(conversation_id, message, author, image_data=[]):
     if not os.path.isfile("krypton_storage/conversations.json"):
         return None
 
@@ -46,8 +56,17 @@ def append_conversation(conversation_id, message, author):
         for conversation in data:
             if conversation["id"] == conversation_id:
                 timestamp = datetime.datetime.utcnow().isoformat()
-                conversation["conversation"].append({"role": author, "message": message, "timestamp": timestamp, "id": message_id})
+
+                list_of_image_ids = []
+                if image_data != []:
+                    for image in image_data:
+                        image_id = generate_id()
+                        image_storage.store_image(image["type"], image["image"], image_id)
+                        list_of_image_ids.append(image_id)
+
+                conversation["conversation"].append({"role": author, "message": message, "timestamp": timestamp, "id": message_id, "image_data": list_of_image_ids})
                 break
+
         else:  # If the conversation ID was not found
             return None
         file.seek(0)
@@ -66,7 +85,7 @@ def find_recent_conversation_ids(n=20):
         recent_conversations_ids = [conv["id"] for conv in sorted_conversations[:n]]
     return recent_conversations_ids
 
-def retrieve_conversation(id, message_id=None):
+def retrieve_conversation(id, message_id=None, should_load_images=False):
     # Check if the file exists
     if not os.path.isfile("krypton_storage/conversations.json"):
         return None
@@ -78,7 +97,8 @@ def retrieve_conversation(id, message_id=None):
         data = json.load(file)
         for conversation in data:
             if conversation["id"] == id:
-                return conversation
+                return conversation if not should_load_images else load_images(conversation)
+
     return None
 
 
@@ -86,7 +106,9 @@ def fetch_recent_conversations(n=20):
     ids = find_recent_conversation_ids(n)
     conversations = []
     for id in ids:
-        conversations.append(retrieve_conversation(id))
+        conversation_data = retrieve_conversation(id)
+        conversation_data.pop('conversation', None)  # Remove the 'conversation' attribute if it exists
+        conversations.append(conversation_data)
 
     return conversations
 
@@ -159,5 +181,14 @@ def delete_conversation(conversation_id):
     # Save the updated conversations back to the JSON file
     with open('krypton_storage/conversations.json', 'w') as file:
         json.dump(conversations, file, indent=4)
+
+def load_images(conversation):
+    for message in conversation["conversation"]:
+        # Check if image_data is not empty
+        if message["image_data"]:
+            # Replace each ID in image_data with the actual image data from image_storage
+            message["image_data"] = [image_storage.retrieve_image(image_id) for image_id in message["image_data"]]
+
+    return conversation
 
 

@@ -14,7 +14,7 @@ test_mode = get_test_mode()
 with open("krypton_storage/models.json", "r") as file:
     models = json.load(file)
 
-def format_to_chat(model, prompt, conversation_id, message_id):
+def format_to_chat(model, prompt, conversation_id, message_id, image_data):
     messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
 
     if message_id and message_id.strip() != "null":
@@ -38,7 +38,7 @@ def format_to_chat(model, prompt, conversation_id, message_id):
     complete_function = globals().get(function_name)
 
     if complete_function:
-        return complete_function(model, messages)
+        return complete_function(model, messages) if image_data == [] else complete_function(model, messages, image_data)
     else:
         raise ValueError(f"No completion function found for API: {model_api}")
 

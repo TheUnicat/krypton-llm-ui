@@ -46,6 +46,16 @@ async function selectConversation(conversationId) {
       const messageTextElement = messageElement.querySelector('.message-content .message-text');
       messageTextElement.innerHTML = processText(message.message);
 
+      message.image_data.forEach(item => {
+        const img = new Image();
+        console.log(item)
+        img.src = "data:" + item.mime + ";base64," + item.base64;
+        img.alt = 'Loaded from base64 data';
+        img.style.width = '80%'; // Set the width or adjust as needed
+        img.style.height = 'auto'; // Adjust height as needed
+        messageTextElement.appendChild(img);
+    });
+
       if (message.role == "You") {
           addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
       }
@@ -58,7 +68,6 @@ async function selectConversation(conversationId) {
     // Update conversation ID in localStorage and scroll to the latest message
     localStorage.setItem("conversationId", conversationId);
     chatScrollToBottom();
-    console.log("donee");
   } catch (error) {
     console.error('Error fetching conversation:', error);
   }
@@ -125,14 +134,18 @@ async function getAI(prompt, promptElement, messageId=null) {
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
     const api = localStorage.getItem('api') || 'OpenAI';
     // Encode the prompt and include the model in the query string
-    const eventSource = new EventSource(`/stream?id=${encodeURIComponent(conversationId)}&prompt=${encodeURIComponent(prompt)}&api=${encodeURIComponent(api)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}`);
+      const imagesUploaded = await uploadImages(); // This now returns a boolean
+      const imagesFlag = imagesUploaded ? 'true' : 'false';
+
+      // Modify the event source URL to include the images flag
+      const eventSourceUrl = `/stream?id=${encodeURIComponent(conversationId)}&prompt=${encodeURIComponent(prompt)}&api=${encodeURIComponent(api)}&model_name=${encodeURIComponent(modelName)}&model_version=${encodeURIComponent(modelVersion)}&message_id=${encodeURIComponent(messageId)}&images=${imagesFlag}`;
+      const eventSource = new EventSource(eventSourceUrl);
 
   var messageElement = appendMessage(modelName);
   let accumulatedResponse = "";
 
   eventSource.onmessage = async function(event) {
     let data = event.data;
-    console.log(data);
 
     try {
         data = JSON.parse(data);
@@ -144,12 +157,7 @@ async function getAI(prompt, promptElement, messageId=null) {
         localStorage.setItem('conversationId', data.conversation_id);  // Set the conversationId in localStorage
         promptElement.id = data.message_id;
        } else if (data.new_title) {
-          console.log("new title!");
-          try {
-                await prependConversationItem({ "id": localStorage.getItem("conversationId"), "title": data.new_title });
-              } catch (error) {
-                console.log(error)
-              }
+          await prependConversationItem({ "id": localStorage.getItem("conversationId"), "title": data.new_title });
           eventSource.close();
           return;
         }    else if (data.error) {
@@ -651,6 +659,37 @@ document.getElementById('fileInputButton').addEventListener('change', function(e
   });
 });
 
+async function uploadImages() {
+  const fileInput = document.getElementById('fileInputButton');
+  const files = fileInput.files;
 
+  if (files.length > 0) {
+    const formData = new FormData();
+    // Directly append each file under the 'images' field
+    Array.from(files).forEach(file => {
+      formData.append('images', file);
+    });
 
+    try {
+      // Perform the actual upload
+      const response = await fetch('/upload_images', {
+        method: 'POST',
+        body: formData,
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to upload images');
+      }
+
+      const result = await response.json();
+
+      // Optionally, clear the input after successful upload
+      previewContainer.innerHTML = "";
+
+      return true; // Indicate successful upload
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      return false; // Indicate failure
+    }
+  }
+}
