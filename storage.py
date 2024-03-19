@@ -124,7 +124,7 @@ def format_conversation(conversation):
         elif author in ['system', 'system']:
             role = 'system'
 
-        simplified_messages.append({"role": role, "content": message["message"]})
+        simplified_messages.append({"role": role, "content": message["message"], "image_data": message["image_data"]})
 
     return simplified_messages
 

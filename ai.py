@@ -16,7 +16,7 @@ with open("krypton_storage/models.json", "r") as file:
     models = json.load(file)
 
 def format_to_chat(model, prompt, conversation_id, message_id, image_data):
-    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id)["conversation"])
+    messages = storage.format_conversation(storage.retrieve_conversation(conversation_id, message_id, should_load_images=True)["conversation"])
 
     if message_id and message_id.strip() != "null":
         #if truncated, we need to add back the prompt, both in the storage and in the current messages list

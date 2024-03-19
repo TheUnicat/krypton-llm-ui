@@ -150,7 +150,6 @@ async function getAI(prompt, promptElement, messageId=null) {
 
             // Append the image element to the message-content element
             messageContentElement.appendChild(img);
-            alert("hi");
         });
     }
 
