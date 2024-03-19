@@ -630,3 +630,37 @@ textarea:focus {
   border-radius: 8px 8px 0 0; /* Rounded corners on the top */
 }
 
+#main-container {
+    text-align: center;
+    display: none; /* Hide everything initially */
+    transition: 0.3s;
+}
+
+#circle-image {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 15%;
+    height: auto;
+    padding: 2%;
+}
+
+#text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+#left-text {
+    color: black;
+}
+
+#right-text {
+    color: grey;
+}
+
+

@@ -26,6 +26,7 @@ function clearChatMessages(id=null) {
 }
 
 async function selectConversation(conversationId) {
+    hideElements();
     try {
         let currentConversation = document.getElementById(localStorage.getItem("conversationId"));
         currentConversation.classList.remove('is-current-conversation');
@@ -415,9 +416,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Extracting the text from the element with ID 'prompt'
             const userText = userPrompt.innerText || userPrompt.value; // Works for both divs and input fields
 
-            // Calling appendMessage with "You" and the extracted text
+            // Calling appendMessage with "You" and the extracted text, and hide default if showned
+            hideElements();
             let promptElement = appendMessage("You", userText);
-            // Calling getAI function afterwards
+            // Calling getAI function afterward
             getAI(userText, promptElement);
 
             // clear the prompt input after sending the message
@@ -454,9 +456,12 @@ function toggleSidebar() {
   var sidebar = document.getElementById('sidebar');
   var toggleButton = document.getElementById('sidebarToggle');
   var isOpen = sidebar.style.left === '0px';
+  document.getElementById("main-container").style.transform = isOpen ? "translateX(-10%)" : "translateX(10%)";
 
     sidebar.style.left = isOpen ? '-20%' : '0px';
     toggleButton.style.left = isOpen ? '1%' : '19%';
+
+
 
     // If the sidebar is opened, shift the chat-container and input-container to the right
     document.querySelector('.chat-container').style.marginLeft = isOpen ? '0' : '4%';
@@ -484,16 +489,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Event listener for the new chat button
 document.addEventListener('DOMContentLoaded', async function () {
+
   const newChatButton = document.getElementById('new-chat-button');
   await populateConversationHistory();
   if (localStorage.getItem("conversationId") != null) {
     selectConversation(localStorage.getItem("conversationId"));
   } else {
     clearChatMessages();
+    showElements();
   }
 
   newChatButton.addEventListener('click', function () {
     document.getElementById(localStorage.getItem("conversationId")).classList.remove("is-current-conversation");
+    showElements();
     clearChatMessages();
   });
 
@@ -502,7 +510,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   function displayCurrentModel() {
     document.getElementById('modelName').textContent = localStorage.getItem('modelName') || 'ChatGPT';
     document.getElementById('modelVersion').textContent = localStorage.getItem('modelVersion') || '3.5';
-
   }
 
   // Function to change the model
@@ -510,6 +517,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     localStorage.setItem('api', api);
     localStorage.setItem('modelName', modelName);
     localStorage.setItem('modelVersion', modelVersion);
+    updateElements();
     displayCurrentModel();
     toggleDropdown(); // Hide the dropdown after selection
   }
@@ -720,3 +728,24 @@ async function uploadImages() {
       return false;
   }
 }
+
+function updateElements() {
+    var modelName = localStorage.getItem("modelName") || "Default Model Name";
+    var modelVersion = localStorage.getItem("modelVersion") || "Default Version";
+
+    // Update the image source. Ensure `/images/` path is correct or adjust as needed.
+    document.getElementById("circle-image").src = "/images/" + (imagePaths[modelName] || "default-image.jpg");
+    // Update text contents
+    document.getElementById("left-text").textContent = modelName;
+    document.getElementById("right-text").textContent = modelVersion;
+}
+
+function showElements() {
+    updateElements(); // Make sure content is updated before showing
+    document.getElementById("main-container").style.display = "block";
+}
+
+    function hideElements() {
+        document.getElementById("main-container").style.display = "none";
+    }
+
