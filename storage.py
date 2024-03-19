@@ -5,11 +5,10 @@ import string
 import datetime
 from utils.settings_utils import get_test_mode
 import image_storage
+from initialize_krypton import initialize
 
+initialize()
 test_mode = get_test_mode()
-
-nicknames = {"gpt-3.5-turbo": "ChatGPT"}
-
 
 def generate_id(size=32, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
