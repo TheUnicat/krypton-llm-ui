@@ -5,9 +5,7 @@ import string
 import datetime
 from utils.settings_utils import get_test_mode
 import image_storage
-from initialize_krypton import initialize
 
-initialize()
 test_mode = get_test_mode()
 
 def generate_id(size=32, chars=string.ascii_letters + string.digits):

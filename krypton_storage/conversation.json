@@ -1,0 +1,22 @@
+[
+    {
+        "id": "OmJTAXqRQacAoXOhBj0LLGvLKrLsHFAH",
+        "title": "Sample Conversation",
+        "conversation": [
+            {
+                "role": "You",
+                "message": "Hi ChatGPT!",
+                "timestamp": "2024-03-09T09:08:16.376732",
+                "id": "veqmaaicwfuOxpWP5UPFfU1fvUgefjxZ",
+                "image_data": []
+            },
+            {
+                "role": "gpt-3.5-turbo",
+                "message": "Hi there! How may I assist you today?",
+                "timestamp": "2024-03-09T09:08:17.250722",
+                "id": "nP3hZgoCSHDe9IWNuomiaLLOQr4ShYMk",
+                "image_data": []
+            }
+        ]
+    }
+]
