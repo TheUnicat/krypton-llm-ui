@@ -9,7 +9,7 @@ def initialize():
         os.makedirs(storage_dir)
 
     # Check and initialize conversation.json
-    conversation_path = os.path.join(storage_dir, 'conversation.json')
+    conversation_path = os.path.join(storage_dir, 'conversations.json')
     if not os.path.exists(conversation_path):
         initial_conversation = [{
             "id": "OmJTAXqRQacAoXOhBj0LLGvLKrLsHFAH",
