@@ -206,7 +206,7 @@ textarea {
 }
 
 .conversation-item:hover {
-    background-color: lightgrey;
+    background-color: #f0f0f0;
 }
 
 .new-chat {
@@ -491,6 +491,22 @@ textarea:focus {
   display: flex; /* Show toolbar on hover or when options bar is visible */
 }
 
+.conversation-item.options-bar-visible .conversation-toolbar .conversation-item {
+  background-color: #f0f0f0;
+}
+
+.conversation-item.options-bar-visible {
+    background-color: #f0f0f0;
+}
+
+.conversation-item.is-current-conversation {
+    background-color: lightgrey;
+}
+
+.conversation-item.is-current-conversation .conversation-toolbar {
+  display: flex; /* Keep the toolbar visible */
+}
+
 
 .options-bar {
   display: none;
@@ -524,7 +540,7 @@ textarea:focus {
 }
 
 .conversation-item-options-visible {
-  background-color: lightgrey; /* Or the specific shade of light grey you prefer */
+  background-color: #f0f0f0; /* Or the specific shade of light grey you prefer */
 }
 
 .modal {

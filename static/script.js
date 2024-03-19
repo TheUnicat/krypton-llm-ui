@@ -26,6 +26,14 @@ function clearChatMessages(id=null) {
 }
 
 async function selectConversation(conversationId) {
+    try {
+        let currentConversation = document.getElementById(localStorage.getItem("conversationId"));
+        console.log("current conversation");
+        console.log(currentConversation);
+        currentConversation.classList.remove('is-current-conversation');
+    } catch(e) {
+        console.error(e);
+    }
   try {
     const response = await fetch(`/retrieve_conversation?id=${conversationId}`);
     const conversation = await response.json();
@@ -68,6 +76,9 @@ async function selectConversation(conversationId) {
     // Update conversation ID in localStorage and scroll to the latest message
     localStorage.setItem("conversationId", conversationId);
     chatScrollToBottom();
+    const item = document.getElementById(conversationId);
+    console.log(item);
+    item.classList.add('is-current-conversation');
   } catch (error) {
     console.error('Error fetching conversation:', error);
   }
