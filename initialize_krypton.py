@@ -23,7 +23,11 @@ def initialize():
                     "image_data": []
                 },
                 {
-                    "role": "gpt-3.5-turbo",
+                    "role": [
+                    "ChatGPT",
+                    "3.5",
+                    "OpenAI"
+                ],
                     "message": "Hi there! How may I assist you today?",
                     "timestamp": "2024-03-09T09:08:17.250722",
                     "id": "nP3hZgoCSHDe9IWNuomiaLLOQr4ShYMk",

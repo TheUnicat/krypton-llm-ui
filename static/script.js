@@ -87,7 +87,8 @@ const imagePaths = {
     "MrEagle": "mreagles.png",
     "You": "you.jpg",
     "Claude": "claude.png",
-    "Fireworks": "fireworks.png"
+    "Fireworks": "fireworks.png",
+    "FireFunction": "fireworks.png"
 };
 
 function addEditButton(targetElement) {
@@ -500,7 +501,11 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   newChatButton.addEventListener('click', function () {
-    document.getElementById(localStorage.getItem("conversationId")).classList.remove("is-current-conversation");
+    try {
+        document.getElementById(localStorage.getItem("conversationId")).classList.remove("is-current-conversation");
+    } catch(error) {
+        console.error(error);
+    }
     showElements();
     clearChatMessages();
   });
@@ -734,7 +739,7 @@ function updateElements() {
     var modelVersion = localStorage.getItem("modelVersion") || "Default Version";
 
     // Update the image source. Ensure `/images/` path is correct or adjust as needed.
-    document.getElementById("circle-image").src = "/images/" + (imagePaths[modelName] || "default-image.jpg");
+    document.getElementById("circle-image").src = "/images/" + (imagePaths[modelName]);
     // Update text contents
     document.getElementById("left-text").textContent = modelName;
     document.getElementById("right-text").textContent = modelVersion;
