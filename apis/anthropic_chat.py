@@ -31,9 +31,7 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096):
                 })
             updated_messages.append({"role": message["role"], "content": new_content})
         else:
-            del message["image_data"]
-
-            updated_messages.append({"role": message["role"], "content": message["content"]})
+            updated_messages.append(message)
 
     updated_messages.append(messages[-1])
 
@@ -53,8 +51,6 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096):
                 }
             })
         updated_messages[-1] = {"role": "user", "content": new_content}
-    else:
-        del updated_messages[-1]["image_data"]
 
     # Continue with your existing logic for streaming messages
     with client.messages.stream(
