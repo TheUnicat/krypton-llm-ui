@@ -8,7 +8,7 @@
         "path": null
       },
       "4": {
-        "name": "gpt-4",
+        "name": "gpt-4-vision-preview",
         "vision": true,
         "path": null
       }

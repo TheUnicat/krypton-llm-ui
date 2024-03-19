@@ -12,14 +12,12 @@ client = anthropic.Anthropic(
 
 def anthropic_complete(model, messages, images=[], max_tokens=4096):
     model_name = model_utils.get_model(model)
-    print(model)
 
     # Reformat messages to include image data if present
     updated_messages = []
     for message in messages[:-1]:
         if message.get("image_data") and len(message["image_data"]) > 0:
             new_content = [{"type": "text", "text": message["content"]}]
-            print(message["content"])
             for image_data in message["image_data"]:
                 new_content.append({
                     "type": "image",
@@ -37,7 +35,6 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096):
 
     # Check if the images list is not empty
     if images:
-        print("anthropic images detected")
         # Reformat the last message in the updated_messages list to include image data
         last_message = updated_messages[-1]
         new_content = [{"type": "text", "text": last_message["content"]}]
