@@ -28,8 +28,6 @@ function clearChatMessages(id=null) {
 async function selectConversation(conversationId) {
     try {
         let currentConversation = document.getElementById(localStorage.getItem("conversationId"));
-        console.log("current conversation");
-        console.log(currentConversation);
         currentConversation.classList.remove('is-current-conversation');
     } catch(e) {
         console.error(e);
@@ -52,7 +50,6 @@ async function selectConversation(conversationId) {
 
       // Create and append the message text div
       const messageTextElement = messageElement.querySelector('.message-content .message-text');
-      const messageContentElement = messageElement.querySelector('.message-content')
       messageTextElement.innerHTML = processText(message.message);
 
       message.image_data.forEach(item => {
@@ -77,7 +74,6 @@ async function selectConversation(conversationId) {
     localStorage.setItem("conversationId", conversationId);
     chatScrollToBottom();
     const item = document.getElementById(conversationId);
-    console.log(item);
     item.classList.add('is-current-conversation');
   } catch (error) {
     console.error('Error fetching conversation:', error);
@@ -407,7 +403,7 @@ function prependConversationItem(conversation) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     loadAndAppendModels();
     const sendBtn = document.getElementById('sendBtn');
     const userPrompt = document.getElementById('prompt');
@@ -487,9 +483,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Event listener for the new chat button
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   const newChatButton = document.getElementById('new-chat-button');
-
+  await populateConversationHistory();
   if (localStorage.getItem("conversationId") != null) {
     selectConversation(localStorage.getItem("conversationId"));
   } else {
@@ -497,6 +493,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   newChatButton.addEventListener('click', function () {
+    document.getElementById(localStorage.getItem("conversationId")).classList.remove("is-current-conversation");
     clearChatMessages();
   });
 
@@ -626,7 +623,6 @@ function closeModal() {
 
 closeButton.addEventListener('click', closeModal);
 
-populateConversationHistory();
 
 function adjustTextareaHeight(textarea) {
   // Immediately adjust the height to 'auto' to calculate the potential scrollHeight correctly
@@ -721,8 +717,6 @@ async function uploadImages() {
       return false; // Indicate failure
     }
   } else {
-      console.log("nopity nnope");
       return false;
-
   }
 }
