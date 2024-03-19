@@ -455,11 +455,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Define the toggleSidebar function at a higher scope
 function toggleSidebar() {
   var sidebar = document.getElementById('sidebar');
+  var sidebarBottom = document.getElementById('sidebar-bottom');
   var toggleButton = document.getElementById('sidebarToggle');
   var isOpen = sidebar.style.left === '0px';
   document.getElementById("main-container").style.transform = isOpen ? "translateX(-10%)" : "translateX(10%)";
 
     sidebar.style.left = isOpen ? '-20%' : '0px';
+    sidebarBottom.style.left = isOpen ? '-20%' : '0px';
     toggleButton.style.left = isOpen ? '1%' : '19%';
 
 
@@ -754,3 +756,34 @@ function showElements() {
         document.getElementById("main-container").style.display = "none";
     }
 
+var modalContentHTML = `
+<div style="display: flex; height: 100%;">
+  <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
+    <ul>
+      <li>API Keys</li>
+      <li>User Info</li>
+      <li>Local Models</li>
+    </ul>
+  </div>
+  <div style="flex: 3; padding: 10px;">
+    <div id="api-keys" style="display: block;">
+      <h2>API Keys</h2>
+      <p>OpenAI: <input type="text" placeholder="Enter OpenAI API Key" /></p>
+      <p>Fireworks: <input type="text" placeholder="Enter Fireworks API Key" /></p>
+      <p>Anthropic: <input type="text" placeholder="Enter Anthropic API Key" /></p>
+    </div>
+    <div id="user-info" style="display: none;">
+      <h2>User Info</h2>
+      <p>Name: <input type="text" placeholder="Enter Name" /></p>
+    </div>
+    <div id="local-models" style="display: none;">
+      <h2>Local Models</h2>
+      <p>No local models available for now.</p>
+    </div>
+  </div>
+</div>
+`;
+
+document.getElementById('sidebar-bottom').addEventListener('click', function() {
+    openModal(modalContentHTML);
+});

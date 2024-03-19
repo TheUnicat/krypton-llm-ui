@@ -190,6 +190,7 @@ textarea {
 .conversations-list {
   list-style: none;
   padding: 0;
+  padding-bottom: 30%;
   margin: 0;
 }
 
@@ -661,6 +662,45 @@ textarea:focus {
 
 #right-text {
     color: grey;
+}
+
+.sidebar-bottom {
+  position: fixed;
+  left: -18%; /* Starts off-screen, aligned with the sidebar */
+  bottom: 0; /* Aligns to the bottom of the viewport */
+  width: 18%; /* Matches the sidebar width */
+  height: 10%; /* Or whatever height you prefer */
+  background-color: #f9f9f9; /* Matches the sidebar background color */
+  transition: left 0.3s; /* Smooth transition for opening/closing */
+  z-index: 1000; /* Ensures it's below the sidebar if they overlap */
+  display: flex;
+  align-items: center;
+  padding: 0 10px; /* Adjust padding as needed */
+  box-sizing: border-box; /* Ensures padding is included in the element's dimensions */
+}
+
+.sidebar-bottom:hover {
+    cursor: pointer;
+    background: lightgrey;
+}
+
+.profile-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: auto;
+}
+
+.profile-name {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
 }
 
 
