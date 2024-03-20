@@ -786,6 +786,48 @@ var modalContentHTML = `
 `;
 
 
+// Function to get the API keys from the backend
+function getApiKeys() {
+  fetch('/api/keys')
+    .then(response => response.json())
+    .then(data => {
+      // Assuming you have input fields with IDs corresponding to key names
+      document.getElementById('openai-api-key').value = data.openai || '';
+      document.getElementById('fireworks-api-key').value = data.fireworks || '';
+      document.getElementById('anthropic-api-key').value = data.anthropic || '';
+    })
+    .catch(error => console.error('Error fetching API keys:', error));
+}
+
+// Modified saveApiKeys function to use the backend for saving
+function saveApiKeys() {
+  const keys = {
+    openai: document.getElementById('openai-api-key').value,
+    fireworks: document.getElementById('fireworks-api-key').value,
+    anthropic: document.getElementById('anthropic-api-key').value,
+  };
+
+  fetch('/api/keys', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(keys),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    alert('API Keys saved successfully!');
+  })
+  .catch(error => {
+    console.error('Error saving API keys:', error);
+    alert('Failed to save API Keys.');
+  });
+}
+
+
+
 document.getElementById('sidebar-bottom').addEventListener('click', function() {
     openModal(modalContentHTML);
+    getApiKeys();
 });
