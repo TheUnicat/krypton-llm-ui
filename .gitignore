@@ -5,4 +5,5 @@ models
 /krypton_storage/image_storage.json
 /krypton_storage/temp_image_storage.json
 .DS_Store
-__pycache__
+**/__pycache__/
+**/*.pyc
