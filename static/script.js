@@ -773,7 +773,8 @@ var modalContentHTML = `
     </div>
     <div id="user-info" style="display: none;">
       <h2>User Info</h2>
-      <p>Name: <input type="text" placeholder="Enter Name" /></p>
+      <p>Name: <input type="text" id="user-name" placeholder="Enter Name" /></p>
+        <button onclick="saveUserName()">Save</button>
     </div>
     <div id="local-models" style="display: none;">
       <h2>Local Models</h2>
@@ -797,6 +798,12 @@ function showSettingsContent(selectedId) {
     } else {
       contentElement.style.display = 'none';
       options[index].classList.remove('active');
+    }
+
+    if (id === "user-info") {
+          getUserName(); // Call this function to populate the user's name input field
+    } else if (id === "api-keys") {
+        getApiKeys();
     }
   });
 }
@@ -833,7 +840,6 @@ function saveApiKeys() {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
     alert('API Keys saved successfully!');
   })
   .catch(error => {
@@ -842,10 +848,37 @@ function saveApiKeys() {
   });
 }
 
-
-
 document.getElementById('sidebar-bottom').addEventListener('click', function() {
     openModal(modalContentHTML);
     showSettingsContent("api-keys");
-    getApiKeys();
 });
+
+// Function to get the user's name from the backend
+function getUserName() {
+  fetch('/api/settings/name')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('user-name').value = data.name || '';
+    })
+    .catch(error => console.error('Error fetching user name:', error));
+}
+
+// Function to save the user's name to the backend
+function saveUserName() {
+  const name = document.getElementById('user-name').value;
+  fetch('/api/settings/name', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+  })
+  .catch(error => {
+    console.error('Error saving user name:', error);
+    alert('Failed to save user name.');
+  });
+}
