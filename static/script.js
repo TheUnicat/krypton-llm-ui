@@ -406,6 +406,7 @@ function prependConversationItem(conversation) {
 
 
 document.addEventListener('DOMContentLoaded', async function() {
+    getUserName();
     loadAndAppendModels();
     const sendBtn = document.getElementById('sendBtn');
     const userPrompt = document.getElementById('prompt');
@@ -858,6 +859,8 @@ function getUserName() {
   fetch('/api/settings/name')
     .then(response => response.json())
     .then(data => {
+        console.log(data.name);
+      document.getElementById('name').innerText = data.name || '';
       document.getElementById('user-name').value = data.name || '';
     })
     .catch(error => console.error('Error fetching user name:', error));
@@ -876,6 +879,7 @@ function saveUserName() {
   .then(response => response.json())
   .then(data => {
     alert(data.message);
+    document.getElementById('name').innerText = name || '';
   })
   .catch(error => {
     console.error('Error saving user name:', error);
