@@ -703,4 +703,22 @@ textarea:focus {
   font-weight: 600;
 }
 
+.settings-option {
+  font-weight: 600;
+  font-size: 1.1em; /* Slightly larger text */
+  padding: 12px 20px; /* Add padding for a larger click area and spacing */
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: none;
+  cursor: pointer; /* Change the mouse pointer to indicate it's clickable */
+  transition: background-color 0.3s ease; /* Smooth transition for the background color */
+}
 
+.settings-option:hover {
+  background-color: #f0f0f0; /* A slightly darker grey for more contrast */
+}
+
+.settings-option.active {
+  background-color: lightgrey; /* Even darker or different color for active state */
+}

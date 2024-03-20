@@ -759,11 +759,9 @@ function showElements() {
 var modalContentHTML = `
 <div style="display: flex; height: 100%;">
   <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
-    <ul>
-      <li>API Keys</li>
-      <li>User Info</li>
-      <li>Local Models</li>
-    </ul>
+    <div class="settings-option" onclick="showSettingsContent('api-keys')">API Keys</div>
+    <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
+    <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
   </div>
   <div style="flex: 3; padding: 10px;">
     <div id="api-keys" style="display: block;">
@@ -784,6 +782,25 @@ var modalContentHTML = `
   </div>
 </div>
 `;
+
+function showSettingsContent(selectedId) {
+  const contentIds = ['api-keys', 'user-info', 'local-models'];
+  const options = document.querySelectorAll('.settings-option');
+
+  // Loop through all content divs
+  contentIds.forEach((id, index) => {
+    const contentElement = document.getElementById(id);
+    // Show the selected content and add 'active' class to the corresponding option
+    if (id === selectedId) {
+      contentElement.style.display = 'block';
+      options[index].classList.add('active');
+    } else {
+      contentElement.style.display = 'none';
+      options[index].classList.remove('active');
+    }
+  });
+}
+
 
 
 // Function to get the API keys from the backend
@@ -829,5 +846,6 @@ function saveApiKeys() {
 
 document.getElementById('sidebar-bottom').addEventListener('click', function() {
     openModal(modalContentHTML);
+    showSettingsContent("api-keys");
     getApiKeys();
 });
