@@ -768,9 +768,10 @@ var modalContentHTML = `
   <div style="flex: 3; padding: 10px;">
     <div id="api-keys" style="display: block;">
       <h2>API Keys</h2>
-      <p>OpenAI: <input type="text" placeholder="Enter OpenAI API Key" /></p>
-      <p>Fireworks: <input type="text" placeholder="Enter Fireworks API Key" /></p>
-      <p>Anthropic: <input type="text" placeholder="Enter Anthropic API Key" /></p>
+      <p>OpenAI: <input id="openai-api-key" type="text" placeholder="Enter OpenAI API Key" /></p>
+      <p>Fireworks: <input id="fireworks-api-key" type="text" placeholder="Enter Fireworks API Key" /></p>
+      <p>Anthropic: <input id="anthropic-api-key" type="text" placeholder="Enter Anthropic API Key" /></p>
+      <button onclick="saveApiKeys()">Save</button>
     </div>
     <div id="user-info" style="display: none;">
       <h2>User Info</h2>
@@ -783,6 +784,7 @@ var modalContentHTML = `
   </div>
 </div>
 `;
+
 
 document.getElementById('sidebar-bottom').addEventListener('click', function() {
     openModal(modalContentHTML);
