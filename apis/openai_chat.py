@@ -8,7 +8,7 @@ with open("krypton_storage/secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-def openai_complete(model, messages, images=[], max_tokens=4096):
+def openai_complete(model, messages, images=[], max_tokens=4096, system_prompt=None):
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present
@@ -48,6 +48,13 @@ def openai_complete(model, messages, images=[], max_tokens=4096):
                 }
             })
         updated_messages[-1] = {"role": "user", "content": new_content}
+
+    if system_prompt:
+        updated_messages.insert(0, {
+            "role": "system",
+            "content": system_prompt
+        }
+        )
 
     completion = client.chat.completions.create(
         model=model_name,
