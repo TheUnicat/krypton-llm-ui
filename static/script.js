@@ -598,6 +598,10 @@ async function deleteConversation(conversationId) {
     await fetch(`/delete_conversation?id=${conversationId}`);
 }
 
+async function deleteSysPrompt(id) {
+    await fetch(`/delete_sys_prompt?id=${id}`);
+}
+
 async function renameConversation(conversationId, newName) {
     await fetch(`/rename_conversation?id=${conversationId}&new_name=${newName}`);
 }
@@ -799,7 +803,7 @@ var modalContentHTML = `
       <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
       
       <!-- Select Button -->
-      <button id="select-prompt" onclick="selectSystemPrompt()">Select</button>
+      <button id="select-prompt" onclick="activateSysPrompt()">Select</button>
     </div>
 
     <div id="local-models" style="display: none;">
@@ -831,6 +835,7 @@ function showSettingsContent(selectedId) {
     } else if (id === "api-keys") {
         getApiKeys();
     } else if (id === "system-prompt") {
+        getCurrentSysPrompt();
         populateSystemPrompts();
     }
   });
@@ -886,7 +891,6 @@ function getUserName() {
   fetch('/api/settings/name')
     .then(response => response.json())
     .then(data => {
-        console.log(data.name);
       document.getElementById('name').innerText = data.name || '';
       document.getElementById('user-name').value = data.name || '';
     })
@@ -923,6 +927,11 @@ async function populateSystemPrompts() {
 
     // Loop through conversations and prepend them to the list
     prompts.reverse().forEach(prompt => prependSysPrompt(prompt));
+    promptList.insertAdjacentHTML('beforeend', '<li id="new-sys-prompt" onclick="clearSysPrompt();"><strong>New System Prompt</strong></li>');
+
+    if (localStorage.getItem("promptId")) {
+        selectSysPrompt(localStorage.getItem("promptId"));
+    }
   } catch (error) {
     console.error('Failed to load recent conversations:', error);
   }
@@ -969,7 +978,8 @@ function prependSysPrompt(prompt) {
     const deleteOption = listItem.querySelector('.delete-option');
     deleteOption.addEventListener('click', function() {
       // Call the delete function
-      deleteConversation(prompt.id);
+      deleteSysPrompt(prompt.id);
+      console.log("deleted");
 
       // Find the nearest ancestor .conversation-item element and remove it from the DOM
       const conversationItem = this.closest('.conversation-item');
@@ -978,7 +988,56 @@ function prependSysPrompt(prompt) {
       }
     });
 
-  listItem.setAttribute('onclick', `selectConversation('${prompt.id}')`);
+  listItem.setAttribute('onclick', `selectSysPrompt('${prompt.id}')`);
 
   promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
+}
+
+
+async function selectSysPrompt(promptId) {
+    try {
+        let currentPrompt = document.getElementById(localStorage.getItem("promptId"));
+        currentPrompt.classList.remove('is-current-conversation');
+    } catch(e) {
+        console.error(e);
+    }
+  try {
+    const response = await fetch(`/retrieve_sys_prompt?id=${promptId}`);
+    const prompt = await response.json();
+
+    document.getElementById("title-textbox").value = prompt.title;
+    document.getElementById("system-prompt-textbox").value = prompt.prompt;
+
+
+    // Update conversation ID in localStorage and scroll to the latest message
+    localStorage.setItem("promptId", promptId);
+    const item = document.getElementById(promptId);
+    item.classList.add('is-current-conversation');
+  } catch (error) {
+    console.error('Error fetching prompt:', error);
+  }
+}
+
+async function activateSysPrompt() {
+    await fetch(`/select_sys_prompt?id=${localStorage.getItem("promptId")}`);
+}
+
+async function getCurrentSysPrompt() {
+    let currentSysPrompt = await fetch(`/retrieve_current_sys_prompt`);
+    currentSysPrompt = await currentSysPrompt.json();
+    console.log(currentSysPrompt);
+    localStorage.setItem("promptId", currentSysPrompt);
+}
+
+function clearSysPrompt() {
+  const promptContainer = document.getElementById("system-prompt-list")
+  try {
+      document.getElementById(localStorage.getItem("promptId")).classList.remove("is-current-conversation");
+  } catch {
+  }
+
+  document.getElementById("title-textbox").value = "";
+  document.getElementById("system-prompt-textbox").value = "";
+
+
 }
