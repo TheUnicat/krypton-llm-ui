@@ -10,7 +10,7 @@ import storage
 import ai
 import image_storage
 from image_storage import process_and_store_images
-from settings_storage import key_storage_bp
+from utils.settings_utils import key_storage_bp
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
