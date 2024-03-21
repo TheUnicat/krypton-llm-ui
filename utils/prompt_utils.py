@@ -1,8 +1,8 @@
 import os
 import json
 
-def fetch_sys_prompts(n=1000):
-    ids = find_recent_conversation_ids(n)
+def fetch_sys_prompts():
+    ids = find_recent_conversation_ids()
     prompts = []
     for id in ids:
         prompt_data = retrieve_sys_prompt(id)
