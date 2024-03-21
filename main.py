@@ -27,6 +27,7 @@ def handle_update_system_prompt():
     title = data.get('title')
     text = data.get('text')
 
+
     if not title or not text:
         return jsonify({"error": "Title and text are required."}), 400
 
