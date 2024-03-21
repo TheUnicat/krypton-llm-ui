@@ -815,7 +815,7 @@ var modalContentHTML = `
 `;
 
 function showSettingsContent(selectedId) {
-  const contentIds = ['api-keys', 'user-info', 'local-models', 'system-prompt'];
+  const contentIds = ['api-keys', 'user-info', 'system-prompt', 'local-models'];
   const options = document.querySelectorAll('.settings-option');
 
   // Loop through all content divs
