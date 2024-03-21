@@ -10,7 +10,7 @@ client = anthropic.Anthropic(
 )
 
 
-def anthropic_complete(model, messages, images=[], max_tokens=4096):
+def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None):
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present
@@ -50,10 +50,20 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096):
         updated_messages[-1] = {"role": "user", "content": new_content}
 
     # Continue with your existing logic for streaming messages
-    with client.messages.stream(
-        max_tokens=max_tokens,
-        messages=updated_messages,
-        model=model_name,
-    ) as stream:
-        for text in stream.text_stream:
-            yield text
+    if system_prompt is not None:
+        with client.messages.stream(
+            max_tokens=max_tokens,
+            messages=updated_messages,
+            model=model_name,
+            system=system_prompt
+        ) as stream:
+            for text in stream.text_stream:
+                yield text
+    else:
+        with client.messages.stream(
+            max_tokens=max_tokens,
+            messages=updated_messages,
+            model=model_name
+        ) as stream:
+            for text in stream.text_stream:
+                yield text
