@@ -7,3 +7,5 @@ models
 .DS_Store
 **/__pycache__/
 **/*.pyc
+/krypton_storage/system_prompts.json
+/krypton_storage/settings.json
