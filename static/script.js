@@ -242,10 +242,13 @@ function processText(text) {
             const highlightedCode = applySyntaxHighlighting(`\`\`\`${codeWithLineBreaks}\`\`\``);
             parts.push(highlightedCode);
         } else if (match[2]) {
-            // If it's not a code block (matched by the second group of the regex), replace \n with <br>
-            const modifiedText = match[2].replace(/\\n/g, '<br>');
+            // Replace \n with <br>
+            let modifiedText = match[2].replace(/\\n/g, '<br>');
+            // Format text enclosed in *asterisks* as italic
+            modifiedText = modifiedText.replace(/\*(.*?)\*/g, '<i>$1</i>');
             parts.push(modifiedText);
         }
+
     }
 
     // Join all parts back together
@@ -707,7 +710,6 @@ document.getElementById('fileInputButton').addEventListener('change', function()
 async function uploadImages() {
   const fileInput = document.getElementById('fileInputButton');
   const files = fileInput.files;
-
   if (files.length > 0) {
     const formData = new FormData();
     // Directly append each file under the 'images' field
@@ -762,6 +764,7 @@ var modalContentHTML = `
   <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
     <div class="settings-option" onclick="showSettingsContent('api-keys')">API Keys</div>
     <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
+    <div class="settings-option" onclick="showSettingsContent('system-prompt')">System Prompt</div>
     <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
   </div>
   <div style="flex: 3; padding: 10px;">
@@ -777,6 +780,28 @@ var modalContentHTML = `
       <p>Name: <input type="text" id="user-name" placeholder="Enter Name" /></p>
         <button onclick="saveUserName()">Save</button>
     </div>
+    
+    <div id="system-prompt" style="display: block; border: 1px solid #ccc; padding: 20px; margin-top: 20px;">
+      <h2>System Prompt</h2>
+      
+      <!-- The dynamically populated list will go here -->
+      <ul id="system-prompt-list" style="list-style-type: none; padding: 0;">
+        <!-- Example: <li id="prompt1">System Prompt 1</li> -->
+      </ul>
+      
+      <!-- Title Textbox -->
+      <input type="text" id="title-textbox" placeholder="Enter Title" style="width: 100%; padding: 10px; margin: 10px 0;"/>
+      
+      <!-- System Prompt Textbox -->
+      <textarea id="system-prompt-textbox" placeholder="Enter System Prompt" style="width: 100%; padding: 10px; margin-bottom: 10px; height: 150px;"></textarea>
+      
+      <!-- Save Button -->
+      <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
+      
+      <!-- Select Button -->
+      <button id="select-prompt" onclick="selectSystemPrompt()">Select</button>
+    </div>
+
     <div id="local-models" style="display: none;">
       <h2>Local Models</h2>
       <p>No local models available for now.</p>
@@ -786,7 +811,7 @@ var modalContentHTML = `
 `;
 
 function showSettingsContent(selectedId) {
-  const contentIds = ['api-keys', 'user-info', 'local-models'];
+  const contentIds = ['api-keys', 'user-info', 'local-models', 'system-prompt'];
   const options = document.querySelectorAll('.settings-option');
 
   // Loop through all content divs
@@ -805,6 +830,8 @@ function showSettingsContent(selectedId) {
           getUserName(); // Call this function to populate the user's name input field
     } else if (id === "api-keys") {
         getApiKeys();
+    } else if (id === "system-prompt") {
+        populateSystemPrompts();
     }
   });
 }
@@ -885,4 +912,73 @@ function saveUserName() {
     console.error('Error saving user name:', error);
     alert('Failed to save user name.');
   });
+}
+
+async function populateSystemPrompts() {
+  try {
+    const response = await fetch('/get_sys_prompts');
+    const prompts = await response.json();
+    const promptList = document.getElementById('system-prompt-list');
+    promptList.innerHTML = ''; // Clear the list before adding new items
+
+    // Loop through conversations and prepend them to the list
+    prompts.reverse().forEach(prompt => prependSysPrompt(prompt));
+  } catch (error) {
+    console.error('Failed to load recent conversations:', error);
+  }
+}
+
+function prependSysPrompt(prompt) {
+  const promptList = document.getElementById('system-prompt-list');
+  const listItem = document.createElement('li');
+  listItem.className = 'conversation-item';
+  listItem.id = prompt.id; // Assuming conversation["id"] is the ID
+
+  listItem.innerHTML = `
+    <span class="title-text">${prompt.title.replace(/\\/g, '')}</span>
+    <div class="conversation-toolbar">
+      <button class="conversation-options-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-md">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12ZM10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12ZM17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12Z" fill="black"/>
+        </svg>
+      </button>
+      <div class="options-bar" style="display: none;">
+        <div class="delete-option">Delete</div>
+      </div>
+    </div>`;
+
+  const optionsBtn = listItem.querySelector('.conversation-options-btn');
+  const optionsBar = listItem.querySelector('.options-bar');
+
+
+  optionsBtn.addEventListener('click', (event) => {
+    const isDisplayed = optionsBar.style.display !== 'none';
+    optionsBar.style.display = isDisplayed ? 'none' : 'block';
+    listItem.classList.toggle('options-bar-visible', !isDisplayed);
+    event.stopPropagation();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!listItem.contains(event.target)) {
+      optionsBar.style.display = 'none';
+      listItem.classList.remove('options-bar-visible');
+    }
+  });
+
+    // Add event listener for Delete option
+    const deleteOption = listItem.querySelector('.delete-option');
+    deleteOption.addEventListener('click', function() {
+      // Call the delete function
+      deleteConversation(prompt.id);
+
+      // Find the nearest ancestor .conversation-item element and remove it from the DOM
+      const conversationItem = this.closest('.conversation-item');
+      if (conversationItem) {
+        conversationItem.remove();
+      }
+    });
+
+  listItem.setAttribute('onclick', `selectConversation('${prompt.id}')`);
+
+  promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
 }

@@ -721,3 +721,34 @@ textarea:focus {
 .settings-option.active {
   background-color: lightgrey; /* Even darker or different color for active state */
 }
+
+#system-prompt {
+  display: block;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+#system-prompt-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#system-prompt-list li {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+#title-textbox,
+#system-prompt-textbox {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+#system-prompt-textbox {
+  height: 150px;
+}
+
+
