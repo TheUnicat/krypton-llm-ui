@@ -6,6 +6,8 @@ models
 /krypton_storage/temp_image_storage.json
 .DS_Store
 **/__pycache__/
+**/ __pycache__/
 **/*.pyc
+/apis/__pycache__/openai_chat.cpython-311.pyc
 /krypton_storage/system_prompts.json
 /krypton_storage/settings.json
