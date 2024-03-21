@@ -764,55 +764,69 @@ function showElements() {
     }
 
 var modalContentHTML = `
-<div style="display: flex; height: 100%;">
-  <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
-    <div class="settings-option" onclick="showSettingsContent('api-keys')">API Keys</div>
-    <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
-    <div class="settings-option" onclick="showSettingsContent('system-prompt')">System Prompt</div>
-    <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
+<div style="display: flex; flex-direction: column; height: 100%; padding: 0px;">
+  <div id="settings-title" style="border-bottom: 1px solid #ccc; font-size: 1.125rem; padding: 10px;">
+    Settings
   </div>
-  <div style="flex: 3; padding: 10px;">
-    <div id="api-keys" style="display: block;">
-      <h2>API Keys</h2>
-      <p>OpenAI: <input id="openai-api-key" type="text" placeholder="Enter OpenAI API Key" /></p>
-      <p>Fireworks: <input id="fireworks-api-key" type="text" placeholder="Enter Fireworks API Key" /></p>
-      <p>Anthropic: <input id="anthropic-api-key" type="text" placeholder="Enter Anthropic API Key" /></p>
-      <button onclick="saveApiKeys()">Save</button>
+  <div style="display: flex; flex: 1;">
+    <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
+      <div class="settings-option" onclick="showSettingsContent('api-keys')">API Keys</div>
+      <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
+      <div class="settings-option" onclick="showSettingsContent('system-prompt')">System Prompt</div>
+      <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
     </div>
-    <div id="user-info" style="display: none;">
-      <h2>User Info</h2>
-      <p>Name: <input type="text" id="user-name" placeholder="Enter Name" /></p>
+    <div style="flex: 3; padding: 10px;">
+      <div id="api-keys" class="settings-content" style="display: block;">
+        <div class="input-container-settings">
+          <label for="openai-api-key">OpenAI API Key:</label>
+          <textarea id="openai-api-key" class="user-input-settings" placeholder="Enter OpenAI API Key"></textarea>
+        </div>
+        <div class="input-container-settings">
+          <label for="fireworks-api-key">Fireworks API Key:</label>
+          <textarea id="fireworks-api-key" class="user-input-settings" placeholder="Enter Fireworks API Key"></textarea>
+        </div>
+        <div class="input-container-settings">
+          <label for="anthropic-api-key">Anthropic API Key:</label>
+          <textarea id="anthropic-api-key" class="user-input-settings" placeholder="Enter Anthropic API Key"></textarea>
+        </div>
+        <button onclick="saveApiKeys()">Save</button>
+      </div>
+      <div id="user-info" class="settings-content" style="display: none;">
+        <div class="input-container-settings">
+          <label for="user-name">Name:</label>
+          <textarea id="user-name" class="user-input-settings" placeholder="Enter Name"></textarea>
+        </div>
         <button onclick="saveUserName()">Save</button>
-    </div>
-    
-    <div id="system-prompt" style="display: block; border: 1px solid #ccc; padding: 20px; margin-top: 20px;">
-      <h2>System Prompt</h2>
+      </div>
       
-      <!-- The dynamically populated list will go here -->
-      <ul id="system-prompt-list" style="list-style-type: none; padding: 0;">
-        <!-- Example: <li id="prompt1">System Prompt 1</li> -->
-      </ul>
-      
-      <!-- Title Textbox -->
-      <input type="text" id="title-textbox" placeholder="Enter Title" style="width: 100%; padding: 10px; margin: 10px 0;"/>
-      
-      <!-- System Prompt Textbox -->
-      <textarea id="system-prompt-textbox" placeholder="Enter System Prompt" style="width: 100%; padding: 10px; margin-bottom: 10px; height: 150px;"></textarea>
-      
-      <!-- Save Button -->
-      <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
-      
-      <!-- Select Button -->
-      <button id="select-prompt" onclick="activateSysPrompt()">Select</button>
-    </div>
+      <div id="system-prompt" class="settings-content">
+        <ul id="system-prompt-list" style="list-style-type: none; padding: 0;">
+          <!-- Dynamically populated list -->
+        </ul>
+        
+        <div class="input-container-settings">
+          <label for="title-textbox">Title:</label>
+          <textarea id="title-textbox" class="user-input-settings" placeholder="Enter Title"></textarea>
+        </div>
+        <div class="input-container-settings">
+          <label for="system-prompt-textbox">System Prompt:</label>
+          <textarea id="system-prompt-textbox" class="user-input-settings" placeholder="Enter System Prompt"></textarea>
+        </div>
+        
+        <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
+        <button id="select-prompt" onclick="activateSysPrompt()">Select</button>
+      </div>
 
-    <div id="local-models" style="display: none;">
-      <h2>Local Models</h2>
-      <p>No local models available for now.</p>
+      <div id="local-models" class="settings-content" style="display: none;">
+        <p>No local models available for now.</p>
+      </div>
     </div>
   </div>
 </div>
 `;
+
+
+
 
 function showSettingsContent(selectedId) {
   const contentIds = ['api-keys', 'user-info', 'system-prompt', 'local-models'];

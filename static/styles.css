@@ -119,7 +119,6 @@ body, html {
   padding-right: 4%;
   padding-left: 4%;
   font-size: 15px;
-  z-index: -1;
 }
 
 textarea {
@@ -245,6 +244,7 @@ textarea {
   cursor: pointer; /* To indicate it's clickable */
   left: 22%;
   bottom: 18px;
+  z-index: 5;
 }
 
 /* To ensure the button doesn't have any outline when focused, for aesthetic purposes */
@@ -554,9 +554,7 @@ textarea:focus {
 
 .modal-content {
   display: none;
-  padding: 15px;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding: 0px;
 }
 
 .close-button {
@@ -704,9 +702,8 @@ textarea:focus {
 }
 
 .settings-option {
-  font-weight: 600;
-  font-size: 1.1em; /* Slightly larger text */
-  padding: 12px 20px; /* Add padding for a larger click area and spacing */
+  font-size: .875rem; /* Slightly smaller text */
+  padding: 5px; /* Add padding for a larger click area and spacing */
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: none;
@@ -723,10 +720,7 @@ textarea:focus {
 }
 
 #system-prompt {
-  display: block;
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin-top: 20px;
+  display: none;
 }
 
 #system-prompt-list {
@@ -751,4 +745,60 @@ textarea:focus {
   height: 150px;
 }
 
+#settings-title {
+  padding: 20px;
 
+  font-weight: 600;
+  border-bottom: 1px solid lightgrey;
+  font-size: 1.125rem;
+  margin: 0px;
+}
+
+
+.settings-content {
+  display: flex; /* This ensures content within is properly aligned */
+  flex-direction: column; /* Stack children vertically */
+    margin: 25px;
+
+}
+
+.user-input-settings {
+  white-space: nowrap;
+}
+
+.input-container-settings {
+  display: flex;
+  align-items: center; /* Vertically centers the label and input */
+  gap: 10px; /* Spacing between label and input */
+  margin-bottom: 15px; /* Space between each input-container */
+}
+
+.user-input-settings {
+  width: 30%;
+  height: 25px;
+  padding: 10px 2%; /* Adjusted padding */
+  border: none; /* Remove border */
+  border-radius: 15px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 0.875rem;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Keeps content on one line */
+  box-shadow: none; /* Initially no shadow */
+  transition: box-shadow 0.3s; /* Smooth transition for focus */
+}
+
+.user-input-settings:focus {
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2); /* Inner shadow on focus */
+  outline: none; /* Remove the default focus outline */
+}
+
+.input-container-settings:not(:focus-within)::after {
+  content: '';
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none; /* Allows clicks to pass through */
+  background: linear-gradient(to right, transparent, #f0f0f0); /* Shadow falloff effect */
+}
