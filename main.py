@@ -5,7 +5,7 @@ from initialize_krypton import initialize
 
 initialize()
 
-
+from utils import prompt_utils
 import storage
 import ai
 import image_storage
@@ -19,6 +19,11 @@ app.register_blueprint(key_storage_bp)
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.route('/get_sys_prompts')
+def get_sys_prompts():
+    return prompt_utils.fetch_sys_prompts()
 
 @app.route('/get_recent_conversations')
 def get_recent_conversations():
