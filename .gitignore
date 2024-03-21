@@ -11,3 +11,4 @@ models
 **/ __pycache__/
 **/*.pyc
 /apis/__pycache__/openai_chat.cpython-311.pyc
+patch_script.py
