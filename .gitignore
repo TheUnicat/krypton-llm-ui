@@ -4,10 +4,10 @@ models
 /krypton_storage/test_mode.json
 /krypton_storage/image_storage.json
 /krypton_storage/temp_image_storage.json
+/krypton_storage/system_prompts.json
+/krypton_storage/settings.json
 .DS_Store
 **/__pycache__/
 **/ __pycache__/
 **/*.pyc
 /apis/__pycache__/openai_chat.cpython-311.pyc
-/krypton_storage/system_prompts.json
-/krypton_storage/settings.json
