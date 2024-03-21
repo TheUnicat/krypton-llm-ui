@@ -1,5 +1,6 @@
 import os
 import json
+from storage import generate_id
 
 def fetch_sys_prompts():
     ids = find_recent_prompt_ids()
@@ -74,3 +75,22 @@ def retrieve_current_sys_prompt():
         settings = json.load(file)
 
     return settings['current_sys_prompt']
+
+def update_or_add_system_prompt(id=None, title=None, text=None):
+    filepath = 'krypton_storage/system_prompts.json'
+    with open(filepath, 'r+') as file:
+        prompts = json.load(file)
+
+        if id is None:
+            id = generate_id()
+
+        prompts[id] = {
+            "title": title,
+            "prompt": text
+        }
+
+        file.seek(0)  # Go to the beginning of the file
+        json.dump(prompts, file, indent=4)
+        file.truncate()  # Remove remaining part of the old content
+
+    return id

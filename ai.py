@@ -3,6 +3,7 @@ import json
 import storage
 from utils import model_utils
 from utils.settings_utils import get_test_mode
+from utils import prompt_utils
 
 from apis.openai_chat import openai_complete
 from apis.test_chat import test_complete
@@ -28,6 +29,12 @@ def format_to_chat(model, prompt, conversation_id, message_id, image_data):
             }
         )
 
+    current_sys_prompt = prompt_utils.retrieve_current_sys_prompt()
+    system_prompt = None
+
+    if current_sys_prompt and current_sys_prompt.lower().strip() != "null" and current_sys_prompt.lower().strip() != "none":
+        system_prompt = prompt_utils.retrieve_sys_prompt(current_sys_prompt)["prompt"]
+
     if test_mode:
         return test_complete(model, messages)
 
@@ -39,7 +46,7 @@ def format_to_chat(model, prompt, conversation_id, message_id, image_data):
     complete_function = globals().get(function_name)
 
     if complete_function:
-        return complete_function(model, messages) if image_data == [] else complete_function(model, messages, image_data)
+        return complete_function(model, messages, image_data, system_prompt=system_prompt)
     else:
         raise ValueError(f"No completion function found for API: {model_api}")
 

@@ -20,10 +20,55 @@ app.register_blueprint(key_storage_bp)
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
+@app.route('/update_system_prompt', methods=['POST'])
+def handle_update_system_prompt():
+    data = request.json
+    id = data.get('id')
+    title = data.get('title')
+    text = data.get('text')
+
+    if not title or not text:
+        return jsonify({"error": "Title and text are required."}), 400
+
+    try:
+        new_id = prompt_utils.update_or_add_system_prompt(id=id, title=title, text=text)
+        return jsonify({"success": True, "id": new_id}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/get_sys_prompts')
 def get_sys_prompts():
     return prompt_utils.fetch_sys_prompts()
+
+@app.route('/delete_sys_prompt')
+def delete_sys_prompt():
+    id = request.args.get('id')
+    prompt_utils.delete_sys_prompt(id)
+    return "200"
+
+@app.route('/retrieve_sys_prompt')
+def retrieve_sys_prompt():
+    # Assume we have a function to get prompt by ID
+    id = request.args.get('id')
+    prompt = prompt_utils.retrieve_sys_prompt(id)
+
+    return jsonify(prompt)
+
+
+@app.route('/select_sys_prompt')
+def handle_select_sys_prompt():
+    prompt_id = request.args.get('id')
+    try:
+        # Update the system prompt setting
+        if prompt_utils.select_sys_prompt(prompt_id):
+            return jsonify({"success": True}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/retrieve_current_sys_prompt')
+def retrieve_current_sys_prompt():
+    prompt_id = request.args.get('id')
+    return jsonify(prompt_utils.retrieve_current_sys_prompt())
 
 @app.route('/get_recent_conversations')
 def get_recent_conversations():
