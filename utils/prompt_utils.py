@@ -31,8 +31,9 @@ def retrieve_sys_prompt(id):
 
     return None
 
-
 def delete_sys_prompt(prompt_id):
+    print(prompt_id)
+    print("deelting")
     # Load the conversation data from the JSON file
     with open('krypton_storage/system_prompts.json', 'r') as file:
         prompts = json.load(file)
@@ -49,3 +50,27 @@ def delete_sys_prompt(prompt_id):
             with open('krypton_storage/system_prompts.json', 'w') as file:
                 json.dump(prompts, file, indent=4)
             break  #
+
+
+def select_sys_prompt(id):
+    settings_path = 'krypton_storage/settings.json'
+    # Ensure the directory exists
+    with open(settings_path, 'r') as file:
+        settings = json.load(file)
+
+    # Update the current_sys_prompt
+    settings['current_sys_prompt'] = id
+
+    # Save the updated settings
+    with open(settings_path, 'w') as file:
+        json.dump(settings, file, indent=4)
+
+    return True
+
+def retrieve_current_sys_prompt():
+    settings_path = 'krypton_storage/settings.json'
+    # Ensure the directory exists
+    with open(settings_path, 'r') as file:
+        settings = json.load(file)
+
+    return settings['current_sys_prompt']
