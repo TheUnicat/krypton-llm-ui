@@ -1037,7 +1037,46 @@ function clearSysPrompt() {
   }
 
   document.getElementById("title-textbox").value = "";
+  localStorage.removeItem("promptId");
   document.getElementById("system-prompt-textbox").value = "";
+}
 
+async function updateOrCreateSystemPrompt(title, text, id=null) {
+  const url = '/update_system_prompt';
+  const payload = { id, title, text };
 
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+}
+
+async function saveSystemPrompt() {
+    const id = await updateOrCreateSystemPrompt(document.getElementById("title-textbox").value,
+        document.getElementById("system-prompt-textbox").value,
+        localStorage.getItem("promptId"));
+
+    if (localStorage.getItem("promptId") == null || localStorage.getItem("promptId") == undefined) {
+        prependSysPrompt({
+            "id": id,
+            "title": document.getElementById("title-textbox").value,
+            "prompt": document.getElementById("system-prompt-textbox").value
+        });
+
+        localStorage.setItem("promptId", id);
+    }
 }
