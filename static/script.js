@@ -841,8 +841,6 @@ function showSettingsContent(selectedId) {
   });
 }
 
-
-
 // Function to get the API keys from the backend
 function getApiKeys() {
   fetch('/api/keys')
@@ -1030,7 +1028,6 @@ async function getCurrentSysPrompt() {
 }
 
 function clearSysPrompt() {
-  const promptContainer = document.getElementById("system-prompt-list")
   try {
       document.getElementById(localStorage.getItem("promptId")).classList.remove("is-current-conversation");
   } catch {
@@ -1053,10 +1050,6 @@ async function updateOrCreateSystemPrompt(title, text, id=null) {
       },
       body: JSON.stringify(payload),
     });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok.');
-    }
 
     const data = await response.json();
     console.log(data);
