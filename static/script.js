@@ -810,7 +810,13 @@ var modalContentHTML = `
         </div>
         <div class="input-container-settings">
           <label for="system-prompt-textbox">System Prompt:</label>
-          <textarea id="system-prompt-textbox" class="user-input-settings" placeholder="Enter System Prompt"></textarea>
+          <textarea id="system-prompt-textbox" class="user-input-settings" style="  
+          
+          white-space: pre-wrap;
+            overflow-x: hidden;
+            overflow-y: auto;" 
+            
+            placeholder="Enter System Prompt"></textarea>
         </div>
         
         <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
@@ -824,8 +830,6 @@ var modalContentHTML = `
   </div>
 </div>
 `;
-
-
 
 
 function showSettingsContent(selectedId) {
