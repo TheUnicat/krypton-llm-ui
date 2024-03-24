@@ -587,34 +587,33 @@ textarea:focus {
 }
 
 .file-preview {
-  display: flex;
-  align-items: center;
+  position: relative;
+  width: 6%; /* Adjusted for image preview size */
+  height: auto;
   margin: 10px;
-  padding: 5px;
   border: 1px solid grey;
   border-radius: 10px;
-  background-color: lightgrey;
+  overflow: hidden; /* Ensures image stays within the boundaries */
 }
 
-.file-name {
-  margin-left: 10px;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 14px;
+.image-preview {
+  width: 100%;
+  height: auto; /* Maintains aspect ratio */
+  display: block; /* Removes bottom space/margin */
 }
 
 .close-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  border-radius: 50%;
-  color: white;
-  font-size: 12px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  background-color: transparent;
+  color: grey;
   cursor: pointer;
-  margin-left: auto; /* Pushes the button to the right */
 }
+
+/* Adjust .file-name style if you're keeping it for other purposes */
+
 
 .preview-container {
   display: flex; /* Initially hidden */
@@ -624,8 +623,11 @@ textarea:focus {
   justify-content: flex-start;
   left: 21%;
   bottom: 80%;
-  background-color: #f0f0f0; /* Very light grey */
   border-radius: 8px 8px 0 0; /* Rounded corners on the top */
+    border: 1px black;
+      background-color: white;
+    border-bottom: none;
+  margin-bottom: -10px;
 }
 
 #main-container {

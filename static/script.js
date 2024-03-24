@@ -680,36 +680,43 @@ document.getElementById('fileInputButton').addEventListener('change', function()
   var files = fileInput.files;
   var previewContainer = document.getElementById('previewContainer');
 
-
   // Show or hide the preview container based on file selection
   previewContainer.style.display = files.length > 0 ? 'flex' : 'none';
 
+  // Clear existing previews
+  previewContainer.innerHTML = '';
+
   // Create previews for selected files
-  Array.from(files).forEach(file => {
-    if(file.type === "image/png" || file.type === "image/jpeg") {
-      var filePreview = document.createElement('div');
-      filePreview.className = 'file-preview';
+Array.from(files).forEach(file => {
+  if(file.type === "image/png" || file.type === "image/jpeg") {
+    var filePreview = document.createElement('div');
+    filePreview.className = 'file-preview';
 
-      var fileName = document.createElement('span');
-      fileName.className = 'file-name';
-      fileName.textContent = file.name;
+    var imagePreview = document.createElement('img');
+    imagePreview.className = 'image-preview';
+    imagePreview.src = URL.createObjectURL(file);
 
-      var closeBtn = document.createElement('div');
-      closeBtn.className = 'close-btn';
-      closeBtn.textContent = '×';
-      closeBtn.onclick = function() {
-        // Logic to handle removing individual file previews
-        filePreview.remove();
-        // Additional logic needed to adjust file input if removing specific files
-        // Consideration needed for managing fileInput.files since it's a read-only property
-      };
+    // Ensure the image loads before setting height
+    imagePreview.onload = function() {
+      var width = imagePreview.offsetWidth;
+      imagePreview.style.height = `${width}px`; // Set height equal to width
+    };
 
-      filePreview.appendChild(closeBtn);
-      filePreview.appendChild(fileName);
-      previewContainer.appendChild(filePreview);
-    }
+    filePreview.appendChild(imagePreview);
+
+    var closeBtn = document.createElement('div');
+    closeBtn.className = 'close-btn';
+    closeBtn.textContent = '×';
+    closeBtn.onclick = function() {
+      filePreview.remove();
+    };
+
+    filePreview.appendChild(closeBtn);
+    previewContainer.appendChild(filePreview);
+  };
   });
 });
+
 
 async function uploadImages() {
   const fileInput = document.getElementById('fileInputButton');
