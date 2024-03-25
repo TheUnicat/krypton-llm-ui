@@ -119,6 +119,7 @@ body, html {
   padding-right: 4%;
   padding-left: 4%;
   font-size: 15px;
+  z-index: -5;
 }
 
 textarea {
@@ -127,9 +128,10 @@ textarea {
   transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus styles */
 }
 
-.user-input:focus {
+/*make styles for focus within both textareas and divs in input container*/
+.input-container:focus-within textarea, .input-container:focus-within div {
   border-color: #999; /* Darken the border a bit */
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Subtle outer shadow */
+
 }
 
 @media (max-width: 600px) {
@@ -234,6 +236,7 @@ textarea {
     border: none; /* Removes the border from the button */
     font-size: 16px; /* Increases the font size inside the button */
     bottom: 18px;
+    z-index: 5;
 }
 
 .attachmentBtn {
@@ -618,16 +621,28 @@ textarea:focus {
 .preview-container {
   display: flex; /* Initially hidden */
   flex-wrap: wrap;
-  width: 57%;
+  width: 57.2%;
   position: absolute;
   justify-content: flex-start;
   left: 21%;
-  bottom: 80%;
-  border-radius: 8px 8px 0 0; /* Rounded corners on the top */
-    border: 1px black;
-      background-color: white;
+  bottom: 78%;
+  padding-bottom: 20px;
     border-bottom: none;
+
+  border-top: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+  border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  font-family: 'Noto Sans', sans serif;
   margin-bottom: -10px;
+    z-index: 1;
+    background-color: white;
+}
+
+/* hide bottom border for preview container on focus */
+.preview-container:focus-within {
+  border-bottom: none;
 }
 
 #main-container {
