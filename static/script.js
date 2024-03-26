@@ -675,47 +675,59 @@ document.getElementById('prompt').addEventListener('input', function() {
   adjustTextareaHeight(this);
 });
 
-document.getElementById('fileInputButton').addEventListener('change', function() {
-  var fileInput = document.getElementById('fileInputButton');
-  var files = fileInput.files;
+let selectedFiles = []; // Array to keep track of files
+
+document.getElementById('fileInputButton').addEventListener('change', function(event) {
+  // Add new files to the array
+  for (let file of event.target.files) {
+    selectedFiles.push(file);
+  }
+  updatePreviews();
+});
+
+function updatePreviews() {
   var previewContainer = document.getElementById('previewContainer');
 
-  // Show or hide the preview container based on file selection
-  previewContainer.style.display = files.length > 0 ? 'flex' : 'none';
+  previewContainer.style.display = selectedFiles.length > 0 ? 'flex' : 'none';
+  previewContainer.innerHTML = ''; // Clear existing previews
 
-  // Clear existing previews
-  previewContainer.innerHTML = '';
+  selectedFiles.forEach((file, index) => {
+    if (file.type === "image/png" || file.type === "image/jpeg") {
+      var filePreview = document.createElement('div');
+      filePreview.className = 'file-preview';
 
-  // Create previews for selected files
-Array.from(files).forEach(file => {
-  if(file.type === "image/png" || file.type === "image/jpeg") {
-    var filePreview = document.createElement('div');
-    filePreview.className = 'file-preview';
+      var imagePreview = document.createElement('img');
+      imagePreview.className = 'image-preview';
+      imagePreview.src = URL.createObjectURL(file);
 
-    var imagePreview = document.createElement('img');
-    imagePreview.className = 'image-preview';
-    imagePreview.src = URL.createObjectURL(file);
+      imagePreview.onload = function() {
+          var width = imagePreview.offsetWidth;
+          imagePreview.style.height = `${width}px`; // Set height equal to width
+        };
 
-    // Ensure the image loads before setting height
-    imagePreview.onload = function() {
-      var width = imagePreview.offsetWidth;
-      imagePreview.style.height = `${width}px`; // Set height equal to width
-    };
+      filePreview.appendChild(imagePreview);
 
-    filePreview.appendChild(imagePreview);
+      var closeBtn = document.createElement('div');
+      closeBtn.className = 'close-btn';
+      closeBtn.textContent = '×';
+      closeBtn.onclick = () => removeFile(index);
+      filePreview.appendChild(closeBtn);
 
-    var closeBtn = document.createElement('div');
-    closeBtn.className = 'close-btn';
-    closeBtn.textContent = '×';
-    closeBtn.onclick = function() {
-      filePreview.remove();
-    };
-
-    filePreview.appendChild(closeBtn);
-    previewContainer.appendChild(filePreview);
-  };
+      previewContainer.appendChild(filePreview);
+    }
   });
-});
+}
+
+function removeFile(indexToRemove) {
+  selectedFiles.splice(indexToRemove, 1); // Remove the file from the array
+  updatePreviews(); // Refresh the file previews
+}
+
+function resetInput() {
+  document.getElementById('fileInputButton').value = ''; // Reset input to allow adding the same file after removal
+}
+
+
 
 
 async function uploadImages() {
