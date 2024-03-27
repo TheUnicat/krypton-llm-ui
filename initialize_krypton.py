@@ -44,7 +44,9 @@ def initialize():
         secrets_content = {
             "openai": "Your openai api key here",
             "fireworks": "Your fireworks api key here",
-            "anthropic": "Your anthropic api key here"
+            "anthropic": "Your anthropic api key here",
+            "google": "Your google api key here",
+            "discord_bot_token": "You discord bot token here"
         }
         with open(secrets_path, 'w') as file:
             json.dump(secrets_content, file, indent=4)
