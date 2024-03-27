@@ -88,7 +88,8 @@ const imagePaths = {
     "You": "you.jpg",
     "Claude": "claude.png",
     "Fireworks": "fireworks.png",
-    "FireFunction": "fireworks.png"
+    "Llama": "fireworks.png",
+    "Gemini": "gemini.png"
 };
 
 function addEditButton(targetElement) {

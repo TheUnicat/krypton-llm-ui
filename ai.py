@@ -10,6 +10,7 @@ from apis.test_chat import test_complete
 from apis.local_chat import local_complete
 from apis.fireworks_chat import fireworks_complete
 from apis.anthropic_chat import anthropic_complete
+from apis.google_chat import google_complete
 
 test_mode = get_test_mode()
 

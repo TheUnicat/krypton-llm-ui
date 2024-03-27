@@ -57,6 +57,18 @@
       }
     }
   },
+  "Google": {
+    "api": "google",
+    "Gemini": {
+      "Pro": {
+        "name": "gemini-1.0-pro",
+        "vision": true,
+        "path": null,
+        "input_cost": 0,
+        "output_cost": 0
+      }
+    }
+  },
   "Local": {
     "api": "local",
     "MrEagle": {
