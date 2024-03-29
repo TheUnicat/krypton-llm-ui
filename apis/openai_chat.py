@@ -1,6 +1,9 @@
 from openai import OpenAI
 import json
 from utils import model_utils
+from tools.discord_tool import send_message_to_user, read_messages_from_dm
+
+print("hi")
 
 with open("krypton_storage/secrets.json", "r") as file:
     openai_key = json.load(file)["openai"]
@@ -8,7 +11,7 @@ with open("krypton_storage/secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-def openai_complete(model, messages, images=[], max_tokens=4096, system_prompt=None):
+async def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt=None, tools=None):
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present
@@ -56,12 +59,57 @@ def openai_complete(model, messages, images=[], max_tokens=4096, system_prompt=N
         }
         )
 
+    print(tools)
     completion = client.chat.completions.create(
         model=model_name,
         messages=updated_messages,
         stream=True,
-        max_tokens=max_tokens
+        max_tokens=max_tokens,
+        tools=tools
     )
 
+    # Initialize variables to store streaming text content and function call details
+    # Define variables to hold the streaming content and function call details
+    function_call = {"name": "", "arguments": {}}
+    argument_values_str = ""  # Accumulate all argument values in this string
+
     for chunk in completion:
-        yield chunk.choices[0].delta.content
+        print(chunk)  # For logging/debugging
+
+        # Yield content if present
+        if chunk.choices[0].delta.content:
+            yield chunk.choices[0].delta.content
+
+        tool_calls = chunk.choices[0].delta.tool_calls if chunk.choices[0].delta.tool_calls else []
+        for tool_call in tool_calls:
+            # Check for function name
+            if tool_call.function.name:
+                function_call["name"] = tool_call.function.name
+
+            # Accumulate argument fragments
+            if tool_call.function.arguments is not None:
+                argument_values_str += tool_call.function.arguments
+
+    print(argument_values_str)
+    # Try to parse the accumulated argument values string into a dictionary
+    try:
+        if argument_values_str:
+            # Ensure the string is a valid JSON object
+            # This may need adjustment depending on how the fragments are formatted
+            function_call["arguments"] = json.loads(argument_values_str)
+    except json.JSONDecodeError as e:
+
+        print(f"Error parsing arguments JSON: {e}")
+
+    # After processing all chunks, print the function call details
+    if function_call["name"]:
+        print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
+    else:
+        print("No function call in the response.")
+
+    if function_call["name"] == "send_message":
+        await send_message_to_user(function_call["arguments"]["username"], function_call["arguments"]["message"])
+    elif function_call["name"] == "read_messages":
+        messages = await read_messages_from_dm(function_call["arguments"]["username"], function_call["arguments"]["n"])
+        yield messages
+
