@@ -10,7 +10,7 @@ client = anthropic.Anthropic(
 )
 
 
-def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None):
+def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present

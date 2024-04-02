@@ -794,6 +794,7 @@ var modalContentHTML = `
       <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
       <div class="settings-option" onclick="showSettingsContent('system-prompt')">System Prompt</div>
       <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
+      <div class="settings-option" onclick="showSettingsContent('tools')">Tools</div>
     </div>
     <div style="flex: 3; padding: 10px;">
       <div id="api-keys" class="settings-content" style="display: block;">
@@ -846,6 +847,12 @@ var modalContentHTML = `
       <div id="local-models" class="settings-content" style="display: none;">
         <p>No local models available for now.</p>
       </div>
+      
+      <div id="tools" class="settings-content" style="display: none;">
+        <ul id="tool-list" style="list-style-type: none; padding: 0;">
+          <!-- Dynamically populated list -->
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -853,7 +860,7 @@ var modalContentHTML = `
 
 
 function showSettingsContent(selectedId) {
-  const contentIds = ['api-keys', 'user-info', 'system-prompt', 'local-models'];
+  const contentIds = ['api-keys', 'user-info', 'system-prompt', 'local-models', 'tools'];
   const options = document.querySelectorAll('.settings-option');
 
   // Loop through all content divs
@@ -875,6 +882,8 @@ function showSettingsContent(selectedId) {
     } else if (id === "system-prompt") {
         getCurrentSysPrompt();
         populateSystemPrompts();
+    } else if (id === "tools") {
+        populateToolList();
     }
   });
 }
@@ -953,6 +962,19 @@ function saveUserName() {
     alert('Failed to save user name.');
   });
 }
+async function populateToolList() {
+  try {
+    const response = await fetch('/get_tools');
+    const tools = await response.json();
+    console.log(tools);
+    const toolList = document.getElementById('tool-list');
+    toolList.innerHTML = ''; // Clear the list before adding new items
+
+    tools.reverse().forEach(prompt => prependTool(prompt));
+  } catch (error) {
+    console.error('Failed to load tools:', error);
+  }
+}
 
 async function populateSystemPrompts() {
   try {
@@ -973,8 +995,19 @@ async function populateSystemPrompts() {
   }
 }
 
-function prependSysPrompt(prompt) {
+function prependTool(toolName) {
+  const toolList = document.getElementById('tool-list'); // Assuming this is the ID of your tool list
+  const listItem = document.createElement('li');
+  listItem.className = 'tool-item'; // Assign a class for styling if needed
+  listItem.textContent = toolName; // Setting the text content directly to the tool name
+
+  toolList.prepend(listItem); // Add the new tool item at the beginning of the list
+}
+
+
+function prependSysPrompt(prompt, tool=false) {
   const promptList = document.getElementById('system-prompt-list');
+  const toolList = document.getElementById('tool-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
   listItem.id = prompt.id; // Assuming conversation["id"] is the ID
@@ -1025,8 +1058,11 @@ function prependSysPrompt(prompt) {
     });
 
   listItem.setAttribute('onclick', `selectSysPrompt('${prompt.id}')`);
-
-  promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
+  if (tool) {
+    toolList.prepend(listItem);
+  } else {
+      promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
+  }
 }
 
 

@@ -1,7 +1,7 @@
 from openai import OpenAI
 import json
 from utils import model_utils
-from tools.discord_tool import send_message_to_user, read_messages_from_dm
+from utils import tool_utils
 
 print("hi")
 
@@ -11,7 +11,7 @@ with open("krypton_storage/secrets.json", "r") as file:
 client = OpenAI(api_key=openai_key)
 
 
-async def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt=None, tools=None):
+def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt=None, tools=None):
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present
@@ -106,10 +106,4 @@ async def openai_complete(model, messages, images=None, max_tokens=4096, system_
         print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
     else:
         print("No function call in the response.")
-
-    if function_call["name"] == "send_message":
-        await send_message_to_user(function_call["arguments"]["username"], function_call["arguments"]["message"])
-    elif function_call["name"] == "read_messages":
-        messages = await read_messages_from_dm(function_call["arguments"]["username"], function_call["arguments"]["n"])
-        yield messages
 
