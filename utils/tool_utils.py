@@ -2,31 +2,6 @@ import json
 tool_path = "krypton_storage/tools.json"
 tool_settings_path = "krypton_storage/tool_settings.json"
 
-from concurrent.futures import ThreadPoolExecutor
-import asyncio
-import threading
-
-
-# Define a function to run the event loop
-def start_loop(loop):
-    asyncio.set_event_loop(loop)
-    loop.run_forever()
-
-
-# Adjusted run_async to ensure the event loop runs
-def run_async(func, *args):
-    # Create a new event loop
-    new_loop = asyncio.new_event_loop()
-
-    # Start the new event loop in a separate thread
-    t = threading.Thread(target=start_loop, args=(new_loop,))
-    t.start()
-
-    # Now we can safely run the coroutine in the new event loop
-    future = asyncio.run_coroutine_threadsafe(func(*args), new_loop)
-    return future  # Returns immediately; does not wait for future completion
-
-
 def get_tools():
     with open(tool_path, "r") as file:
         tools = json.load(file)
