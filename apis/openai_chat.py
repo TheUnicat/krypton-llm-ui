@@ -2,6 +2,7 @@ from openai import OpenAI
 import json
 from utils import model_utils
 from utils import tool_utils
+from tools import tool_handler
 
 print("hi")
 
@@ -104,6 +105,7 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
     # After processing all chunks, print the function call details
     if function_call["name"]:
         print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
+        tool_handler(function_call["name"], function_call["arguments"])
     else:
         print("No function call in the response.")
 
