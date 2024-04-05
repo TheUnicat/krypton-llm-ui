@@ -11,6 +11,7 @@ import ai
 import image_storage
 from image_storage import process_and_store_images
 from utils.settings_utils import key_storage_bp
+from utils.tool_utils import get_tools
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -39,6 +40,10 @@ def handle_update_system_prompt():
 @app.route('/get_sys_prompts')
 def get_sys_prompts():
     return prompt_utils.fetch_sys_prompts()
+
+@app.route('/get_tools')
+def get_tools_route():
+    return jsonify(get_tools())
 
 @app.route('/delete_sys_prompt')
 def delete_sys_prompt():
