@@ -619,7 +619,7 @@ textarea:focus {
 
 
 .preview-container {
-  display: flex; /* Initially hidden */
+  display: none; /* Initially hidden */
   flex-wrap: wrap;
   width: 57.2%;
   position: absolute;

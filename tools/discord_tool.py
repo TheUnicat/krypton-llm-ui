@@ -57,7 +57,8 @@ def setup_client():
     @client.event
     async def on_ready():
         print(f'We have logged in as {client.user}')
-        #print(await read_messages_from_dm("quackcake"))
+
+
 async def find_user_id_by_username(username):
     print("hi")
     for guild in client.guilds:  # Iterate through each guild the bot is part of
