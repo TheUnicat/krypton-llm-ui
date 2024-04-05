@@ -1,49 +1,36 @@
 {
-  "discord": {
-    "send_message": {
+  "search": {
+    "google": {
       "type": "function",
       "function": {
-        "name": "send_message",
-        "description": "Sends a message to a discord user",
+        "name": "google",
+        "description": "Searches Google for the specified query and returns search results.",
         "parameters": {
           "type": "object",
           "properties": {
-            "username": {
+            "query": {
               "type": "string",
-              "description": "The user's username"
+              "description": "The search query to submit to Google."
             },
-            "message": {
-              "type": "string",
-              "description": "The message to send to the user"
-            }
-          },
-          "required": [
-            "username", "message"
-          ]
-        }
-      }
-    },
-
-    "read_messages": {
-      "type": "function",
-      "function": {
-        "name": "read_messages",
-        "description": "Fetch n messages from the dm history between the bot and the user",
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string",
-              "description": "The user's username"
-            },
-            "message_count": {
+            "num_results": {
               "type": "integer",
-              "description": "The number of messages to fetch, at least 5 is recommended"
+              "description": "The number of search results to return. Defaults to 10 if not specified."
+            },
+            "recency": {
+              "type": "string",
+              "description": "Optional parameter to filter results by recency. Valid values include 'hour', 'day', 'week', 'month', or 'year'."
+            },
+            "language": {
+              "type": "string",
+              "description": "Optional parameter to specify the language of the search results. Defaults to 'en' (English) if not specified."
+            },
+            "region": {
+              "type": "string",
+              "description": "Optional parameter to specify the regional domain for the search results. Defaults to 'US' if not specified."
             }
           },
           "required": [
-            "username",
-            "message_count"
+            "query"
           ]
         }
       }
