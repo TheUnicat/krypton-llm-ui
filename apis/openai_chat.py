@@ -2,7 +2,7 @@ from openai import OpenAI
 import json
 from utils import model_utils
 from utils import tool_utils
-from tools import tool_handler
+from tool_handling import tool_handler
 
 print("hi")
 
@@ -105,7 +105,11 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
     # After processing all chunks, print the function call details
     if function_call["name"]:
         print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
-        tool_handler(function_call["name"], function_call["arguments"])
+        result = tool_handler(function_call["name"], function_call["arguments"])
+        yield result
+        messages.append({"role": "assistant", "content": f"{function_call['name']} with arguments {function_call['arguments']}"})
+        messages.append({"role": "user", "content": result})
+        openai_complete(model, messages, [], max_tokens, system_prompt, tools)
     else:
         print("No function call in the response.")
 

@@ -2,9 +2,10 @@ import requests
 import json
 
 with open("krypton_storage/secrets.json", "r") as file:
-    google_key = json.load(file)["google"]
+    google_key = json.load(file)["google_search"]
 
-def google(query):
+def google(args):
+    query = args['query']
     endpoint = 'https://www.googleapis.com/customsearch/v1'
 
     try:
@@ -14,15 +15,15 @@ def google(query):
             'q': query
         })
 
+        print(response)
+
         if response.json().get('items'):
             return '<br>'.join([
                 f"<a href='{item['link']}' target='_blank'>{item['title']}</a><br>{item['snippet']}"
-                for item in response.json()['items'][:3]]), '<br><br>'.join([
-                f"<a href='{item['link']}' target='_blank'>{item['title']}</a><br>{item['snippet']}"
                 for item in response.json()['items'][:3]])
         else:
-            return 'No results found for the provided query.', 'No results found for the provided query.'
+            return 'No results found for the provided query.'
 
     except Exception as error:
         print('Error fetching search results:', error)
-        return 'An error occurred while fetching the search results.', 'An error occurred while fetching the search results.'
+        return 'An error occurred while fetching the search results.'

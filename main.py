@@ -139,6 +139,7 @@ def stream():
             for response in ai.format_to_chat(combined_model_info, prompt, conversation_id, message_id_for_edit, image_data):
                 if response:
                     # Replace newlines for correct client-side handling
+                    print(response)
                     response = response.replace("\n", "\\n")
                     accumulated_response += response
                     yield f"data: {accumulated_response}\n\n"
