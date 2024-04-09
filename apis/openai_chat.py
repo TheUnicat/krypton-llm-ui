@@ -75,7 +75,6 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
     argument_values_str = ""  # Accumulate all argument values in this string
 
     for chunk in completion:
-        print(chunk)  # For logging/debugging
 
         # Yield content if present
         if chunk.choices[0].delta.content:
@@ -107,9 +106,12 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
         print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
         result = tool_handler(function_call["name"], function_call["arguments"])
         yield result
+
         messages.append({"role": "assistant", "content": f"{function_call['name']} with arguments {function_call['arguments']}"})
         messages.append({"role": "user", "content": result})
-        openai_complete(model, messages, [], max_tokens, system_prompt, tools)
+        print(messages)
+        for chunk in openai_complete(model, messages, [], max_tokens, system_prompt, tools):
+            yield chunk
     else:
         print("No function call in the response.")
 
