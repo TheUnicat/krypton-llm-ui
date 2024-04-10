@@ -188,7 +188,7 @@ async function getAI(prompt, promptElement, messageId=null) {
           await prependConversationItem({ "id": localStorage.getItem("conversationId"), "title": data.new_title });
           eventSource.close();
           return;
-        }    else if (data.error) {
+        } else if (data.error) {
             let errorMessage = JSON.stringify(data.error);
             // Define the formatted error message with the error-box class
             let formattedErrorMessage = `<div class="error-box">${errorMessage}</div>`;
@@ -198,6 +198,13 @@ async function getAI(prompt, promptElement, messageId=null) {
 
              chatScrollToBottom();
             eventSource.close();
+        } else if (data.tool_result) {
+            console.log("Tool result");
+            console.log(data);
+            // Create a new tool block with the tool name, query, output, and isOpen flag
+            const toolBlock = createToolBlock(data.tool_name, data.query, data.tool_result, data.is_open);
+            // Append the tool block to the message content element
+            messageContentElement.appendChild(toolBlock);
         }
     } catch (error) {
         console.error(error);
@@ -256,6 +263,42 @@ function processText(text) {
     // Join all parts back together
     return parts.join('');
 }
+
+function createToolBlock(toolName, query, output, isOpen) {
+  // Create the main container
+  const container = document.createElement('div');
+  container.className = 'tool-container';
+
+  // Check if output is empty, set default loading text
+  if (!output) {
+    output = 'Loading...';
+  }
+
+  // Create and fill the header
+  const header = document.createElement('div');
+  header.className = 'tool-header';
+  header.textContent = `${toolName}: "${query}"`;
+  container.appendChild(header);
+
+  // Create and fill the output container
+  const outputContainer = document.createElement('div');
+  outputContainer.className = 'tool-output';
+  outputContainer.textContent = output;
+  container.appendChild(outputContainer);
+
+  // Initially open if required
+  if (isOpen) {
+    outputContainer.style.display = 'block';
+  }
+
+  // Event listener to toggle the output display
+  container.addEventListener('click', function() {
+    outputContainer.style.display = outputContainer.style.display === 'none' ? 'block' : 'none';
+  });
+
+  return container;
+}
+
 
 function applySyntaxHighlighting(codeBlock) {
     // Extract the code from within the triple backticks, and add a newline

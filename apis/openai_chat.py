@@ -104,12 +104,19 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
     # After processing all chunks, print the function call details
     if function_call["name"]:
         print(f"Function call requested: {function_call['name']} with arguments {function_call['arguments']}")
-        result = tool_handler(function_call["name"], function_call["arguments"])
-        yield result
+        result = None
+        for result_prototype in tool_handler(function_call["name"], function_call["arguments"]):
+            print(result_prototype)
+            print("IS RESULT")
+            yield f"data: {{\"tool_name\": \"{function_call['name']}\", \"query\": \"{function_call['arguments']}\", \"tool_result\": \"{result_prototype['result']}\", \"is_open\": {result_prototype['done']}}}\n\n"
+            result = result_prototype['result']
+
 
         messages.append({"role": "assistant", "content": f"{function_call['name']} with arguments {function_call['arguments']}"})
         messages.append({"role": "user", "content": result})
         print(messages)
+        import time
+        time.sleep(5)
         for chunk in openai_complete(model, messages, [], max_tokens, system_prompt, tools):
             yield chunk
     else:
