@@ -252,10 +252,13 @@ function processText(text) {
             modifiedText = modifiedText.replace(/\[TOOL_USE\](.*?)\[\/TOOL_USE\]/g, function(match, jsonString) {
             try {
                 // Decode the JSON string
-                const {toolName, query, output, isOpen} = JSON.parse(jsonString);
+                console.log(jsonString);
+                const {tool_name, query, tool_result, is_open} = JSON.parse(jsonString);
+
+                console.log(tool_name, query, tool_result, is_open);
 
                 // Call the function with the extracted values
-                const toolBlockOutput = createToolBlock(toolName, query, output, isOpen);
+                const toolBlockOutput = createToolBlock(tool_name, query, tool_result, is_open);
 
                 // Replace the original [TOOL_USE]...[/TOOL_USE] with the output of createToolBlock
                 return toolBlockOutput;
