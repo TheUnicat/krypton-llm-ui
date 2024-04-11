@@ -107,8 +107,9 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
         result = None
         for result_prototype in tool_handler(function_call["name"], function_call["arguments"]):
             print(result_prototype)
+            result_prototype = json.loads(result_prototype)
             print("IS RESULT")
-            yield f"data: {{\"tool_name\": \"{function_call['name']}\", \"query\": \"{function_call['arguments']}\", \"tool_result\": \"{result_prototype['result']}\", \"is_open\": {result_prototype['done']}}}\n\n"
+            yield f"[TOOL_USE]{{\"tool_name\": \"{function_call['name']}\", \"query\": \"{function_call['arguments']}\", \"tool_result\": \"{result_prototype['result']}\", \"is_open\": {json.dumps(result_prototype['done'])}}}[/TOOL_USE]\n\n"
             result = result_prototype['result']
 
 

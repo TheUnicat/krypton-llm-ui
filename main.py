@@ -138,13 +138,6 @@ def stream():
             yield f"data: {{\"conversation_id\": \"{conversation_id}\", \"message_id\": \"{message_id}\"}}\n\n"
             for response in ai.format_to_chat(combined_model_info, prompt, conversation_id, message_id_for_edit, image_data):
                 if response:
-                    #if response starts with data and response[5:] has tool_result, yield it individually
-                    try:
-                        response_json = json.loads(response[5:])
-                        if response_json.get("tool_result"):
-                            yield response
-                    except:
-                        pass
                     # Replace newlines for correct client-side handling
                     response = response.replace("\n", "\\n")
                     accumulated_response += response

@@ -19,9 +19,9 @@ def google(args):
 
         if response.json().get('items'):
             print("returning google results")
-            yield {"result": '<br>'.join([
+            yield json.dumps({"result": '<br>'.join([
                 f"<a href='{item['link']}' target='_blank'>{item['title']}</a><br>{item['snippet']}"
-                for item in response.json()['items'][:3]]), "done": True}
+                for item in response.json()['items'][:3]]), "done": True})
         else:
             yield {"result": 'No results found for the provided query.', "done": True}
 

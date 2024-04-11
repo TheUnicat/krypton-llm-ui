@@ -198,13 +198,6 @@ async function getAI(prompt, promptElement, messageId=null) {
 
              chatScrollToBottom();
             eventSource.close();
-        } else if (data.tool_result) {
-            console.log("Tool result");
-            console.log(data);
-            // Create a new tool block with the tool name, query, output, and isOpen flag
-            const toolBlock = createToolBlock(data.tool_name, data.query, data.tool_result, data.is_open);
-            // Append the tool block to the message content element
-            messageContentElement.appendChild(toolBlock);
         }
     } catch (error) {
         console.error(error);
@@ -255,6 +248,24 @@ function processText(text) {
             let modifiedText = match[2].replace(/\\n/g, '<br>');
             // Format text enclosed in *asterisks* as italic
             modifiedText = modifiedText.replace(/\*(.*?)\*/g, '<i>$1</i>');
+
+            modifiedText = modifiedText.replace(/\[TOOL_USE\](.*?)\[\/TOOL_USE\]/g, function(match, jsonString) {
+            try {
+                // Decode the JSON string
+                const {toolName, query, output, isOpen} = JSON.parse(jsonString);
+
+                // Call the function with the extracted values
+                const toolBlockOutput = createToolBlock(toolName, query, output, isOpen);
+
+                // Replace the original [TOOL_USE]...[/TOOL_USE] with the output of createToolBlock
+                return toolBlockOutput;
+            } catch (error) {
+                console.error("Error parsing JSON from TOOL_USE tag", error);
+                return ""; // Return an empty string or some error placeholder if parsing fails
+            }
+        });
+
+    // After processing, push the modifiedText into parts
             parts.push(modifiedText);
         }
 
@@ -265,38 +276,27 @@ function processText(text) {
 }
 
 function createToolBlock(toolName, query, output, isOpen) {
-  // Create the main container
-  const container = document.createElement('div');
-  container.className = 'tool-container';
+  // Set default loading text if output is empty
+  output = output || 'Loading...';
 
-  // Check if output is empty, set default loading text
-  if (!output) {
-    output = 'Loading...';
-  }
+  // Decide initial display style based on isOpen
+  let displayStyle = isOpen ? 'block' : 'none';
 
-  // Create and fill the header
-  const header = document.createElement('div');
-  header.className = 'tool-header';
-  header.textContent = `${toolName}: "${query}"`;
-  container.appendChild(header);
+  // Create the main container HTML
+  let containerHTML = `
+    <div class='tool-container' onclick='toggleOutputDisplay(this)'>
+      <div class='tool-header'>${toolName}: "${query}"</div>
+      <div class='tool-output' style='display: ${displayStyle};'>${output}</div>
+    </div>
+  `;
 
-  // Create and fill the output container
-  const outputContainer = document.createElement('div');
-  outputContainer.className = 'tool-output';
-  outputContainer.textContent = output;
-  container.appendChild(outputContainer);
+  return containerHTML;
+}
 
-  // Initially open if required
-  if (isOpen) {
-    outputContainer.style.display = 'block';
-  }
-
-  // Event listener to toggle the output display
-  container.addEventListener('click', function() {
-    outputContainer.style.display = outputContainer.style.display === 'none' ? 'block' : 'none';
-  });
-
-  return container;
+// The toggle function needs to be globally accessible
+function toggleOutputDisplay(container) {
+  const outputContainer = container.querySelector('.tool-output');
+  outputContainer.style.display = outputContainer.style.display === 'none' ? 'block' : 'none';
 }
 
 

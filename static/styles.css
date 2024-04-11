@@ -825,3 +825,47 @@ textarea:focus {
   pointer-events: none; /* Allows clicks to pass through */
   background: linear-gradient(to right, transparent, #f0f0f0); /* Shadow falloff effect */
 }
+
+/* General styles for the container */
+.tool-container {
+  background-color: #f0f0f0; /* light grey background */
+  border: 1px solid #d1d1d1; /* light grey border */
+  border-radius: 8px; /* rounded corners */
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.2s; /* smooth transform on hover */
+}
+
+/* Header styles for a nice color and padding */
+.tool-header {
+  background-color: #007bff; /* blue background */
+  color: white; /* white text */
+  padding: 8px 12px;
+  border-top-left-radius: 6px; /* rounded corners on the top */
+  border-top-right-radius: 6px;
+  cursor: pointer; /* indicates the header is clickable */
+}
+
+/* Output styles for padding and hidden by default */
+.tool-output {
+  padding: 8px 12px;
+  display: none; /* hidden by default, shown when clicked */
+  background-color: white; /* white background */
+  border-radius: 6px; /* rounded corners */
+  margin-top: 10px;
+}
+
+/* Hover effect for the header */
+.tool-header:hover {
+  background-color: #0056b3; /* a darker blue on hover */
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+  .tool-container {
+    padding: 5px;
+  }
+  .tool-header, .tool-output {
+    padding: 4px 8px;
+  }
+}
