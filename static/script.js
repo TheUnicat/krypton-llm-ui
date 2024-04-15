@@ -62,9 +62,6 @@ async function selectConversation(conversationId) {
         messageTextElement.appendChild(img);
     });
 
-      if (message.role === "You") {
-          addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
-      }
       messageElement.id = message.id;
 
       // Append the complete message element to the chat container
@@ -129,6 +126,9 @@ function appendMessage(author, text = null) {
   // Append the new message element with the edit button to the chat container
   chatMessagesContainer.append(messageElement);
   chatScrollToBottom();
+  if (author === "You") {
+    addEditButton(messageElement.querySelector('.message-content .message-toolbar'));
+  }
 
   // Return the new message element in case further manipulation is needed
   return messageElement;

@@ -19,7 +19,7 @@ def load_model(path):
 
 #this is a function that completes a conversation between the user and the ai
 #It adds a system message, then takes the first message and adds it to messages as an ai message, and then alternates between user and ai messages
-def local_complete(model, messages, max_tokens=1000):
+def local_complete(model, messages, image_data=[], max_tokens=1000, system_prompt="", tools=[]):
     global llm
 
     messages = fit_to_grammar(messages, get_template(model[0]))

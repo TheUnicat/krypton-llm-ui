@@ -52,7 +52,7 @@ def format_messages(conversations, new_images=[]):
     return google_format_conversations, has_images
 
 
-def google_complete(model, messages, images=[], max_tokens=4096, system_prompt=None):
+def google_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
     model_name = model_utils.get_model(model)
 
     messages, has_images = format_messages(messages, images)
