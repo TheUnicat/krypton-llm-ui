@@ -899,6 +899,24 @@ var modalContentHTML = `
         <ul id="tool-list" style="list-style-type: none; padding: 0;">
           <!-- Dynamically populated list -->
         </ul>
+
+        <div class="input-container-settings">
+          <label for="tool-textbox">Title:</label>
+          <textarea id="tool-title-textbox" class="user-input-settings" placeholder="Enter Title"></textarea>
+        </div>
+        <div class="input-container-settings">
+          <label for="system-prompt-textbox">System Prompt:</label>
+          <textarea id="tool-textbox" class="user-input-settings" style="
+
+          white-space: pre-wrap;
+            overflow-x: hidden;
+            overflow-y: auto;"
+
+            placeholder="Enter tool"></textarea>
+        </div>
+
+        <button id="save-tool" onclick="saveSystemPrompt()">Save</button>
+        <button id="select-tool" onclick="activateSysPrompt()">Select</button>
       </div>
     </div>
   </div>

@@ -115,9 +115,6 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
 
         messages.append({"role": "assistant", "content": f"{function_call['name']} with arguments {function_call['arguments']}"})
         messages.append({"role": "user", "content": result})
-        print(messages)
-        import time
-        time.sleep(5)
         for chunk in openai_complete(model, messages, [], max_tokens, system_prompt, tools):
             yield chunk
     else:
