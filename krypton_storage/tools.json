@@ -1,5 +1,4 @@
 {
-  "google": {
     "google": {
       "type": "function",
       "function": {
@@ -35,5 +34,4 @@
         }
       }
     }
-  }
 }

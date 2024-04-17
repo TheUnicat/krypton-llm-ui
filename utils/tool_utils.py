@@ -9,12 +9,9 @@ def get_tools():
 
 
 def clean_up_function_list(function_list):
-    print(function_list)
     cleaned_list = []
     for item in function_list:
-            print(item)
-            cleaned_list.append(function_list[item])
-    print("cleaned_list", cleaned_list)
+            cleaned_list.append(item)
     return cleaned_list
 
 def get_tool_info(tool_name):
