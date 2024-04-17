@@ -548,7 +548,7 @@ textarea:focus {
 }
 
 .modal {
-  position: relative; /* Stay in place */
+  position: fixed; /* Stay in place */
   z-index: 999999;
   background-color: white;
   overflow: auto;
