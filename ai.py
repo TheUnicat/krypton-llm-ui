@@ -41,7 +41,10 @@ def format_to_chat(model, prompt, conversation_id, message_id, image_data):
         return test_complete(model, messages)
 
     enabled_tools = tool_utils.get_enabled_tools()
-    tool_json = [tool_utils.get_tool_info(tool) for tool in enabled_tools][0]
+    print("enabled tools")
+    print(enabled_tools)
+
+    tool_json = [tool_utils.get_tool_info(tool) for tool in enabled_tools]
 
     model_api = model[2].lower()
 

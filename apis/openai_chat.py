@@ -61,6 +61,7 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
         )
 
     print(tools)
+
     completion = client.chat.completions.create(
         model=model_name,
         messages=updated_messages,

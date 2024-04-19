@@ -12,14 +12,27 @@ import image_storage
 from image_storage import process_and_store_images
 from utils.settings_utils import key_storage_bp
 from utils.tool_utils import get_tools
-
+from utils.tool_utils import toggle_tool_status
+from utils.tool_utils import is_tool_enabled
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.register_blueprint(key_storage_bp)
 
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/toggle_tool_status')
+def toggle_tool_status_route():
+    tool_name = request.args.get('tool_name')
+    toggle_tool_status(tool_name)
+    return "200"
+
+@app.route('/get_tool_status')
+def tool_status():
+    tool_name = request.args.get('tool_name')
+    return jsonify(is_tool_enabled(tool_name))
 
 @app.route('/update_system_prompt', methods=['POST'])
 def handle_update_system_prompt():

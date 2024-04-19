@@ -914,9 +914,6 @@ var modalContentHTML = `
 
             placeholder="Enter tool"></textarea>
         </div>
-
-        <button id="save-tool" onclick="saveSystemPrompt()">Save</button>
-        <button id="select-tool" onclick="activateSysPrompt()">Select</button>
       </div>
     </div>
   </div>
@@ -1060,19 +1057,93 @@ async function populateSystemPrompts() {
   }
 }
 
-function prependTool(toolName) {
-  const toolList = document.getElementById('tool-list'); // Assuming this is the ID of your tool list
-  const listItem = document.createElement('li');
-  listItem.className = 'tool-item'; // Assign a class for styling if needed
-  listItem.textContent = toolName; // Setting the text content directly to the tool name
+function createToggleSwitch(parent, toolName) {
+  // Create the label that will act as the switch container
+  const label = document.createElement('label');
+  label.className = 'switch';
 
-  toolList.prepend(listItem); // Add the new tool item at the beginning of the list
+  // Create the checkbox input
+  const input = document.createElement('input');
+  input.type = 'checkbox';
+  input.id = `${toolName}-switch`;
+
+  // Create the span that will be styled as the slider
+  const slider = document.createElement('span');
+  slider.className = 'slider round';
+
+  // Append the input and the slider to the label
+  label.appendChild(input);
+  label.appendChild(slider);
+
+  // Append the switch (label) to the parent element
+  parent.appendChild(label);
+
+  // Attach the event listener to the input
+  input.addEventListener('change', function() {
+    toggleToolStatus(toolName); // Pass the tool name and the status
+  });
+}
+
+function toggleToolStatus(toolName) {
+  fetch(`/toggle_tool_status?tool_name=${encodeURIComponent(toolName)}`);
+}
+
+function prependTool(toolName) {
+  const toolList = document.getElementById('tool-list');
+  const listItem = document.createElement('li');
+  listItem.className = 'conversation-item';
+  listItem.id = toolName; // Assuming conversation["id"] is the ID
+
+  listItem.innerHTML = `
+    <span class="title-text">${toolName}</span>
+    <div class="conversation-toolbar">
+      <button class="conversation-options-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-md">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12ZM10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12ZM17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12Z" fill="black"/>
+        </svg>
+      </button>
+      <div class="options-bar" style="display: none;">
+        <div class="delete-option">Delete</div>
+      </div>
+    </div>`;
+
+  const optionsBtn = listItem.querySelector('.conversation-options-btn');
+  const optionsBar = listItem.querySelector('.options-bar');
+  const toolBar = listItem.querySelector('.conversation-toolbar');
+  createToggleSwitch(toolBar, toolName);
+
+  optionsBtn.addEventListener('click', (event) => {
+    const isDisplayed = optionsBar.style.display !== 'none';
+    optionsBar.style.display = isDisplayed ? 'none' : 'block';
+    listItem.classList.toggle('options-bar-visible', !isDisplayed);
+    event.stopPropagation();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!listItem.contains(event.target)) {
+      optionsBar.style.display = 'none';
+      listItem.classList.remove('options-bar-visible');
+    }
+  });
+
+  const deleteOption = listItem.querySelector('.delete-option');
+  deleteOption.addEventListener('click', function() {
+    deleteTool(toolName);
+    console.log("Tool deleted: " + toolName);
+
+    const toolItem = this.closest('.conversation-item');
+    if (toolItem) {
+      toolItem.remove();
+    }
+  });
+
+  toolList.prepend(listItem);
 }
 
 
-function prependSysPrompt(prompt, tool=false) {
+
+function prependSysPrompt(prompt) {
   const promptList = document.getElementById('system-prompt-list');
-  const toolList = document.getElementById('tool-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
   listItem.id = prompt.id; // Assuming conversation["id"] is the ID
@@ -1113,7 +1184,6 @@ function prependSysPrompt(prompt, tool=false) {
     deleteOption.addEventListener('click', function() {
       // Call the delete function
       deleteSysPrompt(prompt.id);
-      console.log("deleted");
 
       // Find the nearest ancestor .conversation-item element and remove it from the DOM
       const conversationItem = this.closest('.conversation-item');
@@ -1123,11 +1193,7 @@ function prependSysPrompt(prompt, tool=false) {
     });
 
   listItem.setAttribute('onclick', `selectSysPrompt('${prompt.id}')`);
-  if (tool) {
-    toolList.prepend(listItem);
-  } else {
-      promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
-  }
+  promptList.prepend(listItem); // Changed to prepend to add it at the beginning of the list
 }
 
 

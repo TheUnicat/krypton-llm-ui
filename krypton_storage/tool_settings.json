@@ -1,5 +1,3 @@
 {
-  "google": {
-    "enabled": true
-  }
+    "google": true
 }

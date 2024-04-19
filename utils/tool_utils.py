@@ -7,6 +7,12 @@ def get_tools():
         tools = json.load(file)
     return list(tools.keys())
 
+def toggle_tool_status(tool_name):
+    with open(tool_settings_path, "r") as file:
+        tool_settings = json.load(file)
+    tool_settings[tool_name] = not tool_settings.get(tool_name, False)
+    with open(tool_settings_path, "w") as file:
+        json.dump(tool_settings, file, indent=4)
 
 def clean_up_function_list(function_list):
     cleaned_list = []
@@ -17,7 +23,7 @@ def clean_up_function_list(function_list):
 def get_tool_info(tool_name):
     with open(tool_path, "r") as file:
         tools = json.load(file)
-    return clean_up_function_list(tools[tool_name])
+    return tools[tool_name]
 
 def is_tool_enabled(tool_name):
     with open(tool_settings_path, "r") as file:
