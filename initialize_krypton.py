@@ -38,6 +38,16 @@ def initialize():
         with open(conversation_path, 'w') as file:
             json.dump(initial_conversation, file, indent=4)
 
+        # make all tools disabled by default
+        tool_settings_path = os.path.join(storage_dir, 'tool_settings.json')
+        with open(tool_settings_path, 'r') as file:
+            tool_settings = json.load(file)
+            for key in tool_settings:
+                tool_settings[key] = False
+
+        with open(tool_settings_path, 'w') as file:
+            json.dump(tool_settings, file, indent=4)
+
     # Check and initialize secrets.json
     secrets_path = os.path.join(storage_dir, 'secrets.json')
     if not os.path.exists(secrets_path):
@@ -45,8 +55,9 @@ def initialize():
             "openai": "Your openai api key here",
             "fireworks": "Your fireworks api key here",
             "anthropic": "Your anthropic api key here",
-            "google": "Your google api key here",
-            "discord_bot_token": "You discord bot token here"
+            "google": "Your google (ai) api key here",
+            "google_search": "Your google search api key here",
+            "alpha_vantage": "Your alpha vantage api key here"
         }
         with open(secrets_path, 'w') as file:
             json.dump(secrets_content, file, indent=4)
@@ -62,6 +73,7 @@ def initialize():
         }
         with open(system_prompts_path, 'w') as file:
             json.dump(system_prompts_content, file, indent=4)
+
 
     # Check and initialize temp_image_storage.json and image_storage.json with empty dicts
     for json_file in ['temp_image_storage.json', 'image_storage.json']:
