@@ -1078,15 +1078,33 @@ function createToggleSwitch(parent, toolName) {
   // Append the switch (label) to the parent element
   parent.appendChild(label);
 
-  // Attach the event listener to the input
+
+  // Check the current status and update the switch accordingly
+  getToolStatus(toolName)
+    .then(isEnabled => {
+      input.checked = isEnabled; // Set the switch to the current status
+    })
+    .catch(error => {
+      console.error('Error fetching tool status:', error);
+    });
+
+    // Attach the event listener to the input
   input.addEventListener('change', function() {
-    toggleToolStatus(toolName); // Pass the tool name and the status
+    toggleToolStatus(toolName, this.checked); // Pass the tool name and the status
   });
 }
 
 function toggleToolStatus(toolName) {
   fetch(`/toggle_tool_status?tool_name=${encodeURIComponent(toolName)}`);
 }
+
+function getToolStatus(toolName) {
+  return fetch(`/get_tool_status?tool_name=${encodeURIComponent(toolName)}`)
+    .then(response => response.text()) // Convert the response to text
+    .then(isEnabled => isEnabled === 'True'); // Convert the string to a boolean
+}
+
+
 
 function prependTool(toolName) {
   const toolList = document.getElementById('tool-list');

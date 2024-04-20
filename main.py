@@ -32,7 +32,7 @@ def toggle_tool_status_route():
 @app.route('/get_tool_status')
 def tool_status():
     tool_name = request.args.get('tool_name')
-    return jsonify(is_tool_enabled(tool_name))
+    return str(is_tool_enabled(tool_name))
 
 @app.route('/update_system_prompt', methods=['POST'])
 def handle_update_system_prompt():

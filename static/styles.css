@@ -199,7 +199,6 @@ textarea {
   display: flex; /* Enables flexbox */
   align-items: center; /* Aligns children vertically in the center */
   justify-content: space-between; /* Spreads out children with space between */
-  margin-left: 10px;
   margin-right: 10px;
   padding: 10px;
   font-size: 15px;
