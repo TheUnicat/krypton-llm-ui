@@ -12,4 +12,3 @@ models
 **/*.pyc
 /apis/__pycache__/openai_chat.cpython-311.pyc
 patch_script.py
-/tools/discord_tool.py

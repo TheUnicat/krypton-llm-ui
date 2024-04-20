@@ -23,7 +23,7 @@ def google(args):
                 f"<a href='{item['link']}' target='_blank'>{item['title']}</a><br>{item['snippet']}"
                 for item in response.json()['items'][:3]]), "done": True})
         else:
-            yield {"result": 'No results found for the provided query.', "done": True}
+            yield json.dumps({"result": 'No results found for the provided query.', "done": True})
 
     except Exception as error:
         print('Error fetching search results:', error)

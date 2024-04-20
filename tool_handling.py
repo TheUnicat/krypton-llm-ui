@@ -1,4 +1,5 @@
 from tools.search_tool import google
+from tools.stock_price_tool import stock_price
 
 
 def tool_handler(name, arguments):

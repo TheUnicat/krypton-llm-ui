@@ -14,18 +14,6 @@
             "num_results": {
               "type": "integer",
               "description": "The number of search results to return. Defaults to 10 if not specified."
-            },
-            "recency": {
-              "type": "string",
-              "description": "Optional parameter to filter results by recency. Valid values include 'hour', 'day', 'week', 'month', or 'year'."
-            },
-            "language": {
-              "type": "string",
-              "description": "Optional parameter to specify the language of the search results. Defaults to 'en' (English) if not specified."
-            },
-            "region": {
-              "type": "string",
-              "description": "Optional parameter to specify the regional domain for the search results. Defaults to 'US' if not specified."
             }
           },
           "required": [
@@ -33,5 +21,24 @@
           ]
         }
       }
+    },
+    "stock_price": {
+    "type": "function",
+    "function": {
+      "name": "stock_price",
+      "description": "Fetches the latest stock price for the specified ticker symbol from a financial data API.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "The stock ticker symbol for which to fetch the latest price."
+          }
+        },
+        "required": [
+          "ticker"
+        ]
+      }
     }
+  }
 }

@@ -1,3 +1,4 @@
 {
-    "google": true
+    "google": false,
+    "stock_price": true
 }
