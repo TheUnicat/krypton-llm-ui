@@ -1,13 +1,29 @@
 import json
 import anthropic
 from utils import model_utils
+from typing import Dict, List
 
 with open("krypton_storage/secrets.json", "r") as file:
     anthropic_key = json.load(file)["anthropic"]
 
 client = anthropic.Anthropic(
-    api_key=anthropic_key,
+    api_key=anthropic_key
 )
+
+def format_tools(schemas: List[Dict]) -> List[Dict]:
+    converted_schemas = []
+
+    for schema in schemas:
+        if schema["type"] == "function":
+            function_schema = schema["function"]
+            converted_schema = {
+                "name": function_schema["name"],
+                "description": function_schema["description"],
+                "input_schema": function_schema["parameters"]
+            }
+            converted_schemas.append(converted_schema)
+
+    return converted_schemas
 
 
 def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
