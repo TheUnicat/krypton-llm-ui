@@ -2,6 +2,8 @@ import json
 import anthropic
 from utils import model_utils
 from typing import Dict, List
+from utils import tool_utils
+from tool_handling import tool_handler
 
 with open("krypton_storage/secrets.json", "r") as file:
     anthropic_key = json.load(file)["anthropic"]
@@ -27,6 +29,8 @@ def format_tools(schemas: List[Dict]) -> List[Dict]:
 
 
 def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
+    unformatted_tools = tools
+    tools = format_tools(tools)
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present
@@ -66,20 +70,56 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096, system_promp
         updated_messages[-1] = {"role": "user", "content": new_content}
 
     # Continue with your existing logic for streaming messages
-    if system_prompt is not None:
-        with client.messages.stream(
-            max_tokens=max_tokens,
-            messages=updated_messages,
-            model=model_name,
-            system=system_prompt
-        ) as stream:
-            for text in stream.text_stream:
-                yield text
+    if not tools:
+        if system_prompt is not None:
+            with client.messages.stream(
+                max_tokens=max_tokens,
+                messages=updated_messages,
+                model=model_name,
+                system=system_prompt
+            ) as stream:
+                for text in stream.text_stream:
+                    yield text
+        else:
+            with client.messages.stream(
+                max_tokens=max_tokens,
+                messages=updated_messages,
+                model=model_name
+            ) as stream:
+                for text in stream.text_stream:
+                    yield text
     else:
-        with client.messages.stream(
-            max_tokens=max_tokens,
-            messages=updated_messages,
-            model=model_name
-        ) as stream:
-            for text in stream.text_stream:
-                yield text
+        if system_prompt is not None:
+            response = client.beta.tools.messages.create(
+                max_tokens=max_tokens,
+                messages=updated_messages,
+                model=model_name,
+                system=system_prompt,
+                tools=tools
+            )
+        else:
+            response = client.beta.tools.messages.create(
+                max_tokens=max_tokens,
+                messages=updated_messages,
+                model=model_name,
+                tools=tools
+            )
+
+        print(response)
+
+
+        used_tool = False
+
+        for item in response.content:
+            if item.type == "text":
+                yield item.text
+            elif item.type == "tool_use":
+                used_tool = True
+
+                for result_prototype in tool_handler(item.name, item.input):
+                    result_prototype = json.loads(result_prototype)
+                    yield f"[TOOL_USE]{{\"tool_name\": \"{item.name}\", \"query\": \"{item.input}\", \"tool_result\": \"{result_prototype['result']}\", \"is_open\": {json.dumps(result_prototype['done'])}}}[/TOOL_USE]\n\n"
+
+        if used_tool:
+            for chunk in anthropic_complete(model, messages, tools=unformatted_tools, max_tokens=max_tokens, system_prompt=system_prompt, images=images):
+                yield chunk
