@@ -80,7 +80,7 @@
       }
     },
     "Gemma": {
-      "template": "Alpaca",
+      "template": "Gemma",
       "2B": {
         "name": "Gemma 2B",
         "vision": false,
