@@ -1,3 +1,5 @@
+# Uses the python wrapper for llama.cpp to integrate local models
+
 from llama_cpp import Llama
 from utils import model_utils
 from os import path as ospath
@@ -8,6 +10,7 @@ import json
 
 global llm
 llm = False
+
 
 def load_model(path):
     global llm
@@ -44,6 +47,7 @@ def local_complete(model, messages, image_data=[], max_tokens=1000, system_promp
 def get_template(model_name):
     with open("krypton_storage/models.json", "r") as file:
         models = json.load(file)
+        print(models["Local"][model_name])
         template_name = models["Local"][model_name]["template"]
 
     with open("krypton_storage/prompt_templates.json", "r") as file:
