@@ -29,3 +29,7 @@ def is_local_model(api, product_family, model_version=None):
     else:
         return False
 
+def get_all_local_models():
+    local_models = models['Local']
+    return local_models
+
