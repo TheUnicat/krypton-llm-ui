@@ -113,7 +113,7 @@ def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt
 
         messages.append({"role": "assistant", "content": f"{function_call['name']} with arguments {function_call['arguments']}"})
         messages.append({"role": "user", "content": result})
-        for chunk in openai_complete(model, messages, tools, max_tokens, system_prompt, tools):
+        for chunk in openai_complete(model, messages, images, max_tokens, system_prompt, tools):
             yield chunk
     else:
         print("No function call in the response.")

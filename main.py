@@ -14,6 +14,7 @@ from utils.settings_utils import key_storage_bp
 from utils.tool_utils import get_tools
 from utils.tool_utils import toggle_tool_status
 from utils.tool_utils import is_tool_enabled
+from utils.model_utils import get_all_local_models
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.register_blueprint(key_storage_bp)
@@ -210,6 +211,11 @@ def upload_images():
     process_and_store_images(images)
 
     return jsonify({'message': 'Images uploaded and saved successfully'}), 200
+
+
+@app.route('/get_local_models')
+def get_local_models():
+    return get_all_local_models()
 
 if __name__ == '__main__':
     app.run(debug=True, port="8080")

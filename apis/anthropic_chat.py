@@ -70,7 +70,7 @@ def anthropic_complete(model, messages, images=[], max_tokens=4096, system_promp
         updated_messages[-1] = {"role": "user", "content": new_content}
 
     # Continue with your existing logic for streaming messages
-    if not tools:
+    if tools == []:
         if system_prompt is not None:
             with client.messages.stream(
                 max_tokens=max_tokens,
