@@ -35,3 +35,37 @@ def get_enabled_tools():
         tool_settings = json.load(file)
     enabled_tools = [tool for tool, enabled in tool_settings.items() if enabled]
     return enabled_tools
+
+
+def format_tool_info(tool):
+    # Extract the description of the tool
+    description = tool["function"]["description"]
+
+    # Prepare a list to hold parameters' details
+    parameters = []
+
+    # Iterate through the properties of the parameters to get each parameter's details
+    for param_name, param_info in tool["function"]["parameters"]["properties"].items():
+        # Check if the parameter is required
+        is_required = param_name in tool["function"]["parameters"]["required"]
+
+        # Append the parameter's details as a dictionary to the parameters list
+        parameters.append({
+            "name": param_name,
+            "type": param_info["type"],
+            "description": param_info["description"],
+            "required": is_required
+        })
+
+    # Form the output JSON
+    formatted_info = {
+        "description": description,
+        "parameters": parameters
+    }
+
+    return formatted_info
+
+#retrieves tool info and returns formatted tool info from tool name
+def get_formatted_tool_info(tool_name):
+    tool = get_tool_info(tool_name)
+    return format_tool_info(tool)
