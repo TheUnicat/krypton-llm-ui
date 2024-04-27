@@ -896,24 +896,7 @@ var modalContentHTML = `
       </div>
       
       <div id="tools" class="settings-content" style="display: none;">
-        <ul id="tool-list" style="list-style-type: none; padding: 0;">
-          <!-- Dynamically populated list -->
-        </ul>
-
-        <div class="input-container-settings">
-          <label for="tool-textbox">Title:</label>
-          <textarea id="tool-title-textbox" class="user-input-settings" placeholder="Enter Title"></textarea>
-        </div>
-        <div class="input-container-settings">
-          <label for="system-prompt-textbox">System Prompt:</label>
-          <textarea id="tool-textbox" class="user-input-settings" style="
-
-          white-space: pre-wrap;
-            overflow-x: hidden;
-            overflow-y: auto;"
-
-            placeholder="Enter tool"></textarea>
-        </div>
+        <ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>
       </div>
     </div>
   </div>
@@ -945,6 +928,8 @@ function showSettingsContent(selectedId) {
         getCurrentSysPrompt();
         populateSystemPrompts();
     } else if (id === "tools") {
+        //set "tools" html equal to <ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>
+        document.getElementById("tools").innerHTML = '<ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>';
         populateToolList();
     }
   });
@@ -1262,7 +1247,8 @@ function displayToolInfo(toolName) {
                 </ul>
             </div>
         `;
-        openModal(html);
+        //append the html to tools and set toolList to empty
+        document.getElementById('tools').innerHTML = html;
     });
 }
 
