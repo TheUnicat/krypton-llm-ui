@@ -14,11 +14,16 @@ from utils.settings_utils import key_storage_bp
 from utils.tool_utils import get_tools
 from utils.tool_utils import toggle_tool_status
 from utils.tool_utils import is_tool_enabled
+from utils.tool_utils import get_formatted_tool_info
 from utils.model_utils import get_all_local_models
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.register_blueprint(key_storage_bp)
 
+@app.route('/get_tool_info')
+def get_tool_info_handler():
+    tool_name = request.args.get('tool_name')
+    return get_formatted_tool_info(tool_name)
 
 @app.route('/')
 def index():

@@ -1142,6 +1142,7 @@ function prependTool(toolName) {
     }
   });
 
+  listItem.setAttribute('onclick', `displayToolInfo('${toolName}')`);
 
   toolList.prepend(listItem);
 }
@@ -1237,6 +1238,35 @@ async function getCurrentSysPrompt() {
     console.log(currentSysPrompt);
     localStorage.setItem("promptId", currentSysPrompt);
 }
+
+function fetchToolInfo(toolName, callback) {
+    fetch(`/get_tool_info?tool_name=${encodeURIComponent(toolName)}`)
+    .then(response => response.json())
+    .then(toolInfo => callback(toolInfo))
+    .catch(error => console.error('Error fetching tool info:', error));
+}
+
+function displayToolInfo(toolName) {
+    fetchToolInfo(toolName, function(toolInfo) {
+        const html = `
+            <div class="tool-info-container">
+                <a href="#" class="back-arrow" onclick="showSettingsContent('tools');">&#x2190;</a>
+                <h1>${toolInfo.name || 'Tool Information'}</h1>
+                <div><strong>Description:</strong> ${toolInfo.description}</div>
+                <ul>
+                    ${toolInfo.parameters.map(param => `
+                        <li>
+                            <strong>${param.name}:</strong> (${param.type}) ${param.description} ${param.required ? '(Required)' : '(Optional)'}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `;
+        openModal(html);
+    });
+}
+
+
 
 function clearSysPrompt() {
   try {
