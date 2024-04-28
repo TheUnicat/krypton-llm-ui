@@ -1075,7 +1075,6 @@ function createToggleSwitch(parent, toolName) {
   // Append the switch (label) to the parent element
   parent.appendChild(label);
 
-
   // Check the current status and update the switch accordingly
   getToolStatus(toolName)
     .then(isEnabled => {
@@ -1085,9 +1084,19 @@ function createToggleSwitch(parent, toolName) {
       console.error('Error fetching tool status:', error);
     });
 
-    // Attach the event listener to the input
+  // Attach the event listener to the input
   input.addEventListener('change', function() {
     toggleToolStatus(toolName, this.checked); // Pass the tool name and the status
+  });
+
+  // Stop propagation of the click event to prevent triggering the listItem's onclick event
+  input.addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
+  // Optionally, stop propagation on the label as well to cover all parts of the switch
+  label.addEventListener('click', function(event) {
+    event.stopPropagation();
   });
 }
 
@@ -1108,27 +1117,13 @@ function prependTool(toolName) {
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
   //make it have a minimum width of 10%
-  listItem.style.minWidth = "120%";
+  listItem.style.minWidth = "80%";
   listItem.id = toolName; // Assuming conversation["id"] is the ID
 
   listItem.innerHTML = `
-    <span class="title-text">${toolName}</span>
-    <div class="conversation-toolbar">
-      <div class="options-bar" style="display: block;"></div>
-    </div>`;
+    <span class="title-text">${toolName}</span>`;
 
-  const optionsBar = listItem.querySelector('.options-bar');
-  const toolBar = listItem.querySelector('.conversation-toolbar');
-  createToggleSwitch(toolBar, toolName);
-
-
-  document.addEventListener('click', (event) => {
-    if (!listItem.contains(event.target)) {
-      optionsBar.style.display = 'none';
-      listItem.classList.remove('options-bar-visible');
-    }
-  });
-
+  createToggleSwitch(listItem, toolName);
   listItem.setAttribute('onclick', `displayToolInfo('${toolName}')`);
 
   toolList.prepend(listItem);
