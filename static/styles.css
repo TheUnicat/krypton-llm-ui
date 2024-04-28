@@ -552,6 +552,7 @@ textarea:focus {
   background-color: white;
   overflow: auto;
   border-radius: 20px;
+  min-width: 25%;
 }
 
 .modal-content {

@@ -1095,30 +1095,20 @@ function prependTool(toolName) {
   const toolList = document.getElementById('tool-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
+  //make it have a minimum width of 10%
+  listItem.style.minWidth = "120%";
   listItem.id = toolName; // Assuming conversation["id"] is the ID
 
   listItem.innerHTML = `
     <span class="title-text">${toolName}</span>
     <div class="conversation-toolbar">
-      <button class="conversation-options-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-md">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12ZM10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12ZM17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12Z" fill="black"/>
-        </svg>
-      </button>
       <div class="options-bar" style="display: block;"></div>
     </div>`;
 
-  const optionsBtn = listItem.querySelector('.conversation-options-btn');
   const optionsBar = listItem.querySelector('.options-bar');
   const toolBar = listItem.querySelector('.conversation-toolbar');
   createToggleSwitch(toolBar, toolName);
 
-  optionsBtn.addEventListener('click', (event) => {
-    const isDisplayed = optionsBar.style.display !== 'none';
-    optionsBar.style.display = isDisplayed ? 'none' : 'block';
-    listItem.classList.toggle('options-bar-visible', !isDisplayed);
-    event.stopPropagation();
-  });
 
   document.addEventListener('click', (event) => {
     if (!listItem.contains(event.target)) {
@@ -1234,7 +1224,7 @@ function fetchToolInfo(toolName, callback) {
 function displayToolInfo(toolName) {
     fetchToolInfo(toolName, function(toolInfo) {
         const html = `
-            <div class="tool-info-container">
+            <div>
                 <a href="#" class="back-arrow" onclick="showSettingsContent('tools');">&#x2190;</a>
                 <h1>${toolInfo.name || 'Tool Information'}</h1>
                 <div><strong>Description:</strong> ${toolInfo.description}</div>
