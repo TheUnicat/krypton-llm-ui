@@ -753,8 +753,7 @@ textarea:focus {
 #title-textbox,
 #system-prompt-textbox {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 0 10px;
 }
 
 #system-prompt-textbox {
@@ -774,19 +773,24 @@ textarea:focus {
 .settings-content {
   display: flex; /* This ensures content within is properly aligned */
   flex-direction: column; /* Stack children vertically */
-    margin: 25px;
+    margin: 0 25px;
 
 }
 
 .user-input-settings {
   white-space: nowrap;
+  padding-top: -10px;
 }
 
 .input-container-settings {
   display: flex;
   align-items: center; /* Vertically centers the label and input */
   gap: 10px; /* Spacing between label and input */
-  margin-bottom: 15px; /* Space between each input-container */
+  flex-direction: column; /* Stack children vertically */
+  font-weight: 600; /* Makes the label bold */
+  font-size: 0.8rem;
+  /*align items to left*/
+    align-items: flex-start;
 }
 
 .user-input-settings {
@@ -799,11 +803,12 @@ textarea:focus {
   overflow-x: auto; /* Enables horizontal scrolling */
   white-space: nowrap; /* Keeps content on one line */
   box-shadow: none; /* Initially no shadow */
-
   position: relative;
   border: 1px solid lightgrey;
   padding-right: 4%;
   padding-left: 4%;
+  margin: 0px;
+  margin-bottom: 10px;
 }
 
 .user-input-settings:focus {
@@ -931,4 +936,8 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+label {
+    margin: 0;
 }

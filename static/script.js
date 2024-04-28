@@ -858,22 +858,22 @@ var modalContentHTML = `
     <div style="flex: 3; padding: 10px;">
       <div id="api-keys" class="settings-content" style="display: block;">
         <div class="input-container-settings">
-          <label for="openai-api-key">OpenAI API Key:</label>
+          <label for="openai-api-key">OpenAI API Key</label>
           <textarea id="openai-api-key" class="user-input-settings" placeholder="Enter OpenAI API Key"></textarea>
         </div>
         <div class="input-container-settings">
-          <label for="fireworks-api-key">Fireworks API Key:</label>
+          <label for="fireworks-api-key">Fireworks API Key</label>
           <textarea id="fireworks-api-key" class="user-input-settings" placeholder="Enter Fireworks API Key"></textarea>
         </div>
         <div class="input-container-settings">
-          <label for="anthropic-api-key">Anthropic API Key:</label>
+          <label for="anthropic-api-key">Anthropic API Key</label>
           <textarea id="anthropic-api-key" class="user-input-settings" placeholder="Enter Anthropic API Key"></textarea>
         </div>
         <button onclick="saveApiKeys()">Save</button>
       </div>
       <div id="user-info" class="settings-content" style="display: none;">
         <div class="input-container-settings">
-          <label for="user-name">Name:</label>
+          <label for="user-name">Name</label>
           <textarea id="user-name" class="user-input-settings" placeholder="Enter Name"></textarea>
         </div>
         <button onclick="saveUserName()">Save</button>
@@ -885,11 +885,11 @@ var modalContentHTML = `
         </ul>
         
         <div class="input-container-settings">
-          <label for="title-textbox">Title:</label>
+          <label for="title-textbox">Title</label>
           <textarea id="title-textbox" class="user-input-settings" placeholder="Enter Title"></textarea>
         </div>
         <div class="input-container-settings">
-          <label for="system-prompt-textbox">System Prompt:</label>
+          <label for="system-prompt-textbox">System Prompt</label>
           <textarea id="system-prompt-textbox" class="user-input-settings" style="  
           
           white-space: pre-wrap;
