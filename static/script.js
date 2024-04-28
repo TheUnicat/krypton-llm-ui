@@ -40,27 +40,34 @@ async function selectConversation(conversationId) {
     chatContainer.innerHTML = ''; // Clear existing messages
 
     for (const message of conversation.conversation) {
-    let messageElement;
+        let messageElement;
 
-    if (typeof message.role === "string") {
-        messageElement = appendMessage(message.role);
-    } else {
-        // Assuming message.role is an array and contains at least two elements
-        messageElement = appendMessage(`${message.role[0]} ${message.role[1]}`);
-    }
+        if (typeof message.role === "string") {
+            messageElement = appendMessage(message.role);
+        } else {
+            // Check if message.role[3] exists and is not 'null'
+            if (message.role.length > 3 && message.role[3] !== null) {
+                // If message.role[3] exists and is not null, call appendMessage with message.role[3]
+                messageElement = appendMessage(`${message.role[0]}`, null, `${message.role[3]}`);
+            } else {
+                // Otherwise, call appendMessage with message.role[0]
+                messageElement = appendMessage(`${message.role[0]}`);
+            }
 
-      // Create and append the message text div
-      const messageTextElement = messageElement.querySelector('.message-content .message-text');
-      messageTextElement.innerHTML = processText(message.message);
+        }
 
-      message.image_data.forEach(item => {
-        const img = new Image();
-        img.src = "data:" + item.mime + ";base64," + item.base64;
-        img.alt = 'Loaded from base64 data';
-        img.style.width = '80%'; // Set the width or adjust as needed
-        img.style.height = 'auto'; // Adjust height as needed
-        messageTextElement.appendChild(img);
-    });
+          // Create and append the message text div
+          const messageTextElement = messageElement.querySelector('.message-content .message-text');
+          messageTextElement.innerHTML = processText(message.message);
+
+          message.image_data.forEach(item => {
+            const img = new Image();
+            img.src = "data:" + item.mime + ";base64," + item.base64;
+            img.alt = 'Loaded from base64 data';
+            img.style.width = '80%'; // Set the width or adjust as needed
+            img.style.height = 'auto'; // Adjust height as needed
+            messageTextElement.appendChild(img);
+        });
 
       messageElement.id = message.id;
 
@@ -106,8 +113,12 @@ function addEditButton(targetElement) {
 }
 
 
-function appendMessage(author, text = null) {
+function appendMessage(author, text = null, sysPrompt=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
+
+    console.log(sysPrompt);
+    // Determine the appropriate user name to display
+let userName = sysPrompt ? sysPrompt : author;
 
   // Initialize an empty message element
   let messageElement = document.createElement('div');
@@ -116,7 +127,7 @@ function appendMessage(author, text = null) {
   messageElement.innerHTML = `
     <img class="profile-picture" src=${imagePath} alt="${author}">
     <div class="message-content">
-        <div class="user-name">${author}</div>
+        <div class="user-name">${userName}</div>
         <div class="message-text">${text ? text : ""}</div>
         <div class="message-toolbar"></div>
     </div>
@@ -143,7 +154,8 @@ async function getAI(prompt, promptElement, messageId=null) {
     const modelVersion = localStorage.getItem('modelVersion') || '3.5';
     const api = localStorage.getItem('api') || 'OpenAI';
     // Encode the prompt and include the model in the query string
-    var messageElement = appendMessage(modelName);
+    let promptName = localStorage.getItem('promptName');
+    var messageElement = appendMessage(modelName, null, promptName);
     const messageContentElement = promptElement.querySelector('.message-content');
 
     const fileInput = document.getElementById('fileInputButton');
@@ -1196,6 +1208,9 @@ async function selectSysPrompt(promptId) {
 
     // Update conversation ID in localStorage and scroll to the latest message
     localStorage.setItem("promptId", promptId);
+    //set promptName to the prompt.title
+    localStorage.setItem("promptName", prompt.title);
+
     const item = document.getElementById(promptId);
     item.classList.add('is-current-conversation');
   } catch (error) {

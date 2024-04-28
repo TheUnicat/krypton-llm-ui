@@ -16,6 +16,7 @@ from utils.tool_utils import toggle_tool_status
 from utils.tool_utils import is_tool_enabled
 from utils.tool_utils import get_formatted_tool_info
 from utils.model_utils import get_all_local_models
+from utils.prompt_utils import retrieve_current_sys_prompt_name
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.register_blueprint(key_storage_bp)
@@ -150,7 +151,7 @@ def stream():
 
 
     def generate(api, prompt, conversation_id, message_id):
-        combined_model_info = [model_name, model_version, api]
+        combined_model_info = [model_name, model_version, api, retrieve_current_sys_prompt_name()]
 
         try:
             accumulated_response = ""

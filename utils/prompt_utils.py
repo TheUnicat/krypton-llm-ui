@@ -76,6 +76,12 @@ def retrieve_current_sys_prompt():
 
     return settings['current_sys_prompt']
 
+def retrieve_current_sys_prompt_name():
+    current_sys_prompt = retrieve_current_sys_prompt()
+    if current_sys_prompt is None:
+        return "null"
+    return retrieve_sys_prompt(current_sys_prompt)["title"]
+
 def update_or_add_system_prompt(id=None, title=None, text=None):
     filepath = 'krypton_storage/system_prompts.json'
     with open(filepath, 'r') as file:
