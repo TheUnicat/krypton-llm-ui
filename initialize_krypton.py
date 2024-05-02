@@ -64,13 +64,13 @@ def initialize():
 
     system_prompts_path = os.path.join(storage_dir, 'system_prompts.json')
     if not os.path.exists(system_prompts_path):
-        system_prompts_content = {
+        system_prompts_content = [
             {
         "id": "123e4567e89b12d3a456426655440003",
         "title": "Uwuifier",
         "prompt": "You are an AI that uwuifies responses, talking in a cute uwuspeak manner with lots of owo and >w< expressions."
     }
-        }
+        ]
         with open(system_prompts_path, 'w') as file:
             json.dump(system_prompts_content, file, indent=4)
 
