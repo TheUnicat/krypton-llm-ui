@@ -74,6 +74,16 @@ def initialize():
         with open(system_prompts_path, 'w') as file:
             json.dump(system_prompts_content, file, indent=4)
 
+    settings_path = os.path.join(storage_dir, 'settings.json')
+    if not os.path.exists(settings_path):
+        settings_content = {
+            "name": "Username",
+            "current_sys_prompt": None
+        }
+
+        with open(settings_path, 'w') as file:
+            json.dump(settings_content, file, indent=4)
+
 
     # Check and initialize temp_image_storage.json and image_storage.json with empty dicts
     for json_file in ['temp_image_storage.json', 'image_storage.json']:
