@@ -7,10 +7,6 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from utils import model_utils
 
 
-with open("krypton_storage/secrets.json", "r") as file:
-    google_key = json.load(file)["google"]
-
-genai.configure(api_key=google_key)
 
 
 def base64_to_image(base64_string):
@@ -53,6 +49,11 @@ def format_messages(conversations, new_images=[]):
 
 
 def google_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
+    with open("krypton_storage/secrets.json", "r") as file:
+        google_key = json.load(file)["google"]
+
+    genai.configure(api_key=google_key)
+
     model_name = model_utils.get_model(model)
 
     messages, has_images = format_messages(messages, images)

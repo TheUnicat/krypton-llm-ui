@@ -5,12 +5,6 @@ from typing import Dict, List
 from utils import tool_utils
 from tool_handling import tool_handler
 
-with open("krypton_storage/secrets.json", "r") as file:
-    anthropic_key = json.load(file)["anthropic"]
-
-client = anthropic.Anthropic(
-    api_key=anthropic_key
-)
 
 def format_tools(schemas: List[Dict]) -> List[Dict]:
     converted_schemas = []
@@ -29,6 +23,14 @@ def format_tools(schemas: List[Dict]) -> List[Dict]:
 
 
 def anthropic_complete(model, messages, images=[], max_tokens=4096, system_prompt=None, tools=[]):
+
+    with open("krypton_storage/secrets.json", "r") as file:
+        anthropic_key = json.load(file)["anthropic"]
+
+    client = anthropic.Anthropic(
+        api_key=anthropic_key
+    )
+
     unformatted_tools = tools
     tools = format_tools(tools)
     model_name = model_utils.get_model(model)

@@ -4,15 +4,13 @@ from utils import model_utils
 from utils import tool_utils
 from tool_handling import tool_handler
 
-print("hi")
-
-with open("krypton_storage/secrets.json", "r") as file:
-    openai_key = json.load(file)["openai"]
-
-client = OpenAI(api_key=openai_key)
-
 
 def openai_complete(model, messages, images=None, max_tokens=4096, system_prompt=None, tools=None):
+    with open("krypton_storage/secrets.json", "r") as file:
+        openai_key = json.load(file)["openai"]
+
+    client = OpenAI(api_key=openai_key)
+
     model_name = model_utils.get_model(model)
 
     # Reformat messages to include image data if present

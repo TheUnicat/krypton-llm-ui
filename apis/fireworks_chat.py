@@ -8,9 +8,10 @@ def load_api_key():
         secrets = json.load(file)
     return secrets["fireworks"]
 
-client = Fireworks(api_key=load_api_key())
 
 def fireworks_complete(model, messages, max_tokens=4096):
+    client = Fireworks(api_key=load_api_key())
+
     model_name = model_utils.get_model_path(model)
     print(model_name)
     completion = client.chat.completions.create(

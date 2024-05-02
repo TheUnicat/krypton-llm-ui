@@ -520,12 +520,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 function toggleSidebar() {
   var sidebar = document.getElementById('sidebar');
   var sidebarBottom = document.getElementById('sidebar-bottom');
+  var sidebarPopup = document.getElementById('sidebar-popup');
   var toggleButton = document.getElementById('sidebarToggle');
   var isOpen = sidebar.style.left === '0px';
   document.getElementById("main-container").style.transform = isOpen ? "translateX(-10%)" : "translateX(10%)";
 
-    sidebar.style.left = isOpen ? '-20%' : '0px';
-    sidebarBottom.style.left = isOpen ? '-20%' : '0px';
+    sidebar.style.left = isOpen ? '-20%' : '0';
+    sidebarBottom.style.left = isOpen ? '-20%' : '0';
+    sidebarPopup.style.left = isOpen ? '-18%' : '2%';
     toggleButton.style.left = isOpen ? '1%' : '19%';
 
 
@@ -852,7 +854,6 @@ var modalContentHTML = `
       <div class="settings-option" onclick="showSettingsContent('api-keys')">API Keys</div>
       <div class="settings-option" onclick="showSettingsContent('user-info')">User Info</div>
       <div class="settings-option" onclick="showSettingsContent('system-prompt')">System Prompt</div>
-      <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
       <div class="settings-option" onclick="showSettingsContent('tools')">Tools</div>
     </div>
     <div style="flex: 3; padding: 10px;">
@@ -902,10 +903,6 @@ var modalContentHTML = `
         <button id="save-prompt" onclick="saveSystemPrompt()">Save</button>
         <button id="select-prompt" onclick="activateSysPrompt()">Select</button>
       </div>
-
-      <div id="local-models" class="settings-content" style="display: none;">
-        <p>No local models available for now.</p>
-      </div>
       
       <div id="tools" class="settings-content" style="display: none;">
         <ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>
@@ -914,6 +911,23 @@ var modalContentHTML = `
   </div>
 </div>
 `;
+
+var secondModalContentHTML =  `<div style="display: flex; flex-direction: column; height: 100%; padding: 0px;">
+  <div id="settings-title" style="border-bottom: 1px solid #ccc; font-size: 1.125rem; padding: 10px;">
+    Local Models
+  </div>
+  <div style="display: flex; flex: 1;">
+    <div style="flex: 1; border-right: 1px solid #ccc; padding: 10px;">
+      <div class="settings-option" onclick="showSettingsContent('local-models')">Local Models</div>
+    </div>
+    <div style="flex: 3; padding: 10px;">
+      <div id="local-models" class="settings-content" style="display: none;">
+        <ul id="model-list" style="list-style-type: none; padding: 0;"></ul>
+      </div>
+    </div>
+  </div>
+</div>`;
+
 
 
 function showSettingsContent(selectedId) {
@@ -985,8 +999,13 @@ function saveApiKeys() {
   });
 }
 
-document.getElementById('sidebar-bottom').addEventListener('click', function() {
+document.getElementById('open-settings-btn').addEventListener('click', function() {
     openModal(modalContentHTML);
+    showSettingsContent("api-keys");
+});
+
+document.getElementById('open-models-btn').addEventListener('click', function() {
+    openModal(secondModalContentHTML);
     showSettingsContent("api-keys");
 });
 
@@ -1300,3 +1319,25 @@ async function saveSystemPrompt() {
         localStorage.setItem("promptId", id);
     }
 }
+
+// Get the elements
+const sidebarBottom = document.getElementById('sidebar-bottom');
+const sidebarPopup = document.getElementById('sidebar-popup');
+
+// Function to toggle the popup display using a ternary operator
+function togglePopup() {
+    sidebarPopup.style.display = (sidebarPopup.style.display === 'none' ? 'block' : 'none');
+}
+
+// Click event for sidebarBottom to show the popup
+sidebarBottom.addEventListener('click', function(event) {
+    event.stopPropagation();  // Prevent click from bubbling up to the document level
+    togglePopup();
+});
+
+// Click event for the document to hide the popup if clicking outside
+document.addEventListener('click', function(event) {
+    if (!sidebarPopup.contains(event.target) && sidebarPopup.style.display === 'block') {
+        sidebarPopup.style.display = 'none';
+    }
+});

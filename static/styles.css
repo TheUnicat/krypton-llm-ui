@@ -678,12 +678,31 @@ textarea:focus {
     color: grey;
 }
 
+#sidebar-popup {
+    bottom: 6%;
+    padding: 2% 0;
+    height: 20%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Minor shadow */
+    border-radius: 10px; /* Rounded edges */
+    background: white;
+    width: 14%;
+    left: -1%;
+    display: none;
+    z-index: 9999;
+}
+
+#sidebar-popup:hover {
+    cursor: default;
+    background: white;
+}
+
+
 .sidebar-bottom {
   position: fixed;
   left: -18%; /* Starts off-screen, aligned with the sidebar */
   bottom: 0; /* Aligns to the bottom of the viewport */
   width: 18%; /* Matches the sidebar width */
-  height: 10%; /* Or whatever height you prefer */
+  height: 6%; /* Or whatever height you prefer */
   background-color: #f9f9f9; /* Matches the sidebar background color */
   transition: left 0.3s; /* Smooth transition for opening/closing */
   z-index: 1000; /* Ensures it's below the sidebar if they overlap */
