@@ -929,9 +929,10 @@ var secondModalContentHTML =  `<div style="display: flex; flex-direction: column
 </div>`;
 
 
-
+console.log("haii");
 function showSettingsContent(selectedId) {
-  const contentIds = ['api-keys', 'user-info', 'system-prompt', 'local-models', 'tools'];
+    console.log(selectedId);
+  const contentIds = ['api-keys', 'user-info', 'system-prompt', 'tools'];
   const options = document.querySelectorAll('.settings-option');
 
   // Loop through all content divs
@@ -945,6 +946,8 @@ function showSettingsContent(selectedId) {
       contentElement.style.display = 'none';
       options[index].classList.remove('active');
     }
+    console.log("id");
+    console.log(id);
 
     if (id === "user-info") {
           getUserName(); // Call this function to populate the user's name input field
@@ -954,9 +957,12 @@ function showSettingsContent(selectedId) {
         getCurrentSysPrompt();
         populateSystemPrompts();
     } else if (id === "tools") {
+        console.log("uwu");
         //set "tools" html equal to <ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>
         document.getElementById("tools").innerHTML = '<ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>';
         populateToolList();
+    } else if (id === "local-models") {
+
     }
   });
 }
@@ -1044,6 +1050,7 @@ async function populateToolList() {
   try {
     const response = await fetch('/get_tools');
     const tools = await response.json();
+    console.log("this is tools");
     console.log(tools);
     const toolList = document.getElementById('tool-list');
     toolList.innerHTML = ''; // Clear the list before adding new items
@@ -1053,6 +1060,27 @@ async function populateToolList() {
     console.error('Failed to load tools:', error);
   }
 }
+
+async function populateModelList() {
+  try {
+    const response = await fetch('/get_local_models'); // Adjust the endpoint as needed
+    const models = await response.json();
+    console.log(models); // Log the models to console for verification
+    const modelList = document.getElementById('model-list'); // Reference to the HTML element for displaying models
+    modelList.innerHTML = ''; // Clear the list before adding new items
+
+    models.reverse().forEach(model => prependModel(model)); // Assuming prependModel is a function to add each model to the list
+  } catch (error) {
+    console.error('Failed to load models:', error);
+  }
+}
+
+function prependModel(model) {
+  const modelEntry = document.createElement('li');
+  modelEntry.textContent = `${model.MrEagle ? model.MrEagle.template : 'Unknown'} - ${model.Gemma ? model.Gemma.template : 'Unknown'}`;
+  document.getElementById('model-list').prepend(modelEntry);
+}
+
 
 async function populateSystemPrompts() {
   try {
@@ -1132,6 +1160,7 @@ function getToolStatus(toolName) {
 
 
 function prependTool(toolName) {
+    console.log(toolName);
   const toolList = document.getElementById('tool-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';

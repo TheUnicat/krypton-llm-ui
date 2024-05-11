@@ -31,5 +31,5 @@ def is_local_model(api, product_family, model_version=None):
 
 def get_all_local_models():
     local_models = models['Local']
-    return local_models
+    return list(local_models.keys())
 
