@@ -224,4 +224,4 @@ def get_local_models():
     return get_all_local_models()
 
 if __name__ == '__main__':
-    app.run(debug=True, port="8080")
+    app.run(debug=True, port="8081")

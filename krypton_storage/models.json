@@ -42,7 +42,7 @@
         "output_cost": 0.075
       },
       "Sonnet": {
-        "name": "claude-3-sonnet-20240229",
+        "name": "claude-3-5-sonnet-20240620",
         "vision": true,
         "path": null,
         "input_cost": 0.003,
