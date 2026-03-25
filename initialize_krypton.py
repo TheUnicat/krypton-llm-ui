@@ -56,6 +56,7 @@ def initialize():
             "fireworks": "Your fireworks api key here",
             "anthropic": "Your anthropic api key here",
             "google": "Your google (ai) api key here",
+            "cohere": "Your cohere api key here",
             "google_search": "Your google search api key here",
             "alpha_vantage": "Your alpha vantage api key here"
         }

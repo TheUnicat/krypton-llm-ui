@@ -69,6 +69,25 @@
       }
     }
   },
+  "Cohere": {
+    "api": "cohere",
+    "Command R": {
+      "+": {
+        "name": "command-r-plus",
+        "vision": false,
+        "path": null,
+        "input_cost": 0.003,
+        "output_cost": 0.015
+      },
+      "Base": {
+        "name": "command-r",
+        "vision": false,
+        "path": null,
+        "input_cost": 0.0005,
+        "output_cost": 0.0015
+      }
+    }
+  },
   "Local": {
     "api": "local",
     "MrEagle": {
@@ -85,6 +104,12 @@
         "name": "Gemma 2B",
         "vision": false,
         "path": "gemma-2b-it.Q5_K_M.gguf"
+      },
+      "Llama-A": {
+        "template": "Alpaca",
+          "name": "Llama-3-A-8B",
+          "vision": false,
+          "path": "meta-llama-3.1-8b-instruct-abliterated_Q4_K_M.gguf"
       }
     }
   }

@@ -14,10 +14,8 @@ llm = False
 
 def load_model(path):
     global llm
-    print(path)
-    assert ospath.exists(path)
-    llm = Llama(model_path=path, use_mlock=True,
-                n_gpu_layers=1, seed=-1, n_ctx=768)
+   # assert ospath.exists(path)
+    llm = Llama(model_path="/Users/hongyang/Downloads/Llama-3-8B-Instruct-abliterated-q4_k.gguf", use_mlock=True)
     return llm
 
 #this is a function that completes a conversation between the user and the ai

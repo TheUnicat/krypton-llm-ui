@@ -93,7 +93,8 @@ const imagePaths = {
     "Claude": "claude.png",
     "Fireworks": "fireworks.png",
     "Llama": "fireworks.png",
-    "Gemini": "gemini.png"
+    "Gemini": "gemini.png",
+    "Command R": "cohere.png"
 };
 
 function addEditButton(targetElement) {
@@ -115,11 +116,7 @@ function addEditButton(targetElement) {
 
 function appendMessage(author, text = null, sysPrompt=null) {
   const chatMessagesContainer = document.querySelector('.chat-container');
-
-    console.log(sysPrompt);
-    // Determine the appropriate user name to display
-let userName = sysPrompt ? sysPrompt : author;
-
+  let userName = sysPrompt ? sysPrompt : author;
   // Initialize an empty message element
   let messageElement = document.createElement('div');
   messageElement.classList.add('message');
@@ -263,13 +260,7 @@ function processText(text) {
 
             modifiedText = modifiedText.replace(/\[TOOL_USE\](.*?)\[\/TOOL_USE\]/g, function(match, jsonString) {
             try {
-                // Decode the JSON string
-                console.log(jsonString);
                 const {tool_name, query, tool_result, is_open} = JSON.parse(jsonString);
-
-                console.log(tool_name, query, tool_result, is_open);
-
-                // Call the function with the extracted values
                 const toolBlockOutput = createToolBlock(tool_name, query, tool_result, is_open);
 
                 // Replace the original [TOOL_USE]...[/TOOL_USE] with the output of createToolBlock
@@ -870,6 +861,14 @@ var modalContentHTML = `
           <label for="anthropic-api-key">Anthropic API Key</label>
           <textarea id="anthropic-api-key" class="user-input-settings" placeholder="Enter Anthropic API Key"></textarea>
         </div>
+        <div class="input-container-settings">
+          <label for="google-api-key">Google API Key</label>
+          <textarea id="google-api-key" class="user-input-settings" placeholder="Enter Google API Key"></textarea>
+        </div>
+        <div class="input-container-settings">
+          <label for="cohere-api-key">Cohere API Key</label>
+          <textarea id="cohere-api-key" class="user-input-settings" placeholder="Enter Cohere API Key"></textarea>
+        </div>
         <button onclick="saveApiKeys()">Save</button>
       </div>
       <div id="user-info" class="settings-content" style="display: none;">
@@ -928,10 +927,7 @@ var secondModalContentHTML =  `<div style="display: flex; flex-direction: column
   </div>
 </div>`;
 
-
-console.log("haii");
 function showSettingsContent(selectedId) {
-    console.log(selectedId);
   const contentIds = ['api-keys', 'user-info', 'system-prompt', 'tools'];
   const options = document.querySelectorAll('.settings-option');
 
@@ -946,8 +942,6 @@ function showSettingsContent(selectedId) {
       contentElement.style.display = 'none';
       options[index].classList.remove('active');
     }
-    console.log("id");
-    console.log(id);
 
     if (id === "user-info") {
           getUserName(); // Call this function to populate the user's name input field
@@ -957,7 +951,6 @@ function showSettingsContent(selectedId) {
         getCurrentSysPrompt();
         populateSystemPrompts();
     } else if (id === "tools") {
-        console.log("uwu");
         //set "tools" html equal to <ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>
         document.getElementById("tools").innerHTML = '<ul id="tool-list" style="list-style-type: none; padding: 0;"></ul>';
         populateToolList();
@@ -976,6 +969,8 @@ function getApiKeys() {
       document.getElementById('openai-api-key').value = data.openai || '';
       document.getElementById('fireworks-api-key').value = data.fireworks || '';
       document.getElementById('anthropic-api-key').value = data.anthropic || '';
+      document.getElementById('google-api-key').value = data.google || '';
+      document.getElementById('cohere-api-key').value = data.cohere || '';
     })
     .catch(error => console.error('Error fetching API keys:', error));
 }
@@ -986,6 +981,8 @@ function saveApiKeys() {
     openai: document.getElementById('openai-api-key').value,
     fireworks: document.getElementById('fireworks-api-key').value,
     anthropic: document.getElementById('anthropic-api-key').value,
+    google: document.getElementById('google-api-key').value,
+    cohere: document.getElementById('cohere-api-key').value,
   };
 
   fetch('/api/keys', {
@@ -1050,8 +1047,6 @@ async function populateToolList() {
   try {
     const response = await fetch('/get_tools');
     const tools = await response.json();
-    console.log("this is tools");
-    console.log(tools);
     const toolList = document.getElementById('tool-list');
     toolList.innerHTML = ''; // Clear the list before adding new items
 
@@ -1065,7 +1060,6 @@ async function populateModelList() {
   try {
     const response = await fetch('/get_local_models'); // Adjust the endpoint as needed
     const models = await response.json();
-    console.log(models); // Log the models to console for verification
     const modelList = document.getElementById('model-list'); // Reference to the HTML element for displaying models
     modelList.innerHTML = ''; // Clear the list before adding new items
 
@@ -1160,7 +1154,6 @@ function getToolStatus(toolName) {
 
 
 function prependTool(toolName) {
-    console.log(toolName);
   const toolList = document.getElementById('tool-list');
   const listItem = document.createElement('li');
   listItem.className = 'conversation-item';
@@ -1268,7 +1261,6 @@ async function activateSysPrompt() {
 async function getCurrentSysPrompt() {
     let currentSysPrompt = await fetch(`/retrieve_current_sys_prompt`);
     currentSysPrompt = await currentSysPrompt.json();
-    console.log(currentSysPrompt);
     localStorage.setItem("promptId", currentSysPrompt);
 }
 
@@ -1327,7 +1319,6 @@ async function updateOrCreateSystemPrompt(title, text, id=null) {
     });
 
     const data = await response.json();
-    console.log(data);
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
   }

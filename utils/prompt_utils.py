@@ -78,6 +78,7 @@ def retrieve_current_sys_prompt():
 
 def retrieve_current_sys_prompt_name():
     current_sys_prompt = retrieve_current_sys_prompt()
+    print(current_sys_prompt)
     if current_sys_prompt is None:
         return "null"
     return retrieve_sys_prompt(current_sys_prompt)["title"]

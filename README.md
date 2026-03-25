@@ -1,3 +1,5 @@
+A web UI for interacting with LLMs from OpenAI, Anthropic, Google, Cohere, Fireworks, and local models.
+
 ### Quickstart
 1. Clone the repository
 ```git clone https://github.com/TheUnicat/krypton-llm-ui.git ```
